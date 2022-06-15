@@ -57,7 +57,9 @@ const Commissions = () => {
               imgsrcs={[icon1, icon2]}
               caption={
                 <StyledList>
-                  <li>Description here</li>
+                  <li>Neck and above</li>
+                  <li>Solid color or gradient background</li>
+                  <li>Fully colored/painted</li>
                 </StyledList>
               }
             />
@@ -66,13 +68,15 @@ const Commissions = () => {
         <Panel
           imgsrc={halfbody1}
           bgpos="50%"
-          cover={<Cover name="Half-Body" price="20" />}
+          cover={<Cover name="Half-Body" price="$20" />}
           content={
             <Content
               imgsrcs={[halfbody1, halfbody2]}
               caption={
                 <StyledList>
-                  <li>Description here</li>
+                  <li>Torso and above</li>
+                  <li>Solid color or gradient background</li>
+                  <li>Fully colored/painted</li>
                 </StyledList>
               }
             />
@@ -87,7 +91,9 @@ const Commissions = () => {
               imgsrcs={[full1, full2]}
               caption={
                 <StyledList>
-                  <li>Description here</li>
+                  <li>Head to toe</li>
+                  <li>Solid color or gradient background</li>
+                  <li>Fully colored/painted</li>
                 </StyledList>
               }
             />
@@ -101,7 +107,7 @@ const Commissions = () => {
 const StyledList = ({ children }: PropsWithChildren<{}>) => {
   return (
     <Typography variant="body1" color="white">
-      <Flex
+      <FlexCol
         component="ul"
         sx={{
           listStyleType: "none",
@@ -109,7 +115,7 @@ const StyledList = ({ children }: PropsWithChildren<{}>) => {
         }}
       >
         {children}
-      </Flex>
+      </FlexCol>
     </Typography>
   );
 };
@@ -133,7 +139,7 @@ const Cover = ({ name, price }: { name: string; price: string }) => {
   return (
     <FlexCol justifyContent="end" p={3}>
       <Flex px={1.5} bgcolor="rgba(0,0,0,0.5)" color="white" fontSize="2em">
-        {name} ${price}
+        {name} {price}
       </Flex>
     </FlexCol>
   );

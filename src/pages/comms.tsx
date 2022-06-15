@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { ReactNode } from "react";
 import { Layout } from "../components/layout";
 import { FlexCol, Flex } from "../components/flex";
@@ -10,7 +10,8 @@ import full1 from "../images/comms/full-1.png";
 import full2 from "../images/comms/full-2.png";
 import { Typography } from "@mui/material";
 import { Link } from "gatsby";
-import { useClientDims } from "../lib/use-client-dims";
+import { Panel } from "../components/gallery/panel";
+import { MiniGallery } from "../components/gallery/mini-gallery";
 
 const Commissions = () => {
   return (
@@ -51,55 +52,80 @@ const Commissions = () => {
           imgsrc={icon1}
           bgpos="65%"
           cover={<Cover name="Icon" price="10" />}
-          content={<Content imgsrcs={[icon1, icon2]} />}
+          content={
+            <Content
+              imgsrcs={[icon1, icon2]}
+              caption={
+                <StyledList>
+                  <li>Description here</li>
+                </StyledList>
+              }
+            />
+          }
         />
         <Panel
           imgsrc={halfbody1}
           bgpos="50%"
           cover={<Cover name="Half-Body" price="20" />}
-          content={<Content imgsrcs={[halfbody1, halfbody2]} />}
+          content={
+            <Content
+              imgsrcs={[halfbody1, halfbody2]}
+              caption={
+                <StyledList>
+                  <li>Description here</li>
+                </StyledList>
+              }
+            />
+          }
         />
         <Panel
           imgsrc={full1}
           bgpos="70%"
           cover={<Cover name="Full-Body" price="30" />}
-          content={<Content imgsrcs={[full1, full2]} />}
+          content={
+            <Content
+              imgsrcs={[full1, full2]}
+              caption={
+                <StyledList>
+                  <li>Description here</li>
+                </StyledList>
+              }
+            />
+          }
         />
       </Flex>
     </Layout>
   );
 };
 
-const Content = ({ imgsrcs }: { imgsrcs: string[] }) => {
+const StyledList = ({ children }: PropsWithChildren<{}>) => {
   return (
-    <FlexCol justifyContent="center" width="100%" px={6}>
-      <MiniGallery imgsrcs={imgsrcs} />
-    </FlexCol>
+    <Typography variant="body1" color="white">
+      <Flex
+        component="ul"
+        sx={{
+          listStyleType: "none",
+          "& > li::before": { content: '"– "' },
+        }}
+      >
+        {children}
+      </Flex>
+    </Typography>
   );
 };
 
-const MiniGallery = ({ imgsrcs }: { imgsrcs: string[] }) => {
-  const [ref, dims] = useClientDims();
-  const size = dims.clientWidth / 2 - 8;
-
+const Content = ({
+  imgsrcs,
+  caption,
+}: {
+  imgsrcs: string[];
+  caption?: ReactNode;
+}) => {
   return (
-    <Flex width="100%" flexWrap="wrap" gap={1} ref={ref}>
-      {imgsrcs.map((imgsrc, i) => (
-        <Flex
-          key={i}
-          width={size}
-          height={size}
-          border={6}
-          borderRadius={1}
-          borderColor="white"
-          sx={{
-            background: `url("${imgsrc}")`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-      ))}
-    </Flex>
+    <FlexCol justifyContent="center" width="100%" px={6}>
+      <MiniGallery imgsrcs={imgsrcs} />
+      {caption}
+    </FlexCol>
   );
 };
 
@@ -108,64 +134,6 @@ const Cover = ({ name, price }: { name: string; price: string }) => {
     <FlexCol justifyContent="end" p={3}>
       <Flex px={1.5} bgcolor="rgba(0,0,0,0.5)" color="white" fontSize="2em">
         {name} ${price}
-      </Flex>
-    </FlexCol>
-  );
-};
-
-const Panel = ({
-  content,
-  cover,
-  imgsrc,
-  bgpos = "50%",
-}: {
-  content?: ReactNode;
-  cover?: ReactNode;
-  imgsrc: string;
-  bgpos?: string;
-}) => {
-  return (
-    <FlexCol
-      flexGrow={1}
-      minWidth={250}
-      overflow="clip"
-      width="100%"
-      height="100%"
-      position="relative"
-      sx={{
-        "&::before": {
-          content: '""',
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-
-          background: `url("${imgsrc}")`,
-          backgroundSize: "cover",
-          backgroundPosition: `${bgpos} 50%`,
-
-          transition: "transform 0.2s, filter 0.2s",
-        },
-
-        "&:hover::before": {
-          transform: "scale(110%)",
-          filter: "brightness(0.5)",
-        },
-
-        "& #content": {
-          opacity: "0",
-          transition: "opacity 0.3s",
-        },
-
-        "&:hover #content": {
-          opacity: "1",
-        },
-      }}
-    >
-      <Flex position="absolute" width="100%" height="100%">
-        {cover}
-      </Flex>
-      <Flex position="absolute" width="100%" height="100%" id="content">
-        {content}
       </Flex>
     </FlexCol>
   );

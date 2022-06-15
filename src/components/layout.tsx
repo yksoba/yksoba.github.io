@@ -23,7 +23,7 @@ const theme = createTheme({
 export const Layout = ({ children }: PropsWithChildren<{}>) => (
   <ThemeProvider theme={theme}>
     <CssBaseline />
-    <Flex height="100vh" width="100vw">
+    <Flex height="100vh" width="100vw" bgcolor="black" color="white">
       <Navbar />
       <Flex height="100%" flexGrow={1}>
         {children}

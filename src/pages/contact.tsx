@@ -3,10 +3,10 @@ import { Typography } from "@mui/material";
 import { Layout } from "../components/layout";
 import { FlexCol } from "../components/flex";
 
-const HomePage = () => {
+const Contact = () => {
   return (
     <Layout>
-      <title>yksoba</title>
+      <title>yksoba - Contact</title>
       <FlexCol justifyContent="center">
         <Typography variant="body1" ml={1}>
           Nothing here yet... check back soon!
@@ -16,4 +16,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Contact;

@@ -14,10 +14,10 @@ export const Navbar = () => {
     >
       <FlexCol alignItems="end" pr={1.5}>
         <Img width={175} src={title} sx={{ mb: 2 }} />
-        <StyledLink to="">Home</StyledLink>
-        <StyledLink to="">Gallery</StyledLink>
-        <StyledLink to="">Commissions</StyledLink>
-        <StyledLink to="">Contact</StyledLink>
+        {/* <StyledLink to="/">Home</StyledLink> */}
+        {/* <StyledLink to="/gallery">Gallery</StyledLink> */}
+        <StyledLink to="/comms">Commissions</StyledLink>
+        {/* <StyledLink to="/contact">Contact</StyledLink> */}
       </FlexCol>
       <Flex
         position="absolute"

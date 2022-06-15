@@ -51,7 +51,7 @@ const Commissions = () => {
         <Panel
           imgsrc={icon1}
           bgpos="65%"
-          cover={<Cover name="Icon" price="10" />}
+          cover={<Cover name="Icon" price="$10" />}
           content={
             <Content
               imgsrcs={[icon1, icon2]}
@@ -85,7 +85,7 @@ const Commissions = () => {
         <Panel
           imgsrc={full1}
           bgpos="70%"
-          cover={<Cover name="Full-Body" price="30" />}
+          cover={<Cover name="Full-Body" price="$30" />}
           content={
             <Content
               imgsrcs={[full1, full2]}

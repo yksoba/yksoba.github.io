@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import * as React from "react";
+import React from "react";
 import { IconButton, Typography } from "@mui/material";
 import { Layout } from "../components/layout";
 import { Flex, FlexCol, Img } from "../components/flex";

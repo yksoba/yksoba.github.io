@@ -21,10 +21,12 @@ export const Panel = ({
         <FlexCol
           flexGrow={1}
           minWidth={250}
+          minHeight={300}
           overflow="clip"
           width="100%"
           height="100%"
           position="relative"
+          tabIndex={0}
           sx={{
             animation: transitionStatus.startsWith("enter")
               ? `${flyIn} 0.2s ease-out`
@@ -44,7 +46,7 @@ export const Panel = ({
               transition: "transform 0.2s, filter 0.2s",
             },
 
-            "&:hover::before": {
+            "&:hover::before, &:focus::before": {
               transform: "scale(110%)",
               filter: "brightness(0.4)",
             },
@@ -54,7 +56,7 @@ export const Panel = ({
               transition: "opacity 0.3s",
             },
 
-            "&:hover #content": {
+            "&:hover #content, &:focus #content": {
               opacity: "1",
             },
           }}

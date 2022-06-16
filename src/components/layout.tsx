@@ -12,6 +12,12 @@ import { TransitionState } from "gatsby-plugin-transition-link";
 
 const theme = createTheme({
   typography: { fontFamily: "Metropolis" },
+  breakpoints: {
+    values: {
+      mobile: 0,
+      desktop: 640,
+    },
+  },
 });
 
 /**
@@ -26,10 +32,10 @@ export const Layout = ({ children }: PropsWithChildren<{}>) => (
     <CssBaseline />
     <Flex
       height="100vh"
-      width="100vw"
+      minWidth="100vw"
       bgcolor="black"
       color="white"
-      sx={{ overflowX: "auto" }}
+      sx={{ overflowX: "auto", flexDirection: ["column", "row"] }}
     >
       <Navbar />
       <TransitionState>
@@ -40,6 +46,7 @@ export const Layout = ({ children }: PropsWithChildren<{}>) => (
             sx={{
               opacity: transitionStatus.startsWith("enter") ? "100%" : "0",
               transition: "opacity 0.2s",
+              flexDirection: ["column", "row"],
             }}
           >
             {children}

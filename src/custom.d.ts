@@ -12,10 +12,23 @@ declare module "*.png" {
 
 declare module "gatsby-plugin-transition-link" {
   const TransitionLink: any;
-  export default TransitionLink;
+  export = TransitionLink;
+
   export const TransitionState: Component<{
     children: (params: {
       transitionStatus: "entering" | "entered" | "exiting" | "exited";
     }) => ReactNode;
   }>;
+}
+
+declare module '@mui/material/styles' {
+  interface BreakpointOverrides {
+    xs: false; // removes the `xs` breakpoint
+    sm: false;
+    md: false;
+    lg: false;
+    xl: false;
+    mobile: true; // adds the `mobile` breakpoint
+    desktop: true;
+  }
 }

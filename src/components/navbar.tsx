@@ -6,14 +6,16 @@ import { StyledTransitionLink } from "./styled";
 export const Navbar = () => {
   return (
     <FlexCol
-      width={250}
       flexShrink={0}
       justifyContent="center"
       bgcolor="black"
       position="relative"
+      mt={3}
+      mb={1}
+      sx={{ width: ["100%", 250] }}
     >
       <FlexCol alignItems="end" pr={1.5}>
-        <Img width={175} src={title} sx={{ mb: 2 }} />
+        <Img src={title} sx={{ mb: 2, width: [225, 175] }} />
         {/* <StyledLink to="/">Home</StyledLink> */}
         {/* <StyledLink to="/gallery">Gallery</StyledLink> */}
         <NavLink to="/comms">Commissions</NavLink>
@@ -22,7 +24,7 @@ export const Navbar = () => {
       <Flex
         position="absolute"
         bottom="0"
-        left="0"
+        left="4px"
         color="white"
         sx={{ opacity: "50%" }}
       >

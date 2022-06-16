@@ -21,17 +21,18 @@ const Commissions = () => {
       <Flex
         width="0"
         height="fit-content"
-        position="sticky"
         zIndex={1}
         left="0"
+        sx={{ position: ["static", "sticky"] }}
       >
         <FlexCol
-          py={1.5}
-          px={2}
-          ml={2}
-          mt={2}
           color="white"
-          bgcolor="rgba(0,0,0,0.5)"
+          bgcolor={[null, "rgba(0,0,0,0.5)"]}
+          mt={[0, 2]}
+          ml={2}
+          pt={[0.5, 1.5]}
+          pb={1.5}
+          px={[0, 2]}
         >
           <Typography component="h1" variant="h3">
             Commissions
@@ -47,62 +48,73 @@ const Commissions = () => {
         </FlexCol>
       </Flex>
 
-      <Flex width="100%" gap={1} bgcolor="black">
-        <Panel
-          imgsrc={icon1}
-          bgpos="65%"
-          cover={<Cover name="Icon" price="$10" />}
-          content={
-            <Content
-              imgsrcs={[icon1, icon2]}
-              caption={
-                <StyledList>
-                  <li>Neck and above</li>
-                  <li>Solid color or gradient background</li>
-                  <li>Fully colored/painted</li>
-                </StyledList>
-              }
-            />
-          }
-        />
-        <Panel
-          imgsrc={halfbody1}
-          bgpos="50%"
-          cover={<Cover name="Half-Body" price="$20" />}
-          content={
-            <Content
-              imgsrcs={[halfbody1, halfbody2]}
-              caption={
-                <StyledList>
-                  <li>Torso and above</li>
-                  <li>Solid color or gradient background</li>
-                  <li>Fully colored/painted</li>
-                </StyledList>
-              }
-            />
-          }
-        />
-        <Panel
-          imgsrc={full1}
-          bgpos="70%"
-          cover={<Cover name="Full-Body" price="$30" />}
-          content={
-            <Content
-              imgsrcs={[full1, full2]}
-              caption={
-                <StyledList>
-                  <li>Head to toe</li>
-                  <li>Solid color or gradient background</li>
-                  <li>Fully colored/painted</li>
-                </StyledList>
-              }
-            />
-          }
-        />
+      <Flex
+        width="100%"
+        gap={1}
+        bgcolor="black"
+        sx={{ flexDirection: ["column", "row"] }}
+      >
+        <Panels />
       </Flex>
     </Layout>
   );
 };
+
+const Panels = () => (
+  <>
+    <Panel
+      imgsrc={icon1}
+      bgpos="65%"
+      cover={<Cover name="Icon" price="$10" />}
+      content={
+        <Content
+          imgsrcs={[icon1, icon2]}
+          caption={
+            <StyledList>
+              <li>Neck and above</li>
+              <li>Solid color or gradient background</li>
+              <li>Fully colored/painted</li>
+            </StyledList>
+          }
+        />
+      }
+    />
+    <Panel
+      imgsrc={halfbody1}
+      bgpos="50%"
+      cover={<Cover name="Half-Body" price="$20" />}
+      content={
+        <Content
+          imgsrcs={[halfbody1, halfbody2]}
+          caption={
+            <StyledList>
+              <li>Torso and above</li>
+              <li>Solid color or gradient background</li>
+              <li>Fully colored/painted</li>
+            </StyledList>
+          }
+        />
+      }
+    />
+    <Panel
+      imgsrc={full1}
+      bgpos="70%"
+      cover={<Cover name="Full-Body" price="$30" />}
+      content={
+        <Content
+          imgsrcs={[full1, full2]}
+          caption={
+            <StyledList>
+              <li>Head to toe</li>
+              <li>Solid color or gradient background</li>
+              <li>Fully colored/painted</li>
+            </StyledList>
+          }
+        />
+      }
+    />
+  </>
+);
 
 const StyledList = ({ children }: PropsWithChildren<{}>) => {
   return (
@@ -128,10 +140,17 @@ const Content = ({
   caption?: ReactNode;
 }) => {
   return (
-    <FlexCol justifyContent="center" width="100%" px={6}>
+    <Flex
+      justifyContent="center"
+      alignItems="start"
+      width="100%"
+      px={2}
+      py={2}
+      sx={{ flexDirection: ["row", "column"] }}
+    >
       <MiniGallery imgsrcs={imgsrcs} />
       {caption}
-    </FlexCol>
+    </Flex>
   );
 };
 

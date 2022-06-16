@@ -15,7 +15,8 @@ const theme = createTheme({
   breakpoints: {
     values: {
       mobile: 0,
-      desktop: 640,
+      tablet: 500,
+      desktop: 780,
     },
   },
 });
@@ -35,7 +36,7 @@ export const Layout = ({ children }: PropsWithChildren<{}>) => (
       minWidth="100vw"
       bgcolor="black"
       color="white"
-      sx={{ overflowX: "auto", flexDirection: ["column", "row"] }}
+      sx={{ overflowX: "auto", flexDirection: ["column", "column", "row"] }}
     >
       <Navbar />
       <TransitionState>
@@ -46,7 +47,7 @@ export const Layout = ({ children }: PropsWithChildren<{}>) => (
             sx={{
               opacity: transitionStatus.startsWith("enter") ? "100%" : "0",
               transition: "opacity 0.2s",
-              flexDirection: ["column", "row"],
+              flexDirection: ["column", "column", "row"],
             }}
           >
             {children}

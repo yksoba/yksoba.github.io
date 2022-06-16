@@ -12,10 +12,10 @@ export const Navbar = () => {
       position="relative"
       mt={3}
       mb={1}
-      sx={{ width: ["100%", 250] }}
+      sx={{ width: ["100%", "100%", 250] }}
     >
       <FlexCol alignItems="end" pr={1.5}>
-        <Img src={title} sx={{ mb: 2, width: [225, 175] }} />
+        <Img src={title} sx={{ mb: 2, width: [225, 225, 175] }} />
         {/* <StyledLink to="/">Home</StyledLink> */}
         {/* <StyledLink to="/gallery">Gallery</StyledLink> */}
         <NavLink to="/comms">Commissions</NavLink>

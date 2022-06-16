@@ -28,11 +28,11 @@ const Commissions = () => {
         <FlexCol
           color="white"
           bgcolor={[null, "rgba(0,0,0,0.5)"]}
-          mt={[0, 2]}
+          mt={[0, 0, 2]}
           ml={2}
-          pt={[0.5, 1.5]}
+          pt={[0.5, 0.5, 1.5]}
           pb={1.5}
-          px={[0, 2]}
+          px={[0, 0, 2]}
         >
           <Typography component="h1" variant="h3">
             Commissions
@@ -52,7 +52,7 @@ const Commissions = () => {
         width="100%"
         gap={1}
         bgcolor="black"
-        sx={{ flexDirection: ["column", "row"] }}
+        sx={{ flexDirection: ["column", "column", "row"] }}
       >
         <Panels />
       </Flex>
@@ -118,7 +118,7 @@ const Panels = () => (
 
 const StyledList = ({ children }: PropsWithChildren<{}>) => {
   return (
-    <Typography variant="body1" color="white">
+    <Typography variant="body1" color="white" component="span">
       <FlexCol
         component="ul"
         sx={{
@@ -141,15 +141,18 @@ const Content = ({
 }) => {
   return (
     <Flex
-      justifyContent="center"
+      justifyContent={["end", "center"]}
       alignItems="start"
       width="100%"
       px={2}
       py={2}
-      sx={{ flexDirection: ["row", "column"] }}
+      gap={1}
+      sx={{ flexDirection: ["row-reverse", "row-reverse", "column"] }}
     >
-      <MiniGallery imgsrcs={imgsrcs} />
-      {caption}
+      <Flex width={[125, "100%", "100%"]}>
+        <MiniGallery imgsrcs={imgsrcs} />
+      </Flex>
+      <Flex flexGrow={[1, 1, 0]}>{caption}</Flex>
     </Flex>
   );
 };

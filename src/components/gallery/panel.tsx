@@ -21,7 +21,7 @@ export const Panel = ({
         <FlexCol
           flexGrow={1}
           minWidth={250}
-          minHeight={300}
+          minHeight={290}
           overflow="clip"
           width="100%"
           height="100%"

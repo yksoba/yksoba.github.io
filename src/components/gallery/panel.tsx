@@ -1,7 +1,7 @@
 import React from "react";
 import { ReactNode } from "react";
 import { FlexCol, Flex } from "../flex";
-import { flyIn, flyOut } from "../styled";
+import { flyIn, flyOut } from "../keyframes";
 import { TransitionState } from "gatsby-plugin-transition-link";
 
 export const Panel = ({
@@ -19,9 +19,8 @@ export const Panel = ({
     <TransitionState>
       {({ transitionStatus }: any) => (
         <FlexCol
-          flexGrow={1}
-          minWidth={250}
-          minHeight={290}
+          minWidth={340}
+          minHeight={275}
           overflow="clip"
           width="100%"
           height="100%"
@@ -32,6 +31,11 @@ export const Panel = ({
               ? `${flyIn} 0.2s ease-out`
               : `${flyOut} 0.2s ease-out`,
             animationFillMode: "forwards",
+
+            minHeight: {
+              sm: 225,
+              md: 275,
+            },
 
             "&::before": {
               content: '""',

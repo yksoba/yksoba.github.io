@@ -21,15 +21,6 @@ export const Navbar = () => {
         <NavLink to="/comms">Commissions</NavLink>
         <NavLink to="/contact">Contact</NavLink>
       </FlexCol>
-      <Flex
-        position="absolute"
-        bottom="0"
-        left="4px"
-        color="white"
-        sx={{ opacity: "50%" }}
-      >
-        © 2022
-      </Flex>
     </FlexCol>
   );
 };

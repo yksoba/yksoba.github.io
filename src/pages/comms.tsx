@@ -8,10 +8,11 @@ import halfbody1 from "../images/comms/half-body-1.png";
 import halfbody2 from "../images/comms/half-body-2.png";
 import full1 from "../images/comms/full-1.png";
 import full2 from "../images/comms/full-2.png";
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import { Link } from "gatsby";
 import { Panel } from "../components/gallery/panel";
 import { MiniGallery } from "../components/gallery/mini-gallery";
+import { theme, SM, MD, LG } from "../components/theme";
 
 const Commissions = () => {
   return (
@@ -19,20 +20,29 @@ const Commissions = () => {
       <title>yksoba - Commissions</title>
 
       <Flex
-        width="0"
-        height="fit-content"
-        zIndex={1}
-        left="0"
-        sx={{ position: ["static", "sticky"] }}
+        sx={{
+          [theme.breakpoints.up(LG)]: {
+            // Make the title float
+            position: "sticky",
+            width: 0,
+            height: "fit-content",
+            zIndex: 1,
+            left: 0,
+            mt: 2,
+          },
+        }}
       >
         <FlexCol
-          color="white"
-          bgcolor={[null, "rgba(0,0,0,0.5)"]}
-          mt={[0, 0, 2]}
-          ml={2}
-          pt={[0.5, 0.5, 1.5]}
-          pb={1.5}
-          px={[0, 0, 2]}
+          sx={{
+            ml: 2,
+            mb: 1.5,
+            [theme.breakpoints.up(LG)]: {
+              // Place title in box when floating
+              bgcolor: "rgba(0,0,0,0.5)",
+              py: 1.5,
+              px: 2,
+            },
+          }}
         >
           <Typography component="h1" variant="h3">
             Commissions
@@ -49,10 +59,16 @@ const Commissions = () => {
       </Flex>
 
       <Flex
-        width="100%"
         gap={1}
-        bgcolor="black"
-        sx={{ flexDirection: ["column", "column", "row"] }}
+        sx={{
+          [theme.breakpoints.up(SM)]: {
+            flexDirection: "column",
+          },
+          [theme.breakpoints.up(LG)]: {
+            width: "100%",
+            flexDirection: "row",
+          },
+        }}
       >
         <Panels />
       </Flex>
@@ -118,11 +134,12 @@ const Panels = () => (
 
 const StyledList = ({ children }: PropsWithChildren<{}>) => {
   return (
-    <Typography variant="body1" color="white" component="span">
+    <Typography variant="body1" component="span">
       <FlexCol
         component="ul"
         sx={{
           listStyleType: "none",
+          textIndent: -30,
           "& > li::before": { content: '"– "' },
         }}
       >
@@ -139,6 +156,9 @@ const Content = ({
   imgsrcs: string[];
   caption?: ReactNode;
 }) => {
+  const isSm = useMediaQuery(theme.breakpoints.only(SM));
+  const isLg = useMediaQuery(theme.breakpoints.up(LG));
+
   return (
     <Flex
       justifyContent={["end", "center"]}
@@ -147,20 +167,74 @@ const Content = ({
       px={2}
       py={2}
       gap={1}
-      sx={{ flexDirection: ["row-reverse", "row-reverse", "column"] }}
+      sx={{
+        [theme.breakpoints.up(SM)]: {
+          flexDirection: "row-reverse",
+        },
+        [theme.breakpoints.up(LG)]: {
+          flexDirection: "column",
+        },
+      }}
     >
-      <Flex width={[125, "100%", "100%"]}>
-        <MiniGallery imgsrcs={imgsrcs} />
+      <Flex
+        sx={{
+          [theme.breakpoints.up(SM)]: {
+            flexGrow: 1,
+            alignSelf: "stretch",
+          },
+          [theme.breakpoints.up(LG)]: {
+            flexGrow: 0,
+            width: "100%",
+          },
+        }}
+      >
+        <MiniGallery
+          imgsrcs={imgsrcs}
+          freeHeight={isLg}
+          columns={isSm ? 1 : 2}
+        />
       </Flex>
-      <Flex flexGrow={[1, 1, 0]}>{caption}</Flex>
+      <Flex
+        sx={{
+          [theme.breakpoints.up(SM)]: {
+            width: "100%",
+          },
+          [theme.breakpoints.up(MD)]: {
+            width: "calc(max(250px, 100% - 500px))",
+          },
+          [theme.breakpoints.up(LG)]: {
+            width: "100%",
+          },
+        }}
+      >
+        {caption}
+      </Flex>
     </Flex>
   );
 };
 
 const Cover = ({ name, price }: { name: string; price: string }) => {
   return (
-    <FlexCol justifyContent="end" p={3}>
-      <Flex px={1.5} bgcolor="rgba(0,0,0,0.5)" color="white" fontSize="2em">
+    <FlexCol
+      justifyContent="end"
+      sx={{
+        p: {
+          sm: 1,
+          md: 3,
+        },
+      }}
+    >
+      <Flex
+        px={1.5}
+        bgcolor="rgba(0,0,0,0.5)"
+        color="white"
+        sx={{
+          fontSize: {
+            sm: "1.5em",
+            md: "2em",
+          },
+        }}
+      >
         {name} {price}
       </Flex>
     </FlexCol>

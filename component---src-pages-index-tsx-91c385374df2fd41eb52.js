@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[691],{3473:function(e,t,n){n.r(t);var c=n(921),l=n(7291),a=n(7665),r=n(3038);t.default=function(){return c.createElement(a.A,null,c.createElement("title",null,"yksoba"),c.createElement(r.Ht,{justifyContent:"center"},c.createElement(l.Z,{variant:"body1",ml:1},"Nothing here yet... check back soon!")))}}}]);
+//# sourceMappingURL=component---src-pages-index-tsx-91c385374df2fd41eb52.js.map

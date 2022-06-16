@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[650],{8764:function(e,t,n){n.r(t);var c=n(921),a=n(7291),l=n(7665),r=n(3038);t.default=function(){return c.createElement(l.A,null,c.createElement("title",null,"yksoba - Contact"),c.createElement(r.Ht,{justifyContent:"center"},c.createElement(a.Z,{variant:"body1",ml:1},"Nothing here yet... check back soon!")))}}}]);
+//# sourceMappingURL=component---src-pages-contact-tsx-fdb04d1942009d879834.js.map

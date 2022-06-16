@@ -21,6 +21,7 @@
     "css": "^3.0.0",
     "gatsby": "^4.13.1",
     "gatsby-plugin-manifest": "^4.13.0",
+    "gatsby-plugin-transition-link": "^1.20.5",
     "gatsby-source-filesystem": "^4.13.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"

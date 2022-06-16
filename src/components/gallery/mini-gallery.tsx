@@ -2,7 +2,7 @@ import React from "react";
 import { Flex } from "../flex";
 import { useClientDims } from "../../lib/use-client-dims";
 
-export const MiniGallery = ({ imgsrcs }: { imgsrcs: string[]; }) => {
+export const MiniGallery = ({ imgsrcs }: { imgsrcs: string[] }) => {
   const [ref, dims] = useClientDims();
   const size = dims.clientWidth / 2 - 8;
 
@@ -20,7 +20,8 @@ export const MiniGallery = ({ imgsrcs }: { imgsrcs: string[]; }) => {
             background: `url("${imgsrc}")`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-          }} />
+          }}
+        />
       ))}
     </Flex>
   );

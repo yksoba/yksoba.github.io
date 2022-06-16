@@ -8,6 +8,7 @@ import "@fontsource/metropolis/500.css";
 import "@fontsource/metropolis/700.css";
 import { Flex } from "./flex";
 import { Navbar } from "./navbar";
+import { TransitionState } from "gatsby-plugin-transition-link";
 
 const theme = createTheme({
   typography: { fontFamily: "Metropolis" },
@@ -23,11 +24,28 @@ const theme = createTheme({
 export const Layout = ({ children }: PropsWithChildren<{}>) => (
   <ThemeProvider theme={theme}>
     <CssBaseline />
-    <Flex height="100vh" width="100vw" bgcolor="black" color="white">
+    <Flex
+      height="100vh"
+      width="100vw"
+      bgcolor="black"
+      color="white"
+      sx={{ overflowX: "auto" }}
+    >
       <Navbar />
-      <Flex height="100%" flexGrow={1}>
-        {children}
-      </Flex>
+      <TransitionState>
+        {({ transitionStatus }) => (
+          <Flex
+            height="100%"
+            flexGrow={1}
+            sx={{
+              opacity: transitionStatus.startsWith("enter") ? "100%" : "0",
+              transition: "opacity 0.2s",
+            }}
+          >
+            {children}
+          </Flex>
+        )}
+      </TransitionState>
     </Flex>
   </ThemeProvider>
 );

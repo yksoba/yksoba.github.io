@@ -1,7 +1,7 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { Flex, FlexCol, Img } from "./flex";
 import title from "../images/title.png";
-import { StyledLink } from "./styled";
+import { StyledTransitionLink } from "./styled";
 
 export const Navbar = () => {
   return (
@@ -16,8 +16,8 @@ export const Navbar = () => {
         <Img width={175} src={title} sx={{ mb: 2 }} />
         {/* <StyledLink to="/">Home</StyledLink> */}
         {/* <StyledLink to="/gallery">Gallery</StyledLink> */}
-        <StyledLink to="/comms">Commissions</StyledLink>
-        {/* <StyledLink to="/contact">Contact</StyledLink> */}
+        <NavLink to="/comms">Commissions</NavLink>
+        <NavLink to="/contact">Contact</NavLink>
       </FlexCol>
       <Flex
         position="absolute"
@@ -29,5 +29,13 @@ export const Navbar = () => {
         © 2022
       </Flex>
     </FlexCol>
+  );
+};
+
+const NavLink = ({ to, children }: PropsWithChildren<{ to: string }>) => {
+  return (
+    <StyledTransitionLink to={to} exit={{ length: 0.2 }} entry={{ delay: 0.2 }}>
+      {children}
+    </StyledTransitionLink>
   );
 };

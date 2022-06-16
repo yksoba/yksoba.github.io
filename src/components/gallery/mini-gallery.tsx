@@ -4,7 +4,8 @@ import { useClientDims } from "../../lib/use-client-dims";
 
 export const MiniGallery = ({ imgsrcs }: { imgsrcs: string[] }) => {
   const [ref, dims] = useClientDims();
-  const size = dims.clientWidth / 2 - 8;
+  const size =
+    dims.clientWidth < 150 ? dims.clientWidth : dims.clientWidth / 2 - 8;
 
   return (
     <Flex width="100%" flexWrap="wrap" gap={1} ref={ref}>

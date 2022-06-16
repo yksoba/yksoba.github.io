@@ -21,7 +21,7 @@ declare module "gatsby-plugin-transition-link" {
   }>;
 }
 
-declare module '@mui/material/styles' {
+declare module "@mui/material/styles" {
   interface BreakpointOverrides {
     xs: false; // removes the `xs` breakpoint
     sm: false;

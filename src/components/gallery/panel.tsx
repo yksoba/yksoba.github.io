@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { FlexCol, Flex } from "../flex";
 import { flyIn, flyOut } from "../keyframes";
 import { TransitionState } from "gatsby-plugin-transition-link";
+import { SM, MD } from "../theme";
 
 export const Panel = ({
   content,
@@ -33,8 +34,8 @@ export const Panel = ({
             animationFillMode: "forwards",
 
             minHeight: {
-              sm: 225,
-              md: 275,
+              [SM]: 225,
+              [MD]: 275,
             },
 
             "&::before": {

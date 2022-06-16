@@ -219,8 +219,8 @@ const Cover = ({ name, price }: { name: string; price: string }) => {
       justifyContent="end"
       sx={{
         p: {
-          sm: 1,
-          md: 3,
+          [SM]: 1,
+          [MD]: 3,
         },
       }}
     >
@@ -230,8 +230,8 @@ const Cover = ({ name, price }: { name: string; price: string }) => {
         color="white"
         sx={{
           fontSize: {
-            sm: "1.5em",
-            md: "2em",
+            [SM]: "1.5em",
+            [MD]: "2em",
           },
         }}
       >

@@ -39,7 +39,10 @@ export const Layout = ({ children }: PropsWithChildren<{}>) => (
               sx={{
                 opacity: transitionStatus.startsWith("enter") ? "100%" : "0",
                 transition: "opacity 0.2s",
-                flexDirection: ["column", "column", "row"],
+                flexDirection: {
+                  [SM]: "column",
+                  [LG]: "row",
+                },
               }}
             >
               {children}

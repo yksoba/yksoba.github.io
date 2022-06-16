@@ -1,8 +1,7 @@
 {
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@3.2.1",
   "scripts": {
-    "develop": "gatsby develop",
-    "start": "gatsby develop",
+    "develop": "gatsby develop --host 0.0.0.0",
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
@@ -37,6 +36,6 @@
     "@types/react-dom": "^18.0.3",
     "@types/react-swipeable-views": "^0.13.1",
     "gh-pages": "^3.2.3",
-    "typescript": "^4.6.4"
+    "typescript": "^4.7.3"
   }
 }

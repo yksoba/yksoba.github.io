@@ -1,6 +1,7 @@
 import React from "react";
 import { PropsWithChildren } from "react";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import "@fontsource/metropolis/300.css";
 import "@fontsource/metropolis/400.css";
@@ -33,7 +34,6 @@ export const Layout = ({ children }: PropsWithChildren<{}>) => (
     <CssBaseline />
     <Flex
       height="100vh"
-      minWidth="100vw"
       bgcolor="black"
       color="white"
       sx={{ overflowX: "auto", flexDirection: ["column", "column", "row"] }}

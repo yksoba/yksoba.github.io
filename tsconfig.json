@@ -8,8 +8,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "skipLibCheck": true,
-    "typeRoots": ["./src/custom.d.ts"]
+    "skipLibCheck": true
   },
   "include": ["./src/**/*", "./gatsby-config.ts"]
 }

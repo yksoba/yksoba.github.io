@@ -1,17 +1,22 @@
 import React, { PropsWithChildren } from "react";
 import { Layout } from "./layout";
 import { FlexCol } from "./flex";
+import { LG, theme } from "./theme";
 
 export const PageLayout = ({ children }: PropsWithChildren<{}>) => {
   return (
     <Layout>
       <main>
         <FlexCol
-          mt="2in"
-          mb="1in"
           mx={2}
-          maxWidth="7in"
-          sx={{ "& p": { my: 1 } }}
+          sx={{
+            "& p": { my: 1 },
+            [theme.breakpoints.up(LG)]: {
+              mt: "2in",
+              mb: "1in",
+              maxWidth: "7in",
+            },
+          }}
         >
           {children}
         </FlexCol>
@@ -19,4 +24,3 @@ export const PageLayout = ({ children }: PropsWithChildren<{}>) => {
     </Layout>
   );
 };
-

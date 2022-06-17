@@ -43,6 +43,7 @@ export const Layout = ({ children }: PropsWithChildren<{}>) => (
                   [SM]: "column",
                   [LG]: "row",
                 },
+                overflowY: { [LG]: "auto" },
               }}
             >
               {children}

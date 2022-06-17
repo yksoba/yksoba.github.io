@@ -105,11 +105,8 @@ const TOS = () => {
           </StyledLink>
           <ul>
             <li>
-              tl;dr - If you reproduce this art, you must give appropriate
-              credit, provide a link to the license, and indicate if changes
-              were made. You may do so in any reasonable manner, but not in any
-              way that suggests the licensor endorses you or your use. You may
-              not use the material for commercial purposes.
+              tl;dr - You may print my art, you may share my art, but you may
+              not sell my art or otherwise use it for commercial purposes.
             </li>
           </ul>
         </li>

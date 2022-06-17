@@ -54,20 +54,20 @@ const TOS = () => {
             </li>
             <li>
               Note that the price may vary from the base price depending on the
-              complexity of the edits, the subject, or other factors. I will let
-              you know if any suggestions will incur an extra cost before you
-              commit to them.
+              complexity of the edits, the subject, excessive revisions, or
+              other factors. I will let you know if any suggestions will incur
+              an extra cost before you commit to them.
             </li>
           </ul>
         </li>
       </ul>
       <ul>
         <li>
-          Once we agree on a sketch, I will send you an invoice. Once the
-          invoice is paid, I will begin work on the final drawing. At this
-          point, only minor edits will be accepted, and major edits will incur
-          an extra fee depending on the complexity of the edit. Please allow up
-          to one month for the finished piece.
+          <b>Once we agree on a sketch, I will send you an invoice.</b> Once the
+          invoice is paid in full, I will begin work on the final drawing. At
+          this point, only minor edits will be accepted, and major edits will
+          incur an extra fee depending on the complexity of the edit. Please
+          allow up to one month for the finished piece.
           <ul>
             <li>
               If circumstances arise that will delay the delivery of the final
@@ -76,6 +76,17 @@ const TOS = () => {
               may opt to wait.
             </li>
           </ul>
+        </li>
+      </ul>
+      <ul>
+        <li>Payment is accepted in USD via PayPal or Venmo only</li>
+        <li>
+          Listed prices are base prices, and the final price may vary depending
+          on the complexity of the design, additional characters, etc.
+        </li>
+        <li>
+          Returns are not accepted once the initial sketch is approved unless
+          the delivery of the final product is delayed.
         </li>
       </ul>
       <ul>

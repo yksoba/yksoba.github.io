@@ -7,6 +7,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import { Link } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import { SM, LG } from "./theme";
+import { navigate } from "gatsby";
 
 export const Navbar = () => {
   return (
@@ -20,7 +21,13 @@ export const Navbar = () => {
       sx={{ width: { [SM]: "100%", [LG]: 250 } }}
     >
       <FlexCol alignItems="end" pr={1.5}>
-        <Img src={title} sx={{ mb: 2, width: [225, 225, 200] }} />
+        <Img
+          src={title}
+          sx={{ mb: 2, width: [225, 225, 200], cursor: "pointer" }}
+          onClick={() => {
+            navigate("/comms");
+          }}
+        />
         {/* <StyledLink to="/">Home</StyledLink> */}
         {/* <StyledLink to="/gallery">Gallery</StyledLink> */}
         <NavLink to="/comms">Commissions</NavLink>

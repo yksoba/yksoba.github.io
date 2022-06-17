@@ -84,7 +84,7 @@ const Panels = () => (
     <Panel
       imgsrc={icon1}
       bgpos="65%"
-      cover={<Cover name="Icon" price="$10" />}
+      cover={<Cover name="Icon" price="$20" />}
       content={
         <Content
           imgsrcs={[icon1, icon2]}
@@ -102,7 +102,7 @@ const Panels = () => (
     <Panel
       imgsrc={halfbody1}
       bgpos="50%"
-      cover={<Cover name="Half-Body" price="$20" />}
+      cover={<Cover name="Half-Body" price="$40" />}
       content={
         <Content
           imgsrcs={[halfbody1, halfbody2]}
@@ -120,7 +120,7 @@ const Panels = () => (
     <Panel
       imgsrc={full1}
       bgpos="70%"
-      cover={<Cover name="Full-Body" price="$30" />}
+      cover={<Cover name="Full-Body" price="$60" />}
       content={
         <Content
           imgsrcs={[full1, full2]}

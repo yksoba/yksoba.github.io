@@ -45,11 +45,9 @@ const Commissions = () => {
           }}
         >
           <Typography component="h1" variant="h3">
-            Commissions
+            Furry/Anthro Commissions
           </Typography>
           <Typography variant="subtitle1" mt={1}>
-            Commission Furry/Anthro Art
-            <br />
             Read the{" "}
             <Link
               to="/comms/tos"
@@ -68,10 +66,12 @@ const Commissions = () => {
         sx={{
           [theme.breakpoints.up(SM)]: {
             flexDirection: "column",
+            mb: "1in",
           },
           [theme.breakpoints.up(LG)]: {
             width: "100%",
             flexDirection: "row",
+            mb: 0,
           },
         }}
       >

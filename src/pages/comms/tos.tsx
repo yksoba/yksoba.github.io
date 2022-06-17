@@ -73,7 +73,7 @@ const TOS = () => {
               If circumstances arise that will delay the delivery of the final
               product, I will let you know and give you an updated timeline. At
               this point, you may cancel your order for a full refund, or you
-              may opt to wait .
+              may opt to wait.
             </li>
           </ul>
         </li>

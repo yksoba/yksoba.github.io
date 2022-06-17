@@ -49,7 +49,10 @@ const Commissions = () => {
           </Typography>
           <Typography variant="subtitle1" mt={1} fontStyle="italic">
             Read the{" "}
-            <Link to="/comms/tos" style={{ color: "white" }}>
+            <Link
+              to="/comms/tos"
+              style={{ color: "white", fontWeight: "bold" }}
+            >
               terms of service
             </Link>
             <br />

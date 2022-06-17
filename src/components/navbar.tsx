@@ -1,10 +1,12 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import { Flex, FlexCol, Img } from "./flex";
+import { styled } from "@mui/material/styles";
 import title from "../images/title.png";
-import { StyledTransitionLink } from "./styled";
+import { StyledLink } from "./styled";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { Link } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
+import { SM, LG } from "./theme";
 
 export const Navbar = () => {
   return (
@@ -15,7 +17,7 @@ export const Navbar = () => {
       position="relative"
       mt={3}
       mb={1}
-      sx={{ width: ["100%", "100%", 250] }}
+      sx={{ width: { [SM]: "100%", [LG]: 250 } }}
     >
       <FlexCol alignItems="end" pr={1.5}>
         <Img src={title} sx={{ mb: 2, width: [225, 225, 200] }} />
@@ -23,7 +25,7 @@ export const Navbar = () => {
         {/* <StyledLink to="/gallery">Gallery</StyledLink> */}
         <NavLink to="/comms">Commissions</NavLink>
         <NavLink to="/contact">Contact</NavLink>
-        <Flex gap={1} mt={0.5}>
+        <Flex gap={1} mt={1}>
           <Link href="https://twitter.com/yk_soba" target="_blank">
             <TwitterIcon />
           </Link>
@@ -36,10 +38,15 @@ export const Navbar = () => {
   );
 };
 
-const NavLink = ({ to, children }: PropsWithChildren<{ to: string }>) => {
-  return (
-    <StyledTransitionLink to={to} exit={{ length: 0.2 }} entry={{ delay: 0.2 }}>
-      {children}
-    </StyledTransitionLink>
-  );
-};
+const NavLink = styled(StyledLink)({
+  textTransform: "uppercase",
+  color: "white",
+  fontSize: "1.2em",
+  fontWeight: "300",
+  opacity: "95%",
+  textDecoration: "none",
+
+  "&:hover": {
+    textDecoration: "underline",
+  },
+});

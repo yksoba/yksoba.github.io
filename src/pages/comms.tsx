@@ -8,7 +8,7 @@ import halfbody1 from "../images/comms/half-body-1.png";
 import halfbody2 from "../images/comms/half-body-2.png";
 import full1 from "../images/comms/full-1.png";
 import full2 from "../images/comms/full-2.png";
-import { Typography, useMediaQuery } from "@mui/material";
+import { Button, Typography, useMediaQuery } from "@mui/material";
 import { Link } from "gatsby";
 import { Panel } from "../components/gallery/panel";
 import { MiniGallery } from "../components/gallery/mini-gallery";
@@ -92,6 +92,7 @@ const Panels = () => (
               <li>Fully colored/painted</li>
             </StyledList>
           }
+          link="https://docs.google.com/forms/d/e/1FAIpQLSdIFPqYt4KYX_q5dm3YOy8XGRBpc7pKdqw9Rkiw_HAqOAIGIQ/viewform?usp=pp_url&entry.1764984693=Icon+$10"
         />
       }
     />
@@ -109,6 +110,7 @@ const Panels = () => (
               <li>Fully colored/painted</li>
             </StyledList>
           }
+          link="https://docs.google.com/forms/d/e/1FAIpQLSdIFPqYt4KYX_q5dm3YOy8XGRBpc7pKdqw9Rkiw_HAqOAIGIQ/viewform?usp=pp_url&entry.1764984693=Half-Body+$20"
         />
       }
     />
@@ -126,6 +128,7 @@ const Panels = () => (
               <li>Fully colored/painted</li>
             </StyledList>
           }
+          link="https://docs.google.com/forms/d/e/1FAIpQLSdIFPqYt4KYX_q5dm3YOy8XGRBpc7pKdqw9Rkiw_HAqOAIGIQ/viewform?usp=pp_url&entry.1764984693=Full-Body+$30"
         />
       }
     />
@@ -152,9 +155,11 @@ const StyledList = ({ children }: PropsWithChildren<{}>) => {
 const Content = ({
   imgsrcs,
   caption,
+  link,
 }: {
   imgsrcs: string[];
   caption?: ReactNode;
+  link: string;
 }) => {
   const isSm = useMediaQuery(theme.breakpoints.only(SM));
   const isLg = useMediaQuery(theme.breakpoints.up(LG));
@@ -194,10 +199,11 @@ const Content = ({
           columns={isSm ? 1 : 2}
         />
       </Flex>
-      <Flex
+      <FlexCol
         sx={{
           [theme.breakpoints.up(SM)]: {
             width: "100%",
+            mt: -1,
           },
           [theme.breakpoints.up(MD)]: {
             width: "calc(max(250px, 100% - 500px))",
@@ -208,7 +214,19 @@ const Content = ({
         }}
       >
         {caption}
-      </Flex>
+        <Button
+          variant="outlined"
+          sx={{
+            maxWidth: 200,
+            alignSelf: "center",
+            [theme.breakpoints.up(SM)]: { mt: -1 },
+          }}
+          href={link}
+          target="_blank"
+        >
+          Reserve Now
+        </Button>
+      </FlexCol>
     </Flex>
   );
 };

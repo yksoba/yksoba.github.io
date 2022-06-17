@@ -89,7 +89,16 @@ const Panels = () => (
       cover={<Cover name="Icon" price="$20" />}
       content={
         <Content
-          imgsrcs={[icon1, icon2]}
+          imgs={[
+            {
+              src: icon1,
+              href: "https://twitter.com/yk_soba/status/1495083769031766016/photo/1",
+            },
+            {
+              src: icon2,
+              href: "https://twitter.com/yk_soba/status/1530246054125490176/photo/1",
+            },
+          ]}
           caption={
             <StyledList>
               <li>Neck and above</li>
@@ -107,7 +116,17 @@ const Panels = () => (
       cover={<Cover name="Half-Body" price="$40" />}
       content={
         <Content
-          imgsrcs={[halfbody1, halfbody2]}
+          imgs={[
+            {
+              src: halfbody1,
+
+              href: "https://twitter.com/yk_soba/status/1537087193965027328/photo/1",
+            },
+            {
+              src: halfbody2,
+              href: "https://twitter.com/yk_soba/status/1488187099165736962/photo/1",
+            },
+          ]}
           caption={
             <StyledList>
               <li>Torso and above</li>
@@ -125,7 +144,16 @@ const Panels = () => (
       cover={<Cover name="Full-Body" price="$60" />}
       content={
         <Content
-          imgsrcs={[full1, full2]}
+          imgs={[
+            {
+              src: full1,
+              href: "https://twitter.com/yk_soba/status/1486414636715057156/photo/1",
+            },
+            {
+              src: full2,
+              href: "https://twitter.com/yk_soba/status/1523770660820258816/photo/1",
+            },
+          ]}
           caption={
             <StyledList>
               <li>Head to toe</li>
@@ -158,11 +186,11 @@ const StyledList = ({ children }: PropsWithChildren<{}>) => {
 };
 
 const Content = ({
-  imgsrcs,
+  imgs,
   caption,
   link,
 }: {
-  imgsrcs: string[];
+  imgs: { src: string; href: string }[];
   caption?: ReactNode;
   link: string;
 }) => {
@@ -198,11 +226,7 @@ const Content = ({
           },
         }}
       >
-        <MiniGallery
-          imgsrcs={imgsrcs}
-          freeHeight={isLg}
-          columns={isSm ? 1 : 2}
-        />
+        <MiniGallery imgs={imgs} freeHeight={isLg} columns={isSm ? 1 : 2} />
       </Flex>
       <FlexCol
         sx={{

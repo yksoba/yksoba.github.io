@@ -1,17 +1,15 @@
-import React from "react";
-import { Typography } from "@mui/material";
+import React, { useEffect } from "react";
 import { Layout } from "../components/layout";
-import { FlexCol } from "../components/flex";
+import { navigate } from "gatsby";
 
 const HomePage = () => {
+  useEffect(() => {
+    // Redirect to comms
+    if (window) navigate("/comms");
+  }, []);
   return (
     <Layout>
       <title>yksoba</title>
-      <FlexCol justifyContent="center">
-        <Typography variant="body1" ml={1}>
-          Nothing here yet... check back soon!
-        </Typography>
-      </FlexCol>
     </Layout>
   );
 };

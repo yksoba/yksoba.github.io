@@ -47,7 +47,9 @@ const Commissions = () => {
           <Typography component="h1" variant="h3">
             Commissions
           </Typography>
-          <Typography variant="subtitle1" mt={1} fontStyle="italic">
+          <Typography variant="subtitle1" mt={1}>
+            Commission Furry/Anthro Art
+            <br />
             Read the{" "}
             <Link
               to="/comms/tos"

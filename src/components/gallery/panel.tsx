@@ -64,6 +64,15 @@ export const Panel = ({
             "&:hover #content, &:focus #content": {
               opacity: "1",
             },
+
+            "& #barrier": {
+              visibility: "visible",
+              transition: "visibility 0.1s step-end",
+            },
+
+            "&:hover #barrier, &:focus #barrier": {
+              visibility: "hidden",
+            },
           }}
         >
           <Flex position="absolute" width="100%" height="100%">
@@ -72,6 +81,13 @@ export const Panel = ({
           <Flex position="absolute" width="100%" height="100%" id="content">
             {content}
           </Flex>
+          <Flex
+            position="absolute"
+            width="100%"
+            height="100%"
+            id="barrier"
+            sx={{ opacity: 0 }}
+          />
         </FlexCol>
       )}
     </TransitionState>

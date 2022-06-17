@@ -236,7 +236,7 @@ const Content = ({
           },
           [theme.breakpoints.up(MD)]: {
             width: "calc(max(250px, 100% - 500px))",
-            mt: 0
+            mt: 0,
           },
           [theme.breakpoints.up(LG)]: {
             width: "100%",

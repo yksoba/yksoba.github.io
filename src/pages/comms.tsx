@@ -236,6 +236,7 @@ const Content = ({
           },
           [theme.breakpoints.up(MD)]: {
             width: "calc(max(250px, 100% - 500px))",
+            mt: 0
           },
           [theme.breakpoints.up(LG)]: {
             width: "100%",
@@ -249,6 +250,7 @@ const Content = ({
             maxWidth: 200,
             alignSelf: "center",
             [theme.breakpoints.up(SM)]: { mt: -1 },
+            [theme.breakpoints.up(MD)]: { mt: 0 },
           }}
           href={link}
           target="_blank"

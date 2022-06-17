@@ -97,7 +97,7 @@ const Panels = () => (
               <li>Fully colored/painted</li>
             </StyledList>
           }
-          link="https://docs.google.com/forms/d/e/1FAIpQLSdIFPqYt4KYX_q5dm3YOy8XGRBpc7pKdqw9Rkiw_HAqOAIGIQ/viewform?usp=pp_url&entry.1764984693=Icon+$10"
+          link="https://docs.google.com/forms/d/e/1FAIpQLSdIFPqYt4KYX_q5dm3YOy8XGRBpc7pKdqw9Rkiw_HAqOAIGIQ/viewform?usp=pp_url&entry.1764984693=Icon+$20"
         />
       }
     />
@@ -115,7 +115,7 @@ const Panels = () => (
               <li>Fully colored/painted</li>
             </StyledList>
           }
-          link="https://docs.google.com/forms/d/e/1FAIpQLSdIFPqYt4KYX_q5dm3YOy8XGRBpc7pKdqw9Rkiw_HAqOAIGIQ/viewform?usp=pp_url&entry.1764984693=Half-Body+$20"
+          link="https://docs.google.com/forms/d/e/1FAIpQLSdIFPqYt4KYX_q5dm3YOy8XGRBpc7pKdqw9Rkiw_HAqOAIGIQ/viewform?usp=pp_url&entry.1764984693=Half-Body+$40"
         />
       }
     />
@@ -133,7 +133,7 @@ const Panels = () => (
               <li>Fully colored/painted</li>
             </StyledList>
           }
-          link="https://docs.google.com/forms/d/e/1FAIpQLSdIFPqYt4KYX_q5dm3YOy8XGRBpc7pKdqw9Rkiw_HAqOAIGIQ/viewform?usp=pp_url&entry.1764984693=Full-Body+$30"
+          link="https://docs.google.com/forms/d/e/1FAIpQLSdIFPqYt4KYX_q5dm3YOy8XGRBpc7pKdqw9Rkiw_HAqOAIGIQ/viewform?usp=pp_url&entry.1764984693=Full-Body+$60"
         />
       }
     />

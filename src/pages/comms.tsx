@@ -255,7 +255,8 @@ const Content = ({
           href={link}
           target="_blank"
         >
-          Reserve Now
+          {/* Reserve Now */}
+          Join Waitlist
         </Button>
       </FlexCol>
     </Flex>

@@ -82,7 +82,7 @@ const TOS = () => {
         <li>Payment is accepted in USD via PayPal or Venmo only</li>
         <li>
           Listed prices are base prices, and the final price may vary depending
-          on the complexity of the design, additional characters, etc.
+          on the complexity of the design, additional characters, transaction fees, etc.
         </li>
         <li>
           Returns are not accepted once the initial sketch is approved unless

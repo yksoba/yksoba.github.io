@@ -4,8 +4,10 @@ import { Layout } from "../components/layout";
 import { FlexCol, Flex } from "../components/flex";
 import icon1 from "../images/comms/icon-1.png";
 import icon2 from "../images/comms/icon-2.png";
+import icon3 from "../images/comms/500.png";
 import halfbody1 from "../images/comms/half-body-1.png";
 import halfbody2 from "../images/comms/half-body-2.png";
+import halfbody3 from "../images/comms/499a.png";
 import full1 from "../images/comms/full-1.png";
 import full2 from "../images/comms/full-2.png";
 import { Button, Typography, useMediaQuery } from "@mui/material";
@@ -84,20 +86,21 @@ const Commissions = () => {
 const Panels = () => (
   <>
     <Panel
-      imgsrc={icon1}
-      bgpos="65%"
-      cover={<Cover name="Icon" price="$20" />}
+      imgsrc={icon3}
+      bgpos="42%"
+      cover={<Cover name="Icon" price="$30" />}
       content={
         <Content
           imgs={[
+            { src: icon3, href: "https://twitter.com/yk_soba" },
             {
               src: icon1,
               href: "https://twitter.com/yk_soba/status/1495083769031766016/photo/1",
             },
-            {
-              src: icon2,
-              href: "https://twitter.com/yk_soba/status/1530246054125490176/photo/1",
-            },
+            // {
+            //   src: icon2,
+            //   href: "https://twitter.com/yk_soba/status/1530246054125490176/photo/1",
+            // },
           ]}
           caption={
             <StyledList>
@@ -106,26 +109,29 @@ const Panels = () => (
               <li>Fully colored/painted</li>
             </StyledList>
           }
-          link="https://docs.google.com/forms/d/e/1FAIpQLSdIFPqYt4KYX_q5dm3YOy8XGRBpc7pKdqw9Rkiw_HAqOAIGIQ/viewform?usp=pp_url&entry.1764984693=Icon+$20"
+          link="https://docs.google.com/forms/d/e/1FAIpQLSfSEbuI3iM8kkH1alBmQe0-9TFm6Qj95wkgOvphTBcIMEsHbg/viewform?usp=pp_url&entry.1764984693=Icon+$30"
         />
       }
     />
     <Panel
-      imgsrc={halfbody1}
+      imgsrc={halfbody3}
       bgpos="50%"
-      cover={<Cover name="Half-Body" price="$40" />}
+      cover={<Cover name="Half-Body" price="$60" />}
       content={
         <Content
           imgs={[
             {
-              src: halfbody1,
-
-              href: "https://twitter.com/yk_soba/status/1537087193965027328/photo/1",
+              src: halfbody3,
+              href: "https://twitter.com/yk_soba/status/1541805809339858945/photo/1"
             },
             {
-              src: halfbody2,
-              href: "https://twitter.com/yk_soba/status/1488187099165736962/photo/1",
+              src: halfbody1,
+              href: "https://twitter.com/yk_soba/status/1537087193965027328/photo/1",
             },
+            // {
+            //   src: halfbody2,
+            //   href: "https://twitter.com/yk_soba/status/1488187099165736962/photo/1",
+            // },
           ]}
           caption={
             <StyledList>
@@ -134,14 +140,14 @@ const Panels = () => (
               <li>Fully colored/painted</li>
             </StyledList>
           }
-          link="https://docs.google.com/forms/d/e/1FAIpQLSdIFPqYt4KYX_q5dm3YOy8XGRBpc7pKdqw9Rkiw_HAqOAIGIQ/viewform?usp=pp_url&entry.1764984693=Half-Body+$40"
+          link="https://docs.google.com/forms/d/e/1FAIpQLSfSEbuI3iM8kkH1alBmQe0-9TFm6Qj95wkgOvphTBcIMEsHbg/viewform?usp=pp_url&entry.1764984693=Half-Body+$60"
         />
       }
     />
     <Panel
       imgsrc={full1}
       bgpos="70%"
-      cover={<Cover name="Full-Body" price="$60" />}
+      cover={<Cover name="Full-Body" price="$90" />}
       content={
         <Content
           imgs={[
@@ -161,7 +167,7 @@ const Panels = () => (
               <li>Fully colored/painted</li>
             </StyledList>
           }
-          link="https://docs.google.com/forms/d/e/1FAIpQLSdIFPqYt4KYX_q5dm3YOy8XGRBpc7pKdqw9Rkiw_HAqOAIGIQ/viewform?usp=pp_url&entry.1764984693=Full-Body+$60"
+          link="https://docs.google.com/forms/d/e/1FAIpQLSfSEbuI3iM8kkH1alBmQe0-9TFm6Qj95wkgOvphTBcIMEsHbg/viewform?usp=pp_url&entry.1764984693=Full-Body+$90"
         />
       }
     />
@@ -255,8 +261,8 @@ const Content = ({
           href={link}
           target="_blank"
         >
-          {/* Reserve Now */}
-          Join Waitlist
+          Reserve Now
+          {/* Join Waitlist */}
         </Button>
       </FlexCol>
     </Flex>

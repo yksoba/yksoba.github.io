@@ -3,8 +3,8 @@ import { Camera, Scene, WebGLRenderer } from "three";
 export abstract class ThreeGame {
   private _didInit = false;
   private _resizeObserver = new ResizeObserver(() => this._resize());
+  private _renderer = new WebGLRenderer();
   private _container?: HTMLElement;
-  private _renderer?: WebGLRenderer;
   private _animationFrame?: number;
   private _lastTime?: number;
   private _layers: Scene[] = [new Scene()];
@@ -39,8 +39,6 @@ export abstract class ThreeGame {
     if (this._container || this._renderer) this.unmount();
 
     this._container = container;
-    this._renderer = new WebGLRenderer();
-
     container.appendChild(this._renderer.domElement);
 
     if (!this._didInit) {
@@ -60,11 +58,7 @@ export abstract class ThreeGame {
 
     this._container?.removeChild(this._renderer?.domElement!);
     this._container?.removeEventListener("resize", this._resize);
-
-    this._renderer?.dispose();
-
     this._container = undefined;
-    this._renderer = undefined;
   }
 
   private _resize() {

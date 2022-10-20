@@ -20,9 +20,7 @@ const config: GatsbyConfig = {
       },
       __key: "pages",
     },
-    {
-      resolve: "gatsby-plugin-transition-link",
-    },
+    "gatsby-plugin-transition-link",
   ],
 };
 

@@ -62,10 +62,10 @@ export abstract class ThreeGame {
   }
 
   private _resize() {
-    if (this._container && this._renderer) {
+    if (this._container) {
       const { clientWidth: width, clientHeight: height } = this._container;
       this._renderer.setSize(width, height);
-      this.updateCamera(width, height, this.camera);
+      this.resize(width, height, this.camera);
     }
   }
 
@@ -74,21 +74,7 @@ export abstract class ThreeGame {
     this._lastTime = time;
 
     this.tick(dt);
-
-    if (this._renderer && this._layers.length > 0 && this.camera) {
-      if (this._layers.length === 1) {
-        this._renderer.autoClear = true;
-        this._renderer.render(this.scene, this.camera);
-      } else {
-        this._renderer.autoClear = false;
-        this._renderer.clear();
-
-        for (const scene of this._layers) {
-          this._renderer.render(scene, this.camera);
-          this._renderer.clearDepth();
-        }
-      }
-    }
+    this.render();
 
     this._animationFrame = requestAnimationFrame((time) => this._loop(time));
   }
@@ -105,7 +91,21 @@ export abstract class ThreeGame {
     this._lastTime = undefined;
   }
 
+  render(): void {
+    if (this._layers.length === 1) {
+      this._renderer.autoClear = true;
+      this._renderer.render(this.scene, this.camera);
+    } else {
+      this._renderer.autoClear = false;
+      this._renderer.clear();
+
+      for (const scene of this._layers) {
+        this._renderer.render(scene, this.camera);
+        this._renderer.clearDepth();
+      }
+    }
+  }
   abstract init(): void;
-  abstract updateCamera(width: number, height: number, prev: Camera): void;
+  abstract resize(width: number, height: number, prev: Camera): void;
   abstract tick(dt: number): void;
 }

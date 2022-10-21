@@ -17,6 +17,7 @@ import {
   Vector4,
   Box3,
   MeshBasicMaterial,
+  Material,
 } from "three";
 import * as THREE from "three";
 import { ThreeGame } from "./three-game";
@@ -28,7 +29,7 @@ import {
   Variable,
 } from "three/examples/jsm/misc/GPUComputationRenderer";
 import { Box } from "@mui/system";
-import { BVHNode, constructBVH, Triangle } from "./bvh";
+import { BVHNode, constructBVH, Face } from "./bvh";
 
 const persistent: { camera?: PerspectiveCamera; controls?: OrbitControls } = ((
   window as any
@@ -53,24 +54,31 @@ export class MyGame extends ThreeGame {
       this.scene.add(light);
     }
 
-    // {
-    //   const loader = new GLTFLoader();
-
-    //   loader.load("/assets/prototype/cornell-1.glb", (gltf) => {
-    //     this.scene.add(gltf.scene);
-    //     this.pathTracer.updateScene(this.scene);
-    //   });
-    // }
-
     {
-      // const geom = new THREE.IcosahedronGeometry(1);
-      const geom = new THREE.CylinderGeometry(1, 1, 2, 8, 2);
-      const mat = new THREE.MeshPhongMaterial();
-      const mesh = new Mesh(geom, mat);
-      this.scene.add(mesh);
+      const loader = new GLTFLoader();
+
+      loader.load("/assets/prototype/cornell-1.glb", (gltf) => {
+        this.scene.add(gltf.scene);
+
+        this.scene.traverse((object) => {
+          if (object.name === "Sphere") {
+            ((object as Mesh).material as any).smoothNormals = true;
+          }
+        });
+
+        this.pathTracer.loadScene(this.scene);
+      });
     }
 
-    this.pathTracer.loadScene(this.scene);
+    // {
+    //   // const geom = new THREE.IcosahedronGeometry(1);
+    //   const geom = new THREE.CylinderGeometry(1, 1, 2, 8, 2);
+    //   const mat = new THREE.MeshPhongMaterial();
+    //   const mesh = new Mesh(geom, mat);
+    //   this.scene.add(mesh);
+    // }
+
+    // this.pathTracer.loadScene(this.scene);
 
     ////////////
     // CAMERA //
@@ -106,13 +114,19 @@ export class MyGame extends ThreeGame {
   tick(dt: number) {}
 }
 
+const SMOOTH_NORMALS_FLAG = 1;
+
 class PathTracer {
   private _computeShader: ShaderMaterial;
   private _computeScene: Scene;
   private _computeCamera: Camera;
 
-  private _trisTex?: DataTexture;
-  private _nodesTex?: DataTexture;
+  private _textures: {
+    faces?: DataTexture;
+    bvhNodes?: DataTexture;
+    materialFlags?: DataTexture;
+  } = {};
+
   private _scene?: Scene;
 
   constructor(private _renderer: WebGLRenderer) {
@@ -120,16 +134,20 @@ class PathTracer {
       vertexShader: PathTracer._vertexShader,
       fragmentShader: PathTracer._fragmentShader,
       uniforms: {
-        tris: { value: null },
-        nodes: { value: null },
+        faces: { value: null },
+        bvhNodes: { value: null },
+        materialFlags: { value: null },
 
         matrixWorld: { value: null },
         projectionMatrixInverse: { value: null },
       },
       defines: {
-        N_TRIS: 0,
-        N_NODES: 0,
+        N_FACES: 0,
+        N_BVH_NODES: 0,
+        N_MATERIALS: 0,
+        SMOOTH_NORMALS_FLAG,
       },
+      glslVersion: THREE.GLSL3,
     });
 
     this._computeCamera = new Camera();
@@ -139,28 +157,70 @@ class PathTracer {
     this._computeScene.add(mesh);
   }
 
+  private disposeTextures() {
+    Object.values(this._textures).forEach((texture) => texture.dispose());
+    this._textures = {};
+  }
+
+  private bindTextures() {
+    Object.entries(this._textures).forEach(([name, texture]) => {
+      texture.needsUpdate = true;
+      this._computeShader.uniforms[name].value = texture;
+    });
+  }
+
   loadScene(scene?: Scene) {
     if (scene) this._scene = scene;
     if (!this._scene) return;
 
     // Free old textures
-    if (this._trisTex) this._trisTex.dispose();
-    if (this._nodesTex) this._nodesTex.dispose();
+    this.disposeTextures();
 
-    // Extract triangles from geometry
-    const triangles: Triangle[] = [];
+    // Extract face data from geometry
+    const materials: Material[] = [];
+    const materialIndices = new Map<string, number>();
+    const getMaterialIndex = (material: Material) => {
+      if (materialIndices.has(material.uuid))
+        return materialIndices.get(material.uuid)!;
+      const i = materials.length;
+      materials.push(material);
+      materialIndices.set(material.uuid, i);
+      return i;
+    };
+
+    type FaceData = { materialIndex: number };
+    const faces: Face<FaceData>[] = [];
 
     this._scene.traverse((object) => {
       if ((object as Mesh).isMesh) {
         const mesh = object as Mesh;
 
+        // Bake transforms into geometry
+        mesh.updateWorldMatrix(true, true);
+        let geometry = mesh.geometry.clone();
+        geometry.applyMatrix4(mesh.matrixWorld);
+
         // Get non-indexed verts
-        let geometry = mesh.geometry;
         if (geometry.index) geometry = geometry.toNonIndexed();
         const position = geometry.getAttribute("position");
 
+        console.log(mesh);
+
         // Copy vertices
         for (let i = 0; i < position.count * 3; i += 9) {
+          let materialIndex: number;
+          if (Array.isArray(mesh.material)) {
+            const group = geometry.groups.find(
+              ({ start, count }) => i >= start && i < start + count
+            );
+            if (typeof group?.materialIndex !== "number") throw new Error();
+            materialIndex = getMaterialIndex(
+              mesh.material[group.materialIndex]
+            );
+          } else {
+            materialIndex = getMaterialIndex(mesh.material);
+          }
+
           const verts = [
             new Vector3(
               position.array[i + 0],
@@ -179,58 +239,70 @@ class PathTracer {
             ),
           ] as [Vector3, Vector3, Vector3];
 
-          triangles.push(verts);
+          faces.push({ verts, data: { materialIndex } });
         }
       }
     });
 
     // Create BVH
-    const bvh = constructBVH(triangles);
+    const bvh = constructBVH(faces);
 
-    // Serialize BVH
-    const tris: Triangle[] = [];
-    const nodes: { aabb: Box3; element: number; next: number }[] = [];
+    // Collate BVH Data
+    const facesArr: Face<FaceData>[] = [];
+    const nodesArr: { aabb: Box3; element: number; next: number }[] = [];
 
-    const serializeBVH = (node: BVHNode) => {
+    const collateBVH = (node: BVHNode<FaceData>) => {
       if (node.children) {
         const data = { aabb: node.aabb, element: 1, next: 1 };
-        nodes.push(data);
+        nodesArr.push(data);
 
         if (node.children[0].element) {
-          const i = tris.length;
-          tris.push(node.children[0].element);
+          const i = facesArr.length;
+          facesArr.push(node.children[0].element);
           data.element = -i;
         } else {
-          serializeBVH(node.children[0]);
+          collateBVH(node.children[0]);
         }
 
         if (node.children[1].element) {
-          const i = tris.length;
-          tris.push(node.children[1].element);
+          const i = facesArr.length;
+          facesArr.push(node.children[1].element);
           data.next = -i;
         } else {
-          serializeBVH(node.children[1]);
-          data.next = nodes.length;
+          collateBVH(node.children[1]);
+          data.next = nodesArr.length;
         }
       }
     };
-    serializeBVH(bvh);
+    collateBVH(bvh);
 
-    // console.log(nodes);
-
-    // Create textures from data
-    this._trisTex = new DataTexture(
-      new Float32Array(tris.flat().flatMap((v) => [v.x, v.y, v.z, 1])),
+    // Encode data into textures
+    this._textures.faces = new DataTexture(
+      new Float32Array(
+        facesArr.flatMap((face) => [
+          face.verts[0].x,
+          face.verts[0].y,
+          face.verts[0].z,
+          face.data.materialIndex,
+          face.verts[1].x,
+          face.verts[1].y,
+          face.verts[1].z,
+          1,
+          face.verts[2].x,
+          face.verts[2].y,
+          face.verts[2].z,
+          1,
+        ])
+      ),
       3,
-      tris.length,
+      facesArr.length,
       THREE.RGBAFormat,
       THREE.FloatType
     );
-    this._trisTex.needsUpdate = true;
 
-    this._nodesTex = new DataTexture(
+    this._textures.bvhNodes = new DataTexture(
       new Float32Array(
-        nodes.flatMap((n) => [
+        nodesArr.flatMap((n) => [
           ...n.aabb.min.toArray(),
           n.element,
           ...n.aabb.max.toArray(),
@@ -238,18 +310,32 @@ class PathTracer {
         ])
       ),
       2,
-      nodes.length,
+      nodesArr.length,
       THREE.RGBAFormat,
       THREE.FloatType
     );
-    this._nodesTex.needsUpdate = true;
+
+    this._textures.materialFlags = new DataTexture(
+      new Uint16Array(
+        materials.map((mat) => {
+          let flags = 0;
+
+          if ((mat as any).smoothNormals) flags |= SMOOTH_NORMALS_FLAG;
+
+          return flags;
+        })
+      ),
+      1,
+      materials.length,
+      THREE.RGBAIntegerFormat,
+      THREE.UnsignedIntType
+    );
 
     // Bind textures to shader
-    this._computeShader.uniforms.tris.value = this._trisTex;
-    this._computeShader.uniforms.nodes.value = this._nodesTex;
-
-    this._computeShader.defines.N_TRIS = tris.length;
-    this._computeShader.defines.N_NODES = nodes.length;
+    this.bindTextures();
+    this._computeShader.defines.N_FACES = facesArr.length;
+    this._computeShader.defines.N_BVH_NODES = nodesArr.length;
+    this._computeShader.defines.N_MATERIALS = materials.length;
   }
 
   render(camera: Camera) {
@@ -265,13 +351,13 @@ class PathTracer {
   }
 
   private static _vertexShader = `
-    attribute vec3 position;
+    in vec3 position;
 
     uniform mat4 matrixWorld;
     uniform mat4 projectionMatrixInverse;
 
-    varying vec3 vO;
-    varying vec3 vD;
+    out vec3 vO;
+    out vec3 vD;
 
     void main() {
       vec4 o4 = matrixWorld * vec4(0.0, 0.0, 0.0, 1.0);
@@ -286,31 +372,46 @@ class PathTracer {
     }
 `;
 
-  private static _fragmentShader = `
+  private static _fragmentShader = `    
     precision highp float;
 
-    uniform sampler2D tris;
-    uniform sampler2D nodes;
+    uniform sampler2D faces;
+    uniform sampler2D bvhNodes;
+    uniform highp usampler2D materialFlags;
 
-    varying vec3 vO;
-    varying vec3 vD;
+    in vec3 vO;
+    in vec3 vD;
+
+    out vec4 fragColor;
     
-    vec3 get_tri(float i, float j) {
-      return texture2D(tris, vec2(j/3.0, i/float(N_TRIS))).xyz;
+    vec4 get_face_raw(int face, int j) {
+      return texelFetch(faces, ivec2(j, face), 0);
     }
 
-    vec4 get_node(float i, float j) {
-      return texture2D(nodes, vec2(j/2.0, i/float(N_NODES)));
+    void unpack_face(int face, out vec3 v1, out vec3 v2, out vec3 v3, out int material) {
+      vec4 tri0 = get_face_raw(face, 0);
+      vec4 tri1 = get_face_raw(face, 1);
+      vec4 tri2 = get_face_raw(face, 2);
+
+      v1 = tri0.xyz;
+      v2 = tri1.xyz;
+      v3 = tri2.xyz;
+
+      material = int(tri0.w);
     }
 
-    void get_node2(float i, out vec3 mn, out vec3 mx, out float enter, out float next) {
-      vec4 node0 = get_node(i, 0.0);
+    vec4 get_node_raw(int node, int j) {
+      return texelFetch(bvhNodes, ivec2(j, node), 0);
+    }
+
+    void unpack_node(int node, out vec3 mn, out vec3 mx, out int elem, out int next) {
+      vec4 node0 = get_node_raw(node, 0);
       mn = node0.xyz;
-      enter = node0.w;
+      elem = int(node0.w);
 
-      vec4 node1 = get_node(i, 1.0);
+      vec4 node1 = get_node_raw(node, 1);
       mx = node1.xyz;
-      next = node1.w;
+      next = int(node1.w);
     }
 
     bool intersect_box(vec3 o, vec3 inv_d, vec3 mn, vec3 mx) {
@@ -339,18 +440,16 @@ class PathTracer {
       return vec3(dot(q,e2), dot(p,t), dot(q,d)) / dot(p,e1);
     } 
 
-    bool intersect_tri2(vec3 o, vec3 d, float i, inout float t) {
-      vec3 a = get_tri(i, 0.0);
-      vec3 b = get_tri(i, 1.0);
-      vec3 c = get_tri(i, 2.0);
-
+    bool intersect_tri2(vec3 o, vec3 d, vec3 a, vec3 b, vec3 c, inout float t) {
       vec3 tuv = intersect_tri(o, d, a, b, c);
 
-      if(tuv.y > 0.0 
-      && tuv.z > 0.0 
-      && tuv.y + tuv.z < 1.0 
-      && tuv.x > 0.0
-      && (t < 0.0 || tuv.x < t)) {
+      if (
+           tuv.y >= 0.0 
+        && tuv.z >= 0.0 
+        && tuv.y + tuv.z <= 1.0 
+        && tuv.x > 0.0
+        && (t < 0.0 || tuv.x < t)
+      ) {
         t = tuv.x;
         return true;
       } else {
@@ -358,43 +457,49 @@ class PathTracer {
       }
     }
 
+    void intersect_tri3(vec3 o, vec3 d, int i, inout float t, inout vec4 color) {
+      vec3 a, b, c;
+      int material;
+      unpack_face(i,a,b,c,material);
+      if (intersect_tri2(o,d,a,b,c,t)) {
+
+        vec3 normal = normalize(cross(b-a,c-a));
+        color = vec4((normal/2.0 + 0.5) * t / 20.0, 1.0);
+
+      }
+    }
+
+    void cast_ray(vec3 o, vec3 d, out vec4 color) {
+      vec3 inv_d = 1.0/d;
+      float t = -1.0;
+      int node = 0;
+
+      for (int i = 0; i < N_BVH_NODES; i++) {
+        if (node >= N_BVH_NODES) break;
+
+        vec3 mn, mx;
+        int elem, next;
+        unpack_node(node, mn, mx, elem, next);
+
+        node++;
+
+        if (elem <= 0) { intersect_tri3(o,d,-elem,t,color); }
+        if (next <= 0) { intersect_tri3(o,d,-next,t,color); } 
+        else if (!intersect_box(o, inv_d, mn, mx)) {
+          node = next;
+        }
+      }
+    }
+
     void main() {
-      vec3 color;
+      vec4 color;
 
       vec3 o = vO;
       vec3 d = normalize(vD);
-      vec3 inv_d = 1.0/d;
+      
+      cast_ray(o,d,color);
 
-      float t = -1.0;
-
-      float node_idx = 0.0;
-
-      for(int i = 0; i < N_NODES; i++) {
-        if(node_idx >= float(N_NODES)) break;
-
-        vec3 mn, mx;
-        float elem, next;
-        get_node2(node_idx, mn, mx, elem, next);
-
-        node_idx += 1.0;
-
-        if(elem <= 0.0) {
-          if(intersect_tri2(o, d, -elem, t)) {
-            color = vec3(1.0, 1.0, 1.0) * t / 10.0;
-          }
-        }
-
-        if(next <= 0.0) {
-          if(intersect_tri2(o, d, -next, t)) {
-            color = vec3(1.0, 1.0, 1.0) * t / 10.0;
-          }
-        } else if(!intersect_box(o, inv_d, mn, mx)) {
-          node_idx = next;
-        }
-      }
-
-      gl_FragColor = vec4(color, 1.0);
+      fragColor = color;
     }
-
   `;
 }

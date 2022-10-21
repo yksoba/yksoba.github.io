@@ -372,10 +372,8 @@ class PathTracer {
       for(int i = 0; i < N_NODES; i++) {
         if(node_idx >= float(N_NODES)) break;
 
-        vec3 mn;
-        float elem;
-        vec3 mx;
-        float next;
+        vec3 mn, mx;
+        float elem, next;
         get_node2(node_idx, mn, mx, elem, next);
 
         node_idx += 1.0;

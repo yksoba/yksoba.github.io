@@ -123,6 +123,7 @@ class PathTracer {
 
   private _textures: {
     faces?: DataTexture;
+    normals?: DataTexture;
     bvhNodes?: DataTexture;
     materialFlags?: DataTexture;
   } = {};
@@ -135,6 +136,7 @@ class PathTracer {
       fragmentShader: PathTracer._fragmentShader,
       uniforms: {
         faces: { value: null },
+        normals: { value: null },
         bvhNodes: { value: null },
         materialFlags: { value: null },
 
@@ -142,9 +144,7 @@ class PathTracer {
         projectionMatrixInverse: { value: null },
       },
       defines: {
-        N_FACES: 0,
         N_BVH_NODES: 0,
-        N_MATERIALS: 0,
         SMOOTH_NORMALS_FLAG,
       },
       glslVersion: THREE.GLSL3,
@@ -188,8 +188,12 @@ class PathTracer {
       return i;
     };
 
-    type FaceData = { materialIndex: number };
+    type FaceData = {
+      materialIndex: number;
+      normalsIndex: number;
+    };
     const faces: Face<FaceData>[] = [];
+    const normals: [Vector3, Vector3, Vector3][] = [];
 
     this._scene.traverse((object) => {
       if ((object as Mesh).isMesh) {
@@ -203,22 +207,24 @@ class PathTracer {
         // Get non-indexed verts
         if (geometry.index) geometry = geometry.toNonIndexed();
         const position = geometry.getAttribute("position");
+        const normal = geometry.getAttribute("normal");
 
         console.log(mesh);
 
         // Copy vertices
         for (let i = 0; i < position.count * 3; i += 9) {
           let materialIndex: number;
+          let material: Material;
           if (Array.isArray(mesh.material)) {
             const group = geometry.groups.find(
               ({ start, count }) => i >= start && i < start + count
             );
             if (typeof group?.materialIndex !== "number") throw new Error();
             materialIndex = getMaterialIndex(
-              mesh.material[group.materialIndex]
+              (material = mesh.material[group.materialIndex])
             );
           } else {
-            materialIndex = getMaterialIndex(mesh.material);
+            materialIndex = getMaterialIndex((material = mesh.material));
           }
 
           const verts = [
@@ -239,7 +245,29 @@ class PathTracer {
             ),
           ] as [Vector3, Vector3, Vector3];
 
-          faces.push({ verts, data: { materialIndex } });
+          let normalsIndex = -1;
+          if ((material as any).smoothNormals) {
+            normalsIndex = normals.length;
+            normals.push([
+              new Vector3(
+                normal.array[i + 0],
+                normal.array[i + 1],
+                normal.array[i + 2]
+              ),
+              new Vector3(
+                normal.array[i + 3],
+                normal.array[i + 4],
+                normal.array[i + 5]
+              ),
+              new Vector3(
+                normal.array[i + 6],
+                normal.array[i + 7],
+                normal.array[i + 8]
+              ),
+            ] as [Vector3, Vector3, Vector3]);
+          }
+
+          faces.push({ verts, data: { materialIndex, normalsIndex } });
         }
       }
     });
@@ -287,7 +315,7 @@ class PathTracer {
           face.verts[1].x,
           face.verts[1].y,
           face.verts[1].z,
-          1,
+          face.data.normalsIndex,
           face.verts[2].x,
           face.verts[2].y,
           face.verts[2].z,
@@ -296,6 +324,29 @@ class PathTracer {
       ),
       3,
       facesArr.length,
+      THREE.RGBAFormat,
+      THREE.FloatType
+    );
+
+    this._textures.normals = new DataTexture(
+      new Float32Array(
+        normals.flatMap((n) => [
+          n[0].x,
+          n[0].y,
+          n[0].z,
+          1,
+          n[1].x,
+          n[1].y,
+          n[1].z,
+          1,
+          n[2].x,
+          n[2].y,
+          n[2].z,
+          1,
+        ])
+      ),
+      3,
+      normals.length,
       THREE.RGBAFormat,
       THREE.FloatType
     );
@@ -316,8 +367,8 @@ class PathTracer {
     );
 
     this._textures.materialFlags = new DataTexture(
-      new Uint16Array(
-        materials.map((mat) => {
+      new Float32Array(
+        materials.flatMap((mat) => {
           let flags = 0;
 
           if ((mat as any).smoothNormals) flags |= SMOOTH_NORMALS_FLAG;
@@ -327,15 +378,14 @@ class PathTracer {
       ),
       1,
       materials.length,
-      THREE.RGBAIntegerFormat,
-      THREE.UnsignedIntType
+      THREE.RedFormat,
+      THREE.FloatType
     );
+    this._textures.materialFlags.unpackAlignment = 1;
 
     // Bind textures to shader
     this.bindTextures();
-    this._computeShader.defines.N_FACES = facesArr.length;
     this._computeShader.defines.N_BVH_NODES = nodesArr.length;
-    this._computeShader.defines.N_MATERIALS = materials.length;
   }
 
   render(camera: Camera) {
@@ -376,8 +426,9 @@ class PathTracer {
     precision highp float;
 
     uniform sampler2D faces;
+    uniform sampler2D normals;
     uniform sampler2D bvhNodes;
-    uniform highp usampler2D materialFlags;
+    uniform sampler2D materialFlags;
 
     in vec3 vO;
     in vec3 vD;
@@ -388,16 +439,31 @@ class PathTracer {
       return texelFetch(faces, ivec2(j, face), 0);
     }
 
-    void unpack_face(int face, out vec3 v1, out vec3 v2, out vec3 v3, out int material) {
-      vec4 tri0 = get_face_raw(face, 0);
-      vec4 tri1 = get_face_raw(face, 1);
-      vec4 tri2 = get_face_raw(face, 2);
+    void unpack_face(int face, out vec3 v1, out vec3 v2, out vec3 v3, out int material, out int normals) {
+      vec4 face0 = get_face_raw(face, 0);
+      vec4 face1 = get_face_raw(face, 1);
+      vec4 face2 = get_face_raw(face, 2);
 
-      v1 = tri0.xyz;
-      v2 = tri1.xyz;
-      v3 = tri2.xyz;
+      v1 = face0.xyz;
+      v2 = face1.xyz;
+      v3 = face2.xyz;
 
-      material = int(tri0.w);
+      material = int(face0.w);
+      normals = int(face1.w);
+    }
+
+    vec4 get_normals_raw(int normals_, int j) {
+      return texelFetch(normals, ivec2(j, normals_), 0);
+    }
+
+    void unpack_normals(int normals, out vec3 n1, out vec3 n2, out vec3 n3) {
+      vec4 normals0 = get_normals_raw(normals, 0);
+      vec4 normals1 = get_normals_raw(normals, 1);
+      vec4 normals2 = get_normals_raw(normals, 2);
+
+      n1 = normals0.xyz;
+      n2 = normals1.xyz;
+      n3 = normals2.xyz;
     }
 
     vec4 get_node_raw(int node, int j) {
@@ -412,6 +478,10 @@ class PathTracer {
       vec4 node1 = get_node_raw(node, 1);
       mx = node1.xyz;
       next = int(node1.w);
+    }
+
+    int get_material_flags(int material) {
+      return int(texelFetch(materialFlags, ivec2(0, material), 0).r);
     }
 
     bool intersect_box(vec3 o, vec3 inv_d, vec3 mn, vec3 mx) {
@@ -440,7 +510,7 @@ class PathTracer {
       return vec3(dot(q,e2), dot(p,t), dot(q,d)) / dot(p,e1);
     } 
 
-    bool intersect_tri2(vec3 o, vec3 d, vec3 a, vec3 b, vec3 c, inout float t) {
+    bool intersect_tri2(vec3 o, vec3 d, vec3 a, vec3 b, vec3 c, inout float t, out float u, out float v) {
       vec3 tuv = intersect_tri(o, d, a, b, c);
 
       if (
@@ -451,6 +521,8 @@ class PathTracer {
         && (t < 0.0 || tuv.x < t)
       ) {
         t = tuv.x;
+        u = tuv.y;
+        v = tuv.z;
         return true;
       } else {
         return false;
@@ -458,14 +530,24 @@ class PathTracer {
     }
 
     void intersect_tri3(vec3 o, vec3 d, int i, inout float t, inout vec4 color) {
-      vec3 a, b, c;
-      int material;
-      unpack_face(i,a,b,c,material);
-      if (intersect_tri2(o,d,a,b,c,t)) {
+      vec3 normal; 
+      vec3 v1, v2, v3, n1, n2, n3;
+      int material, normals;
+      float u, v;
 
-        vec3 normal = normalize(cross(b-a,c-a));
+      unpack_face(i,v1,v2,v3,material,normals);
+
+      if (intersect_tri2(o,d,v1,v2,v3,t,u,v)) {
+        int materialFlags = get_material_flags(material);
+
+        if((materialFlags & SMOOTH_NORMALS_FLAG) != 0) {
+          unpack_normals(normals,n1,n2,n3);
+          normal = normalize((1.0-u-v)*n1 + u*n2 + v*n3);
+        } else {
+          normal = normalize(cross(v2-v1,v3-v1));
+        }
+
         color = vec4((normal/2.0 + 0.5) * t / 20.0, 1.0);
-
       }
     }
 

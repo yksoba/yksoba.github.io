@@ -21,7 +21,7 @@ const config: GatsbyConfig = {
       __key: "pages",
     },
     "gatsby-plugin-transition-link",
-  ],
+  ]
 };
 
 export default config;

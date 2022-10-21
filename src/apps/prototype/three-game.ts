@@ -9,6 +9,8 @@ export abstract class ThreeGame {
   private _lastTime?: number;
   private _layers: Scene[] = [new Scene()];
 
+  fpsCap: number = Infinity;
+
   get renderer() {
     return this._renderer;
   }
@@ -71,10 +73,13 @@ export abstract class ThreeGame {
 
   private _loop(time?: number) {
     const dt = time && this._lastTime ? time - this._lastTime : 0;
-    this._lastTime = time;
 
-    this.tick(dt);
-    this.render();
+    if (!this._lastTime || dt >= 1000 / this.fpsCap) {
+      this._lastTime = time;
+
+      this.tick(dt);
+      this.render();
+    }
 
     this._animationFrame = requestAnimationFrame((time) => this._loop(time));
   }

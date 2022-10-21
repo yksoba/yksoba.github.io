@@ -110,6 +110,7 @@ export class PathTracer {
     Object.values(this._targets).forEach((target) =>
       target.setSize(width, height)
     );
+    this._nPasses = 0;
   }
 
   private disposeTextures() {

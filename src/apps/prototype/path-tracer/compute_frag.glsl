@@ -235,7 +235,8 @@ bool cast_ray(Ray ray, out Hit hit) {
   return did_hit;
 }
 
-vec3 sample_hit(inout uvec4 g, Ray ray, Hit hit, inout Ray reflected) {
+void sample_hit(inout uvec4 g, Ray ray, Hit hit, inout vec3 color,
+                inout vec3 light, inout Ray next_ray) {
   Face face = load_face(hit.face);
 
   vec3 normal;
@@ -246,27 +247,32 @@ vec3 sample_hit(inout uvec4 g, Ray ray, Hit hit, inout Ray reflected) {
   } else {
     vec3 n1, n2, n3;
     load_normals(face.normals, n1, n2, n3);
-
     normal = normalize((1.0 - hit.u - hit.v) * n1 + hit.u * n2 + hit.v * n3);
   }
+  if (dot(normal, ray.direction) > 0.0)
+    normal *= -1.0;
 
-  reflected.direction = normalize(reflect(ray.direction, normal) +
-                                  (1.0 - mat.metalness) * next_unit(g));
-  // reflected.direction = normalize(reflect(ray.direction, normal));
-  reflected.origin =
-      ray.origin + hit.t * ray.direction + 0.001 * reflected.direction;
+  vec3 hemi = next_unit(g);
+  if (dot(hemi, normal) < 0.0)
+    hemi *= -1.0;
 
-  return mat.color;
+  next_ray.direction =
+      normalize(mix(reflect(ray.direction, normal), hemi, 1.0 - mat.metalness));
+  next_ray.origin =
+      ray.origin + hit.t * ray.direction + 0.001 * next_ray.direction;
+
+  color *= mat.color;
 }
 
-vec3 sample_sky(Ray ray) {
-  return mix(vec3(0.6, 0.1, 0.6), vec3(0.0, 0.0, 1.0), -ray.direction.y);
+void sample_sky(Ray ray, inout vec3 color, inout vec3 light) {
+  light += vec3(1.0, 1.0, 1.0) * 10.0;
 }
 
 void main() {
   uvec4 g = init_rand();
 
   vec3 color = vec3(1.0, 1.0, 1.0);
+  vec3 light = vec3(0.0, 0.0, 0.0);
 
   vec3 o = vO;
   vec3 d = normalize(vD);
@@ -276,18 +282,14 @@ void main() {
     Hit hit = Hit_();
 
     if (cast_ray(ray, hit)) {
-      Ray reflected;
-
-      vec3 hit_color = sample_hit(g, ray, hit, reflected);
-      color *= hit_color;
-
-      ray = reflected;
+      Ray next_ray;
+      sample_hit(g, ray, hit, color, light, next_ray);
+      ray = next_ray;
     } else {
-      // vec3 sky_color = sample_sky(ray);
-      // color *= sky_color;
+      sample_sky(ray, color, light);
       break;
     }
   }
 
-  fragColor = vec4(color, 1.0);
+  fragColor = vec4(color * light, 1.0);
 }

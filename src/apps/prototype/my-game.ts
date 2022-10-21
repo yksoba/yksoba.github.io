@@ -339,7 +339,7 @@ class PathTracer {
       return vec3(dot(q,e2), dot(p,t), dot(q,d)) / dot(p,e1);
     } 
 
-    bool intersect_tri2(vec3 o, vec3 d, float i, out float t) {
+    bool intersect_tri2(vec3 o, vec3 d, float i, inout float t) {
       vec3 a = get_tri(i, 0.0);
       vec3 b = get_tri(i, 1.0);
       vec3 c = get_tri(i, 2.0);
@@ -349,7 +349,8 @@ class PathTracer {
       if(tuv.y > 0.0 
       && tuv.z > 0.0 
       && tuv.y + tuv.z < 1.0 
-      && tuv.x > 0.0) {
+      && tuv.x > 0.0
+      && (t < 0.0 || tuv.x < t)) {
         t = tuv.x;
         return true;
       } else {
@@ -364,7 +365,7 @@ class PathTracer {
       vec3 d = normalize(vD);
       vec3 inv_d = 1.0/d;
 
-      float t = 1000.0;
+      float t = -1.0;
 
       float node_idx = 0.0;
 
@@ -380,17 +381,13 @@ class PathTracer {
         node_idx += 1.0;
 
         if(elem <= 0.0) {
-          float t0;
-          if(intersect_tri2(o, d, -elem, t0) && t0 < t) {
-            t = t0;
+          if(intersect_tri2(o, d, -elem, t)) {
             color = vec3(1.0, 1.0, 1.0) * t / 10.0;
           }
         }
 
         if(next <= 0.0) {
-          float t0;
-          if(intersect_tri2(o, d, -next, t0) && t0 < t) {
-            t = t0;
+          if(intersect_tri2(o, d, -next, t)) {
             color = vec3(1.0, 1.0, 1.0) * t / 10.0;
           }
         } else if(!intersect_box(o, inv_d, mn, mx)) {

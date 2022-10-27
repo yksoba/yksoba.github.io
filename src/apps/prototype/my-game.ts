@@ -9,6 +9,7 @@ import {
   Texture,
   Vector4,
   MeshBasicMaterial,
+  OrthographicCamera,
 } from "three";
 import * as THREE from "three";
 import { ThreeGame } from "./three-game";
@@ -39,24 +40,27 @@ export class MyGame extends ThreeGame {
   pathTracer = new PathTracer(this.renderer);
 
   init() {
-    {
-      const light = new THREE.PointLight(new Color(1, 1, 1), 1);
-      light.position.set(0, 3, 0);
-      light.rotateX(-Math.PI / 2);
+    // {
+    //   const light = new THREE.PointLight(new Color(1, 1, 1), 1);
+    //   light.position.set(0, 3, 0);
+    //   light.rotateX(-Math.PI / 2);
 
-      this.scene.add(light);
-    }
+    //   this.scene.add(light);
+    // }
 
     {
       const loader = new GLTFLoader();
 
-      loader.load("/assets/prototype/cornell-1.glb", (gltf) => {
+      loader.load("/assets/prototype/cornell-0.glb", (gltf) => {
         this.scene.add(gltf.scene);
 
         this.scene.traverse((object) => {
           if (object.name === "Sphere") {
-            ((object as Mesh).material as any).smoothNormals = true;
+            const mat = (object as Mesh).material as any;
+            mat.smoothNormals = true;
           }
+
+          // console.log(object)
         });
 
         this.pathTracer.loadScene(this.scene);

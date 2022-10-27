@@ -83,12 +83,14 @@ struct Material {
   int flags;
   float metalness;
   vec3 color;
+  vec4 emissive;
 };
 
 Material load_material(int i) {
   vec4 tex0 = texelFetch(materials, ivec2(0, i), 0);
   vec4 tex1 = texelFetch(materials, ivec2(1, i), 0);
-  return Material(int(tex0.r), tex0.g, tex1.rgb);
+  vec4 tex2 = texelFetch(materials, ivec2(2, i), 0);
+  return Material(int(tex0.r), tex0.g, tex1.rgb, tex2);
 }
 
 ////////////////////////
@@ -235,8 +237,8 @@ bool cast_ray(Ray ray, out Hit hit) {
   return did_hit;
 }
 
-void sample_hit(inout uvec4 g, Ray ray, Hit hit, inout vec3 color,
-                inout vec3 light, inout Ray next_ray) {
+void sample_hit(inout uvec4 g, Ray ray, Hit hit, out vec3 color, out vec3 light,
+                inout Ray next_ray) {
   Face face = load_face(hit.face);
 
   vec3 normal;
@@ -261,18 +263,17 @@ void sample_hit(inout uvec4 g, Ray ray, Hit hit, inout vec3 color,
   next_ray.origin =
       ray.origin + hit.t * ray.direction + 0.001 * next_ray.direction;
 
-  color *= mat.color;
+  color = mat.color;
+  light = mat.emissive.rgb * mat.emissive.a;
 }
 
-void sample_sky(Ray ray, inout vec3 color, inout vec3 light) {
-  light += vec3(1.0, 1.0, 1.0) * 10.0;
-}
+void sample_sky(Ray ray, out vec3 light) { light = vec3(1.0, 1.0, 1.0); }
 
 void main() {
   uvec4 g = init_rand();
 
-  vec3 color = vec3(1.0, 1.0, 1.0);
-  vec3 light = vec3(0.0, 0.0, 0.0);
+  vec3 running_color = vec3(1.0, 1.0, 1.0);
+  vec3 total_light = vec3(0.0, 0.0, 0.0);
 
   vec3 o = vO;
   vec3 d = normalize(vD);
@@ -283,13 +284,20 @@ void main() {
 
     if (cast_ray(ray, hit)) {
       Ray next_ray;
+      vec3 color, light;
+
       sample_hit(g, ray, hit, color, light, next_ray);
+      total_light += running_color * light;
+      running_color *= color;
+
       ray = next_ray;
     } else {
-      sample_sky(ray, color, light);
+      vec3 light;
+      sample_sky(ray, light);
+      total_light += running_color * light;
       break;
     }
   }
 
-  fragColor = vec4(color * light, 1.0);
+  fragColor = vec4(total_light, 1.0);
 }

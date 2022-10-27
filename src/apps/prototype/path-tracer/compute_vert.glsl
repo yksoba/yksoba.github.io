@@ -10,7 +10,7 @@ in vec2 uv;
 out vec2 vUV;
 
 void main() {
-  vUV = (position.xy + 1.0) / 2.0;
+  vUV = uv;
 
   vec4 o4 = matrixWorld * vec4(0.0, 0.0, 0.0, 1.0);
   vO = o4.xyz / o4.w;

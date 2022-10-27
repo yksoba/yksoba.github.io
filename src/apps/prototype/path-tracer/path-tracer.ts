@@ -16,7 +16,7 @@ import {
   Matrix4,
 } from "three";
 import * as THREE from "three";
-import { BVHNode, constructBVH, Face } from "../bvh";
+import { BVHNode, constructBVH, ElementIn } from "../bvh";
 import computeFrag from "!!raw-loader!./compute_frag.glsl";
 import computeVert from "!!raw-loader!./compute_vert.glsl";
 import accFrag from "!!raw-loader!./acc_frag.glsl";
@@ -25,6 +25,7 @@ import accVert from "!!raw-loader!./acc_vert.glsl";
 const SMOOTH_NORMALS_FLAG = 1;
 
 type FaceData = {
+  verts: Vector3[];
   materialIndex: number;
   normalsIndex: number;
 };
@@ -137,7 +138,7 @@ export class PathTracer {
       return i;
     };
 
-    const faces: Face<FaceData>[] = [];
+    const faces: ElementIn<FaceData>[] = [];
     const normals: [Vector3, Vector3, Vector3][] = [];
 
     scene.traverse((object) => {
@@ -212,7 +213,10 @@ export class PathTracer {
             ] as [Vector3, Vector3, Vector3]);
           }
 
-          faces.push({ verts, data: { materialIndex, normalsIndex } });
+          faces.push({
+            aabb: new Box3().setFromPoints(verts),
+            data: { verts, materialIndex, normalsIndex },
+          });
         }
       }
     });
@@ -233,7 +237,7 @@ export class PathTracer {
     const bvh = constructBVH(faces);
 
     // Collate BVH Data
-    const facesArr: Face<FaceData>[] = [];
+    const facesArr: ElementIn<FaceData>[] = [];
     const nodesArr: { aabb: Box3; element: number; next: number }[] = [];
 
     const collateBVH = (node: BVHNode<FaceData>) => {
@@ -264,18 +268,18 @@ export class PathTracer {
     // Encode data into textures
     this._textures.faces = new DataTexture(
       new Float32Array(
-        facesArr.flatMap((face) => [
-          face.verts[0].x,
-          face.verts[0].y,
-          face.verts[0].z,
-          face.data.materialIndex,
-          face.verts[1].x,
-          face.verts[1].y,
-          face.verts[1].z,
-          face.data.normalsIndex,
-          face.verts[2].x,
-          face.verts[2].y,
-          face.verts[2].z,
+        facesArr.flatMap(({ data }) => [
+          data.verts[0].x,
+          data.verts[0].y,
+          data.verts[0].z,
+          data.materialIndex,
+          data.verts[1].x,
+          data.verts[1].y,
+          data.verts[1].z,
+          data.normalsIndex,
+          data.verts[2].x,
+          data.verts[2].y,
+          data.verts[2].z,
           1,
         ])
       ),
@@ -332,6 +336,8 @@ export class PathTracer {
 
           const mat2 = mat as Partial<MeshStandardMaterial>;
           const color = mat2.color ?? new Color();
+          const emissive = mat2.emissive ?? new Color();
+          const emissiveIntensity = mat2.emissiveIntensity ?? 0;
 
           return [
             flags,
@@ -342,10 +348,14 @@ export class PathTracer {
             color.g,
             color.b,
             1.0,
+            emissive.r,
+            emissive.g,
+            emissive.b,
+            emissiveIntensity,
           ];
         })
       ),
-      2,
+      3,
       materials.length,
       THREE.RGBAFormat,
       THREE.FloatType

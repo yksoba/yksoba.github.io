@@ -1,7 +1,7 @@
 import { CssBaseline } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
-import { MyGame } from "../../apps/prototype/my-game";
+import { MyGame } from "../../apps/prototype/my-game-2d";
 
 const GameComponent = () => {
   const game = useRef<MyGame>();

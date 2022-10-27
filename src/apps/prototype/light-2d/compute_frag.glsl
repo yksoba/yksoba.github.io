@@ -231,35 +231,7 @@ void main() {
   RandomState g = init_rand();
   vec3 color = vec3(0., 0., 0.);
 
-  Light light = Light(vec3(0., 0., 1.), vec3(1., 0.75, 0.5), 5.);
-
-  // {
-  //   if (!cast_ray(ray_to(vPosition, light.position.xy),
-  //                 distance(vPosition, light.position.xy))) {
-  //     color +=
-  //         light.color * light.intensity *
-  //         pow(distance(vPosition, light.position.xy) + light.position.z,
-  //         -2.);
-  //   }
-  // }
-
-  // {
-  //   float angle = 2. * PI * next_uniform(g);
-  //   Ray ray = ray_from_angle(vPosition, angle);
-  //   Hit hit = Hit_();
-
-  //   if (cast_ray(ray, hit)) {
-  //     vec2 hit_pos = ray.o + hit.t * ray.d;
-  //     if (!cast_ray(advance_ray(ray_to(hit_pos, light.position.xy), 0.001),
-  //                   distance(hit_pos, light.position.xy))) {
-
-  //       color +=
-  //           light.color * light.intensity *
-  //           pow(distance(hit_pos, light.position.xy) + light.position.z,
-  //           -2.);
-  //     }
-  //   }
-  // }
+  Light light = Light(vec3(0., 0., 10.), vec3(1., 0.75, 0.5), 100.);
 
   Ray vis_ray = ray_to(vPosition, light.position.xy);
   float r = distance(vPosition, light.position.xy);
@@ -269,14 +241,21 @@ void main() {
   float angle = 2. * PI * next_uniform(g);
   Ray ray = ray_from_angle(vPosition, angle);
 
-  for (int i = 0; i < 2; i++) {
+  for (int i = 0; i < 3; i++) {
     Hit hit = Hit_();
     if (!cast_ray(ray, hit))
       break;
 
     CurveSegment s = get_elem(hit.elem);
     vec2 normal = compute_normal(s, hit.u);
-    vec2 ref_d = reflect(ray.d, normal);
+    // vec2 ref_d = reflect(ray.d, normal);
+
+    float angle = 2. * PI * next_uniform(g);
+    vec2 ref_d = vec2(cos(angle), sin(angle));
+
+    if (dot(normal, ray.d) * dot(normal, ref_d) > 0.)
+      ref_d *= -1.;
+
     ray = Ray_(ray.o + hit.t * ray.d + 0.001 * ref_d, ref_d);
 
     Ray vis_ray = ray_to(ray.o, light.position.xy);

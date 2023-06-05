@@ -2,10 +2,14 @@ import type { GatsbyConfig } from "gatsby";
 
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `yksoba homepage`,
-    siteUrl: `https://yksoba.art/`,
+    title: "yksoba",
+    siteUrl: "https://yksoba.art/",
   },
   plugins: [
+    "gatsby-plugin-transition-link",
+    "gatsby-plugin-image",
+    "gatsby-plugin-sharp",
+    "gatsby-transformer-sharp",
     {
       resolve: "gatsby-plugin-manifest",
       options: {
@@ -18,12 +22,16 @@ const config: GatsbyConfig = {
         name: "pages",
         path: "./src/pages/",
       },
-      __key: "pages",
     },
     {
-      resolve: "gatsby-plugin-transition-link",
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "artworks",
+        path: "./src/images/artworks/",
+      },
     },
   ],
+  graphqlTypegen: true
 };
 
 export default config;

@@ -1,7 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 
 export const SM = "sm";
-export const MD = "md";
+export const MD = 'md'
 export const LG = "lg";
 
 export const theme = createTheme({
@@ -9,8 +9,8 @@ export const theme = createTheme({
   breakpoints: {
     values: {
       [SM]: 0,
-      [MD]: 480,
-      [LG]: 960,
+      [MD]: 900,
+      [LG]: 1200
     },
   },
   palette: {

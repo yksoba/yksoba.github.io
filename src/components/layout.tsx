@@ -17,7 +17,7 @@ export const Layout = ({ children }: PropsWithChildren<{}>) => (
   <ThemeProvider theme={theme}>
     <CssBaseline />
     {/* <Debug /> */}
-    <FlexCol height="100vh">
+    {/* <FlexCol height="100vh">
       <Flex
         sx={{
           flexGrow: 1,
@@ -52,7 +52,8 @@ export const Layout = ({ children }: PropsWithChildren<{}>) => (
         </TransitionState>
       </Flex>
       <Footer />
-    </FlexCol>
+    </FlexCol> */}
+    <FlexCol height="100vh">{children}</FlexCol>
   </ThemeProvider>
 );
 

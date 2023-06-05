@@ -45,12 +45,13 @@ export const Navbar = () => {
   );
 };
 
-const NavLink = styled(StyledLink)({
+export const NavLink = styled(StyledLink)({
   textTransform: "uppercase",
   color: "white",
   fontSize: "1.2em",
   fontWeight: "300",
   opacity: "95%",
+  // lineHeight: '2em',
   textDecoration: "none",
 
   "&:hover": {

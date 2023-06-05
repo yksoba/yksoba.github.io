@@ -1,3 +1,5 @@
+.devcontainer
+
 .yarn/*
 !.yarn/patches
 !.yarn/releases

@@ -3,6 +3,11 @@ declare module "*.png" {
   export = uri;
 }
 
+declare module "*.svg" {
+  const content: any;
+  export = content;
+}
+
 declare module "gatsby-plugin-transition-link" {
   const TransitionLink: any;
   export = TransitionLink;

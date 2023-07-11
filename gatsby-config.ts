@@ -8,12 +8,17 @@ const config: GatsbyConfig = {
   plugins: [
     "gatsby-plugin-transition-link",
     "gatsby-plugin-image",
-    "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
+    {
+      resolve: "gatsby-plugin-sharp",
+      options: {
+        stripMetadata: false
+      }
+    },
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        icon: "src/images/icon.png",
+        icon: "src/images/favicon.png",
       },
     },
     {
@@ -24,12 +29,28 @@ const config: GatsbyConfig = {
       },
     },
     {
+      resolve: 'gatsby-plugin-react-svg',
+      options: {
+        rule: {
+          include: /\.svg$/
+        }
+      }
+    },
+    {
       resolve: "gatsby-source-filesystem",
       options: {
         name: "artworks",
         path: "./src/images/artworks/",
       },
     },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "comms",
+        path: "./src/images/comms/",
+      },
+    },
+
   ],
   graphqlTypegen: true
 };

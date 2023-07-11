@@ -16,9 +16,19 @@ const autoHeightContextInitialState = {
 const [useAutoHeightContext, AutoHeightContextProvider] =
   createImmerMethodsContext(
     {
-      upsertChild(state, key: HTMLDivElement, child: AutoHeightColumnState = {}) {
+      upsertChild(
+        state,
+        key: HTMLDivElement,
+        child: AutoHeightColumnState = {}
+      ) {
         const _child = state.children.get(key) ?? {};
-        if (typeof _child.aspectRatio !== "number" || isNaN(_child.aspectRatio)) {
+        if (
+          typeof _child.aspectRatio !== "number" ||
+          isNaN(_child.aspectRatio) ||
+          (typeof child.aspectRatio === "number" &&
+            !isNaN(child.aspectRatio) &&
+            Math.abs(_child.aspectRatio - child.aspectRatio) > 0.001)
+        ) {
           _child!.aspectRatio = child.aspectRatio;
           state.targetWidths = undefined;
         }

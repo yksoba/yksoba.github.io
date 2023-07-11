@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Layout } from "../components/common/layout";
 import { Gallery } from "../components/content/gallery";
 import { FullDivider } from "../components/common/misc";
@@ -28,6 +28,16 @@ const Home = (props: PageProps) => {
     : isCommsXing
     ? "commissions"
     : "gallery";
+
+  // Fix direct to anchor navigation
+  useEffect(() => {
+    const hash = props.location.hash.replace(/^#?/, "");
+    if (hash) {
+      setTimeout(() => {
+        document.getElementById(hash)?.scrollIntoView({ behavior: "instant" });
+      }, 100);
+    }
+  }, []);
 
   return (
     <Layout pageProps={props} currentSection={currentSection}>

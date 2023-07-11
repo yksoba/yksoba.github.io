@@ -1,6 +1,5 @@
 import { Button, Link, Typography } from "@mui/material";
 import { graphql, useStaticQuery } from "gatsby";
-import { StaticImage } from "gatsby-plugin-image";
 import React, { PropsWithChildren } from "react";
 import { ImageWrapper } from "../containers/image-wrapper";
 import { FlexCol, Flex } from "../styled";

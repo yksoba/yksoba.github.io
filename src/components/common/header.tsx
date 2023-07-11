@@ -11,16 +11,22 @@ import FuraffinityIcon from "../../images/svgs/furaffinity.svg";
 import { useIntersection } from "react-use";
 import { FullDivider } from "./misc";
 import { useLayoutContext } from "./layout";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { MD } from "./theme";
 
 export const Header = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { isIntersecting = true } = useIntersection(ref, {}) ?? {};
 
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down(MD));
+
   return (
     <>
       <Masthead ref={ref} />
       <Portal>
-        <Fade in={!isIntersecting}>
+        <Fade in={!isSm && !isIntersecting}>
           <FlexCol
             sx={{
               position: "fixed",

@@ -52,7 +52,10 @@ export const Comms = () => {
 
       <Flex gap={2}>
         <InfoCol>
-          <Typography variant="h3">Full-Body / Reference</Typography>
+          <Typography variant="h3">
+            Full-Body /<br />
+            Reference
+          </Typography>
           <Typography variant="body1">Line Only | 60</Typography>
           <Typography variant="body1">Flat-Shaded | 80</Typography>
           <Typography variant="body1">Full-Color | 120</Typography>
@@ -96,7 +99,10 @@ export const Comms = () => {
 
       <Flex gap={2} mb={4}>
         <InfoCol>
-          <Typography variant="h3">Bust-Up / Headshot</Typography>
+          <Typography variant="h3">
+            Bust-Up /<br />
+            Headshot
+          </Typography>
           <Typography variant="body1">Line Only | 30</Typography>
           <Typography variant="body1">Flat-Shaded | 40</Typography>
           <Typography variant="body1">Full-Color | 80</Typography>
@@ -130,7 +136,7 @@ export const Comms = () => {
 
 const InfoCol = ({ children }: PropsWithChildren<{}>) => (
   <FlexCol
-    width={["40%", "35%"]}
+    width={["50%", "35%"]}
     alignItems="end"
     sx={{
       textAlign: "right",
@@ -138,7 +144,7 @@ const InfoCol = ({ children }: PropsWithChildren<{}>) => (
         fontSize: ["1.7rem", "2.4rem", "3rem"],
       },
       "& p": {
-        fontSize: ["1rem", "1.15rem", "1.3rem"],
+        fontSize: [".99rem", "1.15rem", "1.3rem"],
       },
     }}
   >
@@ -147,7 +153,7 @@ const InfoCol = ({ children }: PropsWithChildren<{}>) => (
 );
 
 const PreviewCol = ({ children }: PropsWithChildren<{}>) => (
-  <FlexCol width={["60%", "65%"]}>{children}</FlexCol>
+  <FlexCol width={["50%", "65%"]}>{children}</FlexCol>
 );
 
 const SubmitRequestButton = ({ href }: { href: string }) => (

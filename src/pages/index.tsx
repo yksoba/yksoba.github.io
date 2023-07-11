@@ -1,47 +1,50 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Layout } from "../components/common/layout";
-import { graphql, PageProps } from "gatsby";
 import { Gallery } from "../components/content/gallery";
 import { FullDivider } from "../components/common/misc";
 
 import { Expander } from "../components/containers/expander";
 import { Comms } from "../components/content/comms";
 import { Section } from "../components/styled";
-import { Link } from "@mui/material";
 import { Contact } from "../components/content/contact";
-import { getScrollParent } from "../lib/dom/get-scroll-parent";
+import { PageProps } from "gatsby";
+import { useIntersection } from "react-use";
 
-const Home = () => {
+const Home = (props: PageProps) => {
+  const commsRef = useRef<HTMLElement>(null);
+  const { isIntersecting: isCommsXing = false } =
+    useIntersection(commsRef, {
+      rootMargin: "0% 0% -50% 0%",
+    }) ?? {};
+
+  const contactRef = useRef<HTMLElement>(null);
+  const { isIntersecting: isContactXing = false } =
+    useIntersection(contactRef, {
+      threshold: 0.5,
+    }) ?? {};
+
+  const currentSection = isContactXing
+    ? "contact"
+    : isCommsXing
+    ? "commissions"
+    : "gallery";
+
   return (
-    <Layout>
+    <Layout pageProps={props} currentSection={currentSection}>
       <FullDivider id="gallery" />
       <Expander initialHeight="100vh">
         <Gallery />
       </Expander>
       <FullDivider id="commissions" />
-      <Section sx={{ bgcolor: "rgba(0,0,0,0.5)" }}>
-        <BackToTopLink />
+      <Section ref={commsRef} sx={{ bgcolor: "rgba(0,0,0,0.5)" }}>
         <Comms />
       </Section>
       <FullDivider id="contact" />
-      <Section>
-        <BackToTopLink />
+      <Section ref={contactRef}>
         <Contact />
       </Section>
     </Layout>
   );
 };
-
-export const BackToTopLink = () => (
-  <Link
-    href="#"
-    mt={1}
-    onClick={(event) => {
-      getScrollParent(event.currentTarget).scroll({ top: 0 });
-    }}
-  >
-    Back to top ↑
-  </Link>
-);
 
 export default Home;

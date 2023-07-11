@@ -23,13 +23,13 @@ export const Gallery = () => {
 
   const imageNodes = data.allFile.nodes;
   return (
-    <Box pt={4} px={0.25}>
+    <Box pt={8} px={0.25}>
       <Masonry columns={[2, 3, 4]} gutter={4} stamp=".stamp">
         <Box
           className="stamp"
           sx={(theme) => ({
             position: "absolute",
-            top: -32,
+            top: -64,
             [theme.breakpoints.down(LG)]: {
               left: 0,
               width: "100%",

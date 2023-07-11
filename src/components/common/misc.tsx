@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { Divider, DividerProps } from "@mui/material";
 
 export const FullDivider = (props: DividerProps) => (

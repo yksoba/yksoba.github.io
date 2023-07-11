@@ -40,13 +40,13 @@ export const Comms = () => {
 
   return (
     <FlexCol m={[0.5, 1]} gap={2}>
-      <FlexCol mb={2} mt={3} sx={{ textAlign: "center" }}>
+      <FlexCol mb={2} mt={4} sx={{ textAlign: "center" }}>
         <Typography variant="h2" sx={{ textTransform: "uppercase" }}>
           Commissions
         </Typography>
         <Typography variant="subtitle1" sx={{ fontStyle: "italic" }}>
-          Read the <Link>Terms of Service</Link>. Estimated prices below, final
-          prices may differ. <br />
+          Read the <Link href="/terms-of-service">Terms of Service</Link>.
+          Estimated prices below, final prices may differ. <br />
           All prices in USD.
         </Typography>
       </FlexCol>

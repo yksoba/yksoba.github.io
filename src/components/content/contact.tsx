@@ -3,11 +3,11 @@ import { Link, Typography } from "@mui/material";
 import { FlexCol } from "../styled";
 
 export const Contact = () => (
-  <FlexCol maxWidth="600px">
+  <FlexCol maxWidth="600px" px={4}>
     <Typography
       variant="h2"
       textAlign="center"
-      sx={{ mb: 2, mt: 3, textTransform: "uppercase" }}
+      sx={{ mb: 2, mt: 4, textTransform: "uppercase" }}
     >
       Contact
     </Typography>

@@ -1,5 +1,5 @@
 import React from "react";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, createContext, useContext } from "react";
 import { CssBaseline } from "@mui/material";
 import { Box } from "@mui/system";
 import { ThemeProvider } from "@mui/material/styles";
@@ -11,13 +11,25 @@ import "@fontsource/metropolis/700.css";
 import { FlexCol } from "../styled";
 import { theme } from "./theme";
 import { Footer } from "./footer";
+import { PageProps } from "gatsby";
 
-export const Layout = ({ children }: PropsWithChildren<{}>) => {
+const LayoutContext = createContext<{
+  pageProps: PageProps;
+  currentSection?: string;
+}>(undefined as any);
+export const useLayoutContext = () => useContext(LayoutContext);
+
+export const Layout = ({
+  children,
+  pageProps,
+  currentSection,
+}: PropsWithChildren<{ pageProps: PageProps; currentSection?: string }>) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box width="100vw" sx={{ overflowX: "auto" }}>
         <FlexCol
+          id="scroll-container"
           height="100vh"
           minWidth="450px"
           sx={{
@@ -30,8 +42,10 @@ export const Layout = ({ children }: PropsWithChildren<{}>) => {
             scrollBehavior: "smooth",
           }}
         >
-          {children}
-          <Footer />
+          <LayoutContext.Provider value={{ pageProps, currentSection }}>
+            {children}
+            <Footer />
+          </LayoutContext.Provider>
         </FlexCol>
       </Box>
     </ThemeProvider>

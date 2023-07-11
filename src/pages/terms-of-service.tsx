@@ -4,10 +4,11 @@ import { Header } from "../components/common/header";
 import { Layout } from "../components/common/layout";
 import { FullDivider } from "../components/common/misc";
 
-const Page = ({ location }: PageProps) => {
+const Page = (props: PageProps) => {
   return (
-    <Layout>
-      <Header location={location} />
+    <Layout pageProps={props}>
+      <Header />
+      <FullDivider />
     </Layout>
   );
 };

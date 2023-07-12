@@ -4,7 +4,6 @@ import { Box } from "@mui/material";
 import { Header } from "../common/header";
 import { MD } from "../common/theme";
 import { ImageWrapper } from "../containers/image-wrapper";
-import { getImage } from "gatsby-plugin-image";
 import { useStaticQuery, graphql } from "gatsby";
 
 export const Gallery = () => {
@@ -49,7 +48,7 @@ export const Gallery = () => {
 
           return (
             <Brick colSpan={colSpan} key={node.name}>
-              <ImageWrapper alt={node.name} image={node.childImageSharp} />
+              <ImageWrapper image={node} />
             </Brick>
           );
         })}

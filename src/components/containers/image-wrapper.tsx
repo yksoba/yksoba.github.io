@@ -7,6 +7,7 @@ import {
   Backdrop,
   Fade,
   IconButton,
+  Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Flex } from "../styled";
@@ -24,6 +25,7 @@ export const ImageWrapper = ({
       }
     | {
         name: string;
+        modifiedTime: string;
         childImageSharp: {
           previewImage: IGatsbyImageData;
           highResImage: IGatsbyImageData;
@@ -49,16 +51,27 @@ export const ImageWrapper = ({
     return [openModal, closeModal];
   }, []);
 
-  const { childImageSharp, name = alt ?? "image" } =
-    (image && "childImageSharp" in image
-      ? image
-      : { childImageSharp: image }) ?? {};
+  let {
+    childImageSharp,
+    name = undefined,
+    modifiedTime = undefined,
+  } = (image && "childImageSharp" in image
+    ? image
+    : { childImageSharp: image }) ?? {};
+  modifiedTime = modifiedTime?.slice(0, 10);
+
   const { previewImage = null, highResImage = null } = childImageSharp ?? {};
   if (!previewImage || !highResImage) return null;
 
   const imageAspectRatio = previewImage.width / previewImage.height;
   const windowAspectRatio =
     typeof window === "undefined" ? 1 : window.innerWidth / window.innerHeight;
+
+  const _alt = alt
+    ? alt
+    : name && modifiedTime
+    ? `${modifiedTime} (${name})`
+    : "image";
 
   return (
     <>
@@ -70,7 +83,7 @@ export const ImageWrapper = ({
         }}
         onClick={openModal}
       >
-        <GatsbyImage alt={name} image={previewImage} />
+        <GatsbyImage alt={_alt} image={previewImage} />
       </ButtonBase>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -113,10 +126,20 @@ export const ImageWrapper = ({
                       },
                 ]}
               >
-                <GatsbyImage alt={name} image={highResImage} />
+                <GatsbyImage alt={_alt} image={highResImage} />
               </Box>
             </Flex>
-
+            <Box
+              sx={{
+                position: "fixed",
+                ml: 2,
+                mt: 2,
+                px: 1,
+                bgcolor: "rgba(0,0,0,0.25)",
+              }}
+            >
+              <Typography variant="h6">{modifiedTime}</Typography>
+            </Box>
             <IconButton
               color="primary"
               onClick={closeModal}
@@ -145,6 +168,7 @@ export const query = graphql`
   }
   fragment ImageDataFromFile on File {
     name
+    modifiedTime
     childImageSharp {
       ...ImageData
     }

@@ -2727,12 +2727,12 @@ type WebPOptions = {
 type CommsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type CommsQuery = { readonly allFile: { readonly nodes: ReadonlyArray<{ readonly name: string, readonly childImageSharp: { readonly previewImage: import('gatsby-plugin-image').IGatsbyImageData, readonly highResImage: import('gatsby-plugin-image').IGatsbyImageData } | null }> } };
+type CommsQuery = { readonly allFile: { readonly nodes: ReadonlyArray<{ readonly name: string, readonly modifiedTime: string, readonly childImageSharp: { readonly previewImage: import('gatsby-plugin-image').IGatsbyImageData, readonly highResImage: import('gatsby-plugin-image').IGatsbyImageData } | null }> } };
 
 type GalleryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type GalleryQuery = { readonly allFile: { readonly nodes: ReadonlyArray<{ readonly name: string, readonly childImageSharp: { readonly previewImage: import('gatsby-plugin-image').IGatsbyImageData, readonly highResImage: import('gatsby-plugin-image').IGatsbyImageData } | null }> } };
+type GalleryQuery = { readonly allFile: { readonly nodes: ReadonlyArray<{ readonly name: string, readonly modifiedTime: string, readonly childImageSharp: { readonly previewImage: import('gatsby-plugin-image').IGatsbyImageData, readonly highResImage: import('gatsby-plugin-image').IGatsbyImageData } | null }> } };
 
 type GatsbyImageSharpFixedFragment = { readonly base64: string | null, readonly width: number, readonly height: number, readonly src: string, readonly srcSet: string };
 
@@ -2762,7 +2762,7 @@ type GatsbyImageSharpFluidLimitPresentationSizeFragment = { readonly maxHeight: 
 
 type ImageDataFragment = { readonly previewImage: import('gatsby-plugin-image').IGatsbyImageData, readonly highResImage: import('gatsby-plugin-image').IGatsbyImageData };
 
-type ImageDataFromFileFragment = { readonly name: string, readonly childImageSharp: { readonly previewImage: import('gatsby-plugin-image').IGatsbyImageData, readonly highResImage: import('gatsby-plugin-image').IGatsbyImageData } | null };
+type ImageDataFromFileFragment = { readonly name: string, readonly modifiedTime: string, readonly childImageSharp: { readonly previewImage: import('gatsby-plugin-image').IGatsbyImageData, readonly highResImage: import('gatsby-plugin-image').IGatsbyImageData } | null };
 
 
 }

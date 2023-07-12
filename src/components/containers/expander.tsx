@@ -33,6 +33,7 @@ export const Expander = ({
       <Box
         sx={{
           height: innerHeight + controlHeight,
+          minHeight: initialHeight,
           maxHeight: isExpanded ? innerHeight + controlHeight : initialHeight,
           overflowY: "clip",
           transition: "max-height 1s ease",
@@ -72,8 +73,8 @@ const ExpanderControl = ({
       backgroundPosition: isExpanded ? "0 0" : "0 -80px",
       transition: "background-position 300ms ease",
     }}
-    onClick={(event) => {
-      if (isExpanded) getScrollParent(event.currentTarget).scroll({ top: 0 });
+    onClick={() => {
+      if (isExpanded) window.scroll({ top: 0 });
       setIsExpanded((state) => !state);
     }}
   >

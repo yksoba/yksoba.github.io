@@ -122,19 +122,17 @@ const TitleLink = ({ variant }: { variant: "large" | "small" }) => {
 
   return (
     <Link
-      href="/"
+      href="/#"
       onClick={
         isHomePage
           ? (event) => {
-              if (event.button === 0) {
-                window.scroll({ top: 0 });
-                window.history.pushState(
-                  null,
-                  "",
-                  window.location.pathname + window.location.search
-                );
-                event.preventDefault();
-              }
+              window.scroll({ top: 0 });
+              window.history.pushState(
+                null,
+                "",
+                window.location.pathname + window.location.search
+              );
+              event.preventDefault();
             }
           : undefined
       }

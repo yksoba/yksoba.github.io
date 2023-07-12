@@ -5,12 +5,18 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import MasonryLayout from "masonry-layout";
 import { SxProps } from "@mui/system";
 import { Box } from "@mui/material";
+import { useAsync } from "react-use";
+
+// Dynamically import masonry only on client
+import type MasonryLayout from "masonry-layout";
+const LazyMasonryLayout = (async () =>
+  typeof window !== `undefined`
+    ? (await import("masonry-layout")).default
+    : null)();
 
 // Helper functions for computing layout values
-
 const computeWidth = (columns: number, gutter: number, colSpan: number) =>
   `calc(${(colSpan * 100) / columns}% - ${
     gutter * (1 - colSpan / (columns + 1))
@@ -53,12 +59,14 @@ export const Masonry = ({
     onLayoutComplete?: (laidOutItems: any[]) => void;
   }
 >) => {
+  const { value: MasonryLayout } = useAsync(() => LazyMasonryLayout);
+
   const gridRef = useRef<HTMLDivElement>(null);
   const layoutRef = useRef<MasonryLayout>();
 
   // Initialize Masonry
   useEffect(() => {
-    if (gridRef.current) {
+    if (MasonryLayout && gridRef.current) {
       layoutRef.current = new MasonryLayout(gridRef.current, {
         itemSelector,
         gutter,
@@ -66,7 +74,7 @@ export const Masonry = ({
         ...layoutOptions,
       });
     }
-  }, [gridRef.current]);
+  }, [MasonryLayout, gridRef.current]);
 
   // Register Event Listeners
   useEffect(() => {
@@ -83,7 +91,7 @@ export const Masonry = ({
   // Calculate layout parameters
   const sizerWidth = computeWidth2(columns, gutter);
 
-  return (
+  return MasonryLayout ? (
     <MasonryContext.Provider value={{ columns, gutter }}>
       <Box ref={gridRef} position="relative" sx={sx}>
         {sizerWidth && (
@@ -92,7 +100,7 @@ export const Masonry = ({
         {children}
       </Box>
     </MasonryContext.Provider>
-  );
+  ) : null;
 };
 
 export const Brick = ({

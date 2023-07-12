@@ -57,7 +57,8 @@ export const ImageWrapper = ({
   if (!previewImage || !highResImage) return null;
 
   const imageAspectRatio = previewImage.width / previewImage.height;
-  const windowAspectRatio = window.innerWidth / window.innerHeight;
+  const windowAspectRatio =
+    typeof window === "undefined" ? 1 : window.innerWidth / window.innerHeight;
 
   return (
     <>

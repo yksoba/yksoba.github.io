@@ -36,6 +36,7 @@ export const ImageWrapper = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openModal, closeModal] = useMemo(() => {
     const listener = () => {
+      window.history.pushState(null, "", window.location.href);
       closeModal();
     };
     const closeModal = () => {

@@ -62,7 +62,7 @@ export const Masthead = forwardRef<HTMLDivElement, {}>(({}, ref) => (
       minHeight: 150,
     }}
   >
-    <Box sx={{ px: 1.5, maxWidth: 550 }}>
+    <Box sx={{ px: 1.5, maxWidth: 550, width: "100%" }}>
       <TitleLink variant="large" />
     </Box>
     <FlexCol mt={0.5} alignItems="center" justifyContent="center">

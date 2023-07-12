@@ -4,6 +4,7 @@ import React, { PropsWithChildren } from "react";
 import { ImageWrapper } from "../containers/image-wrapper";
 import { FlexCol, Flex } from "../styled";
 import { AutoHeightGrid, AutoHeightColumn } from "../containers/autosized";
+import { SM } from "../common/theme";
 
 export const Comms = () => {
   const data: Queries.CommsQuery = useStaticQuery(graphql`
@@ -38,19 +39,37 @@ export const Comms = () => {
   );
 
   return (
-    <FlexCol m={[0.5, 1]} gap={2}>
-      <FlexCol mb={2} mt={4} sx={{ textAlign: "center" }}>
+    <FlexCol
+      m={[0.5, 1]}
+      gap={2}
+      pb={4}
+      sx={(theme) => ({
+        "& h2": {
+          [theme.breakpoints.down(SM)]: {
+            fontSize: "3rem",
+          },
+        },
+      })}
+      alignItems="center"
+    >
+      <FlexCol
+        mb={2}
+        mt={4}
+        px={4}
+        maxWidth="650px"
+        sx={{ textAlign: "center" }}
+      >
         <Typography variant="h2" sx={{ textTransform: "uppercase" }}>
           Commissions
         </Typography>
         <Typography variant="subtitle1" sx={{ fontStyle: "italic" }}>
           Read the <Link href="/terms-of-service">Terms of Service</Link>.
-          Estimated prices below, final prices may differ. <br />
+          Prices below are estimates, final prices may differ. <br />
           All prices in USD.
         </Typography>
       </FlexCol>
 
-      <Flex gap={2}>
+      <Option>
         <InfoCol>
           <Typography variant="h3">
             Full-Body /<br />
@@ -75,9 +94,9 @@ export const Comms = () => {
             </AutoHeightColumn>
           </AutoHeightGrid>
         </PreviewCol>
-      </Flex>
+      </Option>
 
-      <Flex gap={2}>
+      <Option>
         <InfoCol>
           <Typography variant="h3">Half-Body</Typography>
           <Typography variant="body1">Line Only | 50</Typography>
@@ -95,9 +114,9 @@ export const Comms = () => {
             </AutoHeightColumn>
           </AutoHeightGrid>
         </PreviewCol>
-      </Flex>
+      </Option>
 
-      <Flex gap={2} mb={4}>
+      <Option>
         <InfoCol>
           <Typography variant="h3">
             Bust-Up /<br />
@@ -129,14 +148,29 @@ export const Comms = () => {
             </AutoHeightColumn>
           </AutoHeightGrid>
         </PreviewCol>
-      </Flex>
+      </Option>
     </FlexCol>
   );
 };
 
+const Option = ({ children }: PropsWithChildren<{}>) => (
+  <Flex
+    gap={2}
+    sx={(theme) => ({
+      [theme.breakpoints.down(SM)]: {
+        flexDirection: "column-reverse",
+        px: 4,
+      },
+    })}
+  >
+    {children}
+  </Flex>
+);
+
 const InfoCol = ({ children }: PropsWithChildren<{}>) => (
   <FlexCol
-    width={["50%", "35%"]}
+    className="info-col"
+    width={["100%", "40%", "33%"]}
     alignItems="end"
     sx={{
       textAlign: "right",
@@ -153,7 +187,9 @@ const InfoCol = ({ children }: PropsWithChildren<{}>) => (
 );
 
 const PreviewCol = ({ children }: PropsWithChildren<{}>) => (
-  <FlexCol width={["50%", "65%"]}>{children}</FlexCol>
+  <FlexCol className="preview-col" width={["100%", "60%", "66%"]}>
+    {children}
+  </FlexCol>
 );
 
 const SubmitRequestButton = ({ href }: { href: string }) => (

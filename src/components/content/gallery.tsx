@@ -2,7 +2,7 @@ import React from "react";
 import { Brick, Masonry } from "../containers/masonry";
 import { Box } from "@mui/material";
 import { Header } from "../common/header";
-import { LG } from "../common/theme";
+import { MD } from "../common/theme";
 import { ImageWrapper } from "../containers/image-wrapper";
 import { getImage } from "gatsby-plugin-image";
 import { useStaticQuery, graphql } from "gatsby";
@@ -30,11 +30,11 @@ export const Gallery = () => {
           sx={(theme) => ({
             position: "absolute",
             top: -64,
-            [theme.breakpoints.down(LG)]: {
+            [theme.breakpoints.down(MD)]: {
               left: 0,
               width: "100%",
             },
-            [theme.breakpoints.up(LG)]: {
+            [theme.breakpoints.up(MD)]: {
               left: "calc(25% + 2px)",
               width: "calc(50% - 4px)",
             },

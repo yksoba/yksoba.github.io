@@ -4,6 +4,7 @@ import { Divider, Link, LinkProps } from "@mui/material";
 import { Flex } from "../styled";
 import { SxProps } from "@mui/system";
 import { useLayoutContext } from "./layout";
+import { SM } from "./theme";
 
 export const NavLink = styled(
   ({ className, highlight, ...props }: LinkProps & { highlight?: boolean }) => (
@@ -17,10 +18,16 @@ export const NavLink = styled(
 )(({ theme }) => ({
   textTransform: "uppercase",
   color: "#FFF",
-  fontSize: "1.2em",
   fontWeight: "300",
   opacity: "95%",
   textDecoration: "none",
+
+  [theme.breakpoints.down(SM)]: {
+    fontSize: "calc(min(1.2em, 5vw))",
+  },
+  [theme.breakpoints.up(SM)]: {
+    fontSize: "1.2em",
+  },
 
   "&.highlight": {
     color: theme.palette.primary.main,

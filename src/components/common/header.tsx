@@ -13,28 +13,26 @@ import { FullDivider } from "./misc";
 import { useLayoutContext } from "./layout";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { MD } from "./theme";
+import { SM } from "./theme";
 
 export const Header = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { isIntersecting = true } = useIntersection(ref, {}) ?? {};
 
   const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.down(MD));
+  const isXS = useMediaQuery(theme.breakpoints.down(SM));
 
   return (
     <>
       <Masthead ref={ref} />
       <Portal>
-        <Fade in={!isSm && !isIntersecting}>
+        <Fade in={!isXS && !isIntersecting}>
           <FlexCol
             sx={{
               position: "fixed",
               top: 0,
-              zIndex: 1,
-
-              minWidth: "450px",
               width: "100%",
+              zIndex: 1,
 
               backgroundImage:
                 "linear-gradient(180deg, rgba(0,0,0,.8) 0,  rgba(0,0,0,.6) 50% 100%)",
@@ -121,11 +119,19 @@ const TitleLink = ({ variant }: { variant: "large" | "small" }) => {
 
   return (
     <Link
-      href={isHomePage ? "#" : "/#"}
+      href="/"
       onClick={
         isHomePage
-          ? () => {
-              document.getElementById("scroll-container")?.scroll({ top: 0 });
+          ? (event) => {
+              if (event.button === 0) {
+                window.scroll({ top: 0 });
+                window.history.pushState(
+                  null,
+                  "",
+                  window.location.pathname + window.location.search
+                );
+                event.preventDefault();
+              }
             }
           : undefined
       }

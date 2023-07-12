@@ -1,6 +1,6 @@
 import React from "react";
 import { PropsWithChildren, createContext, useContext } from "react";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, GlobalStyles } from "@mui/material";
 import { Box } from "@mui/system";
 import { ThemeProvider } from "@mui/material/styles";
 
@@ -27,27 +27,22 @@ export const Layout = ({
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box width="100vw" sx={{ overflowX: "auto" }}>
-        <FlexCol
-          id="scroll-container"
-          height="100vh"
-          minWidth="450px"
-          sx={{
-            bgcolor: "#FF3CAC",
+      <GlobalStyles
+        styles={{
+          "html, body": {
             backgroundImage:
               "linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%)",
             backgroundAttachment: "fixed",
-
-            overflowY: "auto",
             scrollBehavior: "smooth",
-          }}
-        >
-          <LayoutContext.Provider value={{ pageProps, currentSection }}>
-            {children}
-            <Footer />
-          </LayoutContext.Provider>
+          },
+        }}
+      />
+      <LayoutContext.Provider value={{ pageProps, currentSection }}>
+        <FlexCol minHeight="100vh">
+          {children}
+          <Footer />
         </FlexCol>
-      </Box>
+      </LayoutContext.Provider>
     </ThemeProvider>
   );
 };

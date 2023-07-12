@@ -106,8 +106,8 @@ export const AutoHeightColumn = ({ children }: PropsWithChildren<{}>) => {
   return (
     <FlexCol
       ref={ref}
-      sx={{
-        width: targetWidth && `${targetWidth}%`,
+      style={{
+        width: targetWidth ? `${targetWidth}%` : undefined,
       }}
     >
       {children}

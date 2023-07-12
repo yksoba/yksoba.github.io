@@ -29,16 +29,6 @@ const Home = (props: PageProps) => {
     ? "commissions"
     : "gallery";
 
-  // Fix direct to anchor navigation
-  useEffect(() => {
-    const hash = props.location.hash.replace(/^#?/, "");
-    if (hash) {
-      setTimeout(() => {
-        document.getElementById(hash)?.scrollIntoView({ behavior: "instant" });
-      }, 100);
-    }
-  }, []);
-
   return (
     <Layout pageProps={props} currentSection={currentSection}>
       <FullDivider id="gallery" />

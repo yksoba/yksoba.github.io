@@ -3,7 +3,7 @@ import { Link, Typography } from "@mui/material";
 import { FlexCol } from "../styled";
 
 export const Contact = () => (
-  <FlexCol maxWidth="600px" px={4}>
+  <FlexCol maxWidth="650px" px={4}>
     <Typography
       variant="h2"
       textAlign="center"

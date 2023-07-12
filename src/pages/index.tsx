@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { Layout } from "../components/common/layout";
 import { Gallery } from "../components/content/gallery";
 import { FullDivider } from "../components/common/misc";
@@ -9,6 +9,7 @@ import { Section } from "../components/styled";
 import { Contact } from "../components/content/contact";
 import { PageProps } from "gatsby";
 import { useIntersection } from "react-use";
+import { Box } from "@mui/material";
 
 const Home = (props: PageProps) => {
   const commsRef = useRef<HTMLElement>(null);
@@ -31,7 +32,8 @@ const Home = (props: PageProps) => {
 
   return (
     <Layout pageProps={props} currentSection={currentSection}>
-      <FullDivider id="gallery" />
+      <FullDivider />
+      <Box id="gallery" position="relative" top="160px" />
       <Expander initialHeight="100vh">
         <Gallery />
       </Expander>

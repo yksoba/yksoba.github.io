@@ -1,4 +1,4 @@
-import { Button, Link, Typography } from "@mui/material";
+import { Button, Link, Theme, Typography, useMediaQuery } from "@mui/material";
 import { graphql, useStaticQuery } from "gatsby";
 import React, { PropsWithChildren } from "react";
 import { ImageWrapper } from "../containers/image-wrapper";
@@ -38,6 +38,8 @@ export const Comms = () => {
     data.allFile.nodes.map((node) => [node.name, node] as const)
   );
 
+  const isXS = useMediaQuery((theme: Theme) => theme.breakpoints.down(SM));
+
   return (
     <FlexCol
       m={[0.5, 1]}
@@ -72,7 +74,7 @@ export const Comms = () => {
       <Option>
         <InfoCol>
           <Typography variant="h3">
-            Full-Body /<br />
+            Full-Body / {isXS || <br />}
             Reference
           </Typography>
           <Typography variant="body1">Line Only | 60</Typography>
@@ -119,7 +121,7 @@ export const Comms = () => {
       <Option>
         <InfoCol>
           <Typography variant="h3">
-            Bust-Up /<br />
+            Bust-Up / {isXS || <br />}
             Headshot
           </Typography>
           <Typography variant="body1">Line Only | 30</Typography>
@@ -175,7 +177,7 @@ const InfoCol = ({ children }: PropsWithChildren<{}>) => (
     sx={{
       textAlign: "right",
       "& h3": {
-        fontSize: ["1.7rem", "2.4rem", "3rem"],
+        fontSize: ["2rem", "2.4rem", "3rem"],
       },
       "& p": {
         fontSize: [".99rem", "1.15rem", "1.3rem"],

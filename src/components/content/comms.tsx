@@ -162,6 +162,7 @@ const Option = ({ children }: PropsWithChildren<{}>) => (
       [theme.breakpoints.down(SM)]: {
         flexDirection: "column-reverse",
         px: 4,
+        pb: 4,
       },
     })}
   >

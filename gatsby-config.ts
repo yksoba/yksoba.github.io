@@ -2,7 +2,7 @@ import type { GatsbyConfig } from "gatsby";
 
 const config: GatsbyConfig = {
   flags: {
-    DEV_SSR: true
+    DEV_SSR: true,
   },
   siteMetadata: {
     title: "yksoba",
@@ -15,8 +15,8 @@ const config: GatsbyConfig = {
     {
       resolve: "gatsby-plugin-sharp",
       options: {
-        stripMetadata: false
-      }
+        stripMetadata: false,
+      },
     },
     {
       resolve: "gatsby-plugin-manifest",
@@ -32,12 +32,12 @@ const config: GatsbyConfig = {
       },
     },
     {
-      resolve: 'gatsby-plugin-react-svg',
+      resolve: "gatsby-plugin-react-svg",
       options: {
         rule: {
-          include: /\.svg$/
-        }
-      }
+          include: /\.svg$/,
+        },
+      },
     },
     {
       resolve: "gatsby-source-filesystem",
@@ -46,16 +46,8 @@ const config: GatsbyConfig = {
         path: "./src/images/artworks/",
       },
     },
-    {
-      resolve: "gatsby-source-filesystem",
-      options: {
-        name: "comms",
-        path: "./src/images/comms/",
-      },
-    },
-
   ],
-  graphqlTypegen: true
+  graphqlTypegen: true,
 };
 
 export default config;

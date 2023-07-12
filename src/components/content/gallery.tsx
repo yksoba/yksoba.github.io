@@ -43,8 +43,8 @@ export const Gallery = () => {
           <Header />
         </Box>
         {imageNodes.map((node) => {
-          const image = getImage(node.childImageSharp!.previewImage)!;
-          const aspectRatio = image.width / image.height;
+          const image = node.childImageSharp?.previewImage;
+          const aspectRatio = image ? image.width / image.height : 1;
           const colSpan = Math.max(1, Math.round(aspectRatio));
 
           return (

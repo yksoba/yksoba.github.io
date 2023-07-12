@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[833],{5206:function(e,t,n){n.r(t);var l=n(921),a=n(8100),c=n(8126),r=n(4569);t.default=function(){return l.createElement(c.A,null,l.createElement("title",null,"yksoba - Gallery"),l.createElement(r.Ht,{justifyContent:"center"},l.createElement(a.Z,{variant:"body1",ml:1},"Nothing here yet... check back soon!")))}}}]);
-//# sourceMappingURL=component---src-pages-gallery-tsx-520aa495590b341c96ef.js.map

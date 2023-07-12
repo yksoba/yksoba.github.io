@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[691],{3473:function(e,n,t){t.r(n);var u=t(921),c=t(8126),l=t(2575);n.default=function(){return(0,u.useEffect)((function(){window&&(0,l.navigate)("/comms")}),[]),u.createElement(c.A,null,u.createElement("title",null,"yksoba"))}}}]);
-//# sourceMappingURL=component---src-pages-index-tsx-75fc49c23bd8f6be3163.js.map

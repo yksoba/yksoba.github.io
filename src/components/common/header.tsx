@@ -88,27 +88,30 @@ export const Masthead = forwardRef<HTMLDivElement, {}>(({}, ref) => (
   </FlexCol>
 ));
 
-const TitleImage = ({ variant }: { variant: "large" | "small" }) =>
-  variant === "large" ? (
-    <StaticImage
-      alt="YK_SOBA"
-      src="../../images/title.png"
-      width={550}
-      height={131}
-      loading="eager"
-      placeholder="none"
-    />
-  ) : (
-    <StaticImage
-      alt="YK_SOBA"
-      src="../../images/title.png"
-      layout="fixed"
-      width={110}
-      height={26}
-      loading="eager"
-      placeholder="none"
-    />
-  );
+const TitleImage = ({ variant }: { variant: "large" | "small" }) => (
+  <Box sx={{ aspectRatio: "550/131", width: "100%", height: "auto" }}>
+    {variant === "large" ? (
+      <StaticImage
+        alt="YK_SOBA"
+        src="../../images/title.png"
+        width={550}
+        height={131}
+        loading="eager"
+        placeholder="none"
+      />
+    ) : (
+      <StaticImage
+        alt="YK_SOBA"
+        src="../../images/title.png"
+        layout="fixed"
+        width={110}
+        height={26}
+        loading="eager"
+        placeholder="none"
+      />
+    )}
+  </Box>
+);
 
 const TitleLink = ({ variant }: { variant: "large" | "small" }) => {
   const {

@@ -25,6 +25,7 @@ export const Gallery = () => {
     <Box pt={8} px={0.25}>
       <BetterMasonry /* columns={[2, 3, 4]} gutter={4} stamp=".stamp" */>
         <Brick
+          _debugTag="stamp"
           stamp
           sx={(theme) => ({
             position: "absolute",

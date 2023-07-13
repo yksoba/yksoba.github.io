@@ -45,8 +45,8 @@ export const Brick = ({
   children,
   aspectRatio: _aspectRatio,
   stamp = false,
-  style,
   _debugTag,
+  style,
   ...boxProps
 }: PropsWithChildren<{
   aspectRatio?: number;
@@ -62,15 +62,15 @@ export const Brick = ({
 
   useEffect(() => {
     if (!key) return;
-    model.upsertBrick(key);
-    return () => model.removeBrick(key);
+    model.upsertItem(key);
+    return () => model.removeItem(key);
   }, [key]);
 
-  // Register debug prop
+  // Register props
   useEffect(() => {
     if (!key) return;
-    model.upsertBrick(key, { _debugTag });
-  }, [key, _debugTag]);
+    model.upsertItem(key, { stamp: !!stamp, _debugTag });
+  }, [key, stamp, _debugTag]);
 
   // Update layout info
   const [measureRef, { top, left, width, height }] = useMeasure();
@@ -78,17 +78,16 @@ export const Brick = ({
 
   useEffect(() => {
     if (!key) return;
-    model.upsertBrick(key, {
+    model.upsertItem(key, {
+      aspectRatio,
       layout: {
-        aspectRatio,
-        stamp,
         top,
         left,
         width,
         height,
       },
     });
-  }, [key, aspectRatio, stamp, top, left, width, height]);
+  }, [key, aspectRatio, top, left, width, height]);
 
   // Get computed layout
   const computedLayout = model.getComputedLayout(key);

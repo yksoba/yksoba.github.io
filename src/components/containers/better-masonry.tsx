@@ -97,14 +97,20 @@ export const Brick = ({
       ref={containerRef}
       style={{
         ...style,
-        ...(computedLayout && {
-          position: "absolute",
-          left: `${computedLayout.left}px`,
-          top: `${computedLayout.top}px`,
-          width: `${computedLayout.width}px`,
-          height: "auto",
-          aspectRatio: `${Math.round(aspectRatio * 1000)} / 1000`,
-        }),
+        ...(computedLayout
+          ? {
+              position: "absolute",
+              left: `${computedLayout.left}px`,
+              top: `${computedLayout.top}px`,
+              width: `${computedLayout.width}px`,
+              height: "auto",
+              aspectRatio: `${Math.round(aspectRatio * 1000)} / 1000`,
+            }
+          : !stamp
+          ? {
+              opacity: 0,
+            }
+          : undefined),
       }}
       {...boxProps}
     >

@@ -1,4 +1,4 @@
-import { Rect } from "../../lib/dom/rects";
+import { Rect, doesContain, doesOverlap } from "../../lib/dom/rects";
 import { createModel } from "../hooks/create-model";
 
 const EPS = 0.01;
@@ -28,7 +28,7 @@ export const [useModel, Provider] = createModel(
     items: new Map<Key, Partial<Item>>(),
     container: {} as ContainerState,
     layoutParams: {
-      targetArea: 200000,
+      targetArea: 100000,
     },
     isComputedLayoutValid: false,
   },
@@ -73,9 +73,25 @@ export const [useModel, Provider] = createModel(
       if (state.items.delete(key)) state.isComputedLayoutValid = false;
     },
     updateContainer(state, container: ContainerState) {
-      state.container = { ...state.container, ...container };
+      const prev = state.container;
+      const next = { ...state.container, ...container };
+
+      if (
+        !prev?.layout ||
+        !next?.layout ||
+        Math.abs(prev.layout.left - next.layout.left) > EPS ||
+        Math.abs(prev.layout.top - next.layout.top) > EPS ||
+        Math.abs(prev.layout.width - next.layout.width) > EPS ||
+        Math.abs(prev.layout.height - next.layout.height) > EPS
+      ) {
+        state.isComputedLayoutValid = false;
+      }
+
+      state.container = next;
     },
     computeLayout(state) {
+      ////////// PRE-PROCESSING //////////
+
       // Skip computation if current layout is valid
       if (state.isComputedLayoutValid) return;
 
@@ -98,13 +114,43 @@ export const [useModel, Provider] = createModel(
         else bricks.push(item as Brick);
       }
 
-      bricks.forEach((brick) => {
+      ////////// LAYOUT //////////
+
+      const exclusion: Rect[] = [];
+
+      const bounds = {
+        left: state.container.layout.left,
+        width: state.container.layout.width,
+        top: 0,
+        height: Infinity,
+      };
+
+      const checkPlacement = (query: Rect) =>
+        !doesOverlap(exclusion, query) && doesContain(bounds, query);
+
+      const anchors: [number, number][] = [[0, 0]];
+
+      for (let brick of bricks) {
         // Compute width that gives us the desired area
         const width = Math.sqrt(
           brick.aspectRatio * state.layoutParams.targetArea
         );
-        brick.computedLayout = { left: 0, top: 0, width };
-      });
+        const height = width / brick.aspectRatio;
+
+        const anchorIdx = anchors.findIndex(([left, top]) =>
+          checkPlacement({ left, top, width, height })
+        );
+        if (anchorIdx === -1) {
+          // Skip unplaceable items for now
+          continue;
+        }
+        const [left, top] = anchors[anchorIdx];
+
+        anchors.splice(anchorIdx, 1, [left + width, top], [left, top + height]);
+        exclusion.push({ left, top, width, height });
+
+        brick.computedLayout = { left, top, width };
+      }
 
       state.isComputedLayoutValid = true;
     },
@@ -117,7 +163,7 @@ export const [useModel, Provider] = createModel(
         ...state,
         layoutParams: JSON.parse(JSON.stringify(state.layoutParams)),
         container: JSON.parse(JSON.stringify(state.container)),
-        bricks: [...state.items].map(([key, value]) => [
+        items: [...state.items].map(([key, value]) => [
           key,
           JSON.parse(JSON.stringify(value)),
         ]),
@@ -137,13 +183,6 @@ export const [useModel, Provider] = createModel(
         if (!model.isComputedLayoutValid) {
           // Defer dispatch while rendering
           setTimeout(() => model.computeLayout(), 0);
-        } else if (!item.computedLayout) {
-          console.error(
-            "internal consistency error: brick does not have a computed layout",
-            JSON.parse(JSON.stringify(item)),
-            model.debug()
-          );
-          throw new Error();
         }
         return item.computedLayout;
       };

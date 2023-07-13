@@ -29,7 +29,7 @@ export const [useModel, Provider] = createModel(
     items: new Map<Key, Partial<Item>>(),
     container: {} as Container,
     layoutParams: {
-      initialTargetArea: 200000,
+      initialTargetArea: 160000,
     },
     isComputedLayoutValid: false,
   },
@@ -94,6 +94,40 @@ export const [useModel, Provider] = createModel(
         );
       };
 
+      const finishLayer = (
+        layer: Brick[],
+        prevLayer: Brick[] | undefined,
+        layerWidth: number = layer
+          .map((brick) => brick.computedLayout!.width)
+          .reduce((a, b) => a + b, 0)
+      ) => {
+        // Scale up bricks to fill width
+        const scaleFactor = bounds.width / layerWidth;
+        layer.forEach((brick) => {
+          brick.computedLayout!.width *= scaleFactor;
+          brick.computedLayout!.height *= scaleFactor;
+        });
+
+        // Place bricks into layer
+        const baseline = prevLayer
+          ? Math.min(
+              ...prevLayer.map(
+                (brick) =>
+                  brick.computedLayout!.top + brick.computedLayout!.height
+              )
+            )
+          : 0;
+        let left = 0;
+        layer.forEach((brick) => {
+          brick.computedLayout!.top = baseline;
+          brick.computedLayout!.left = left;
+          left += brick.computedLayout!.width;
+        });
+
+        // Adjust brick top
+        layer.forEach((brick) => adjustTop(brick, prevLayer));
+      };
+
       ////////// LAYOUT //////////
 
       const bounds = {
@@ -134,38 +168,12 @@ export const [useModel, Provider] = createModel(
             layers.push([brick]);
           }
 
-          // Scale up bricks to fill width
-          const scaleFactor = bounds.width / layerWidth;
-          layer.forEach((brick) => {
-            brick.computedLayout!.width *= scaleFactor;
-            brick.computedLayout!.height *= scaleFactor;
-          });
-
-          // Place bricks into layer
-          const baseline = prevLayer
-            ? Math.min(
-                ...prevLayer.map(
-                  (brick) =>
-                    brick.computedLayout!.top + brick.computedLayout!.height
-                )
-              )
-            : 0;
-          let left = 0;
-          layer.forEach((brick) => {
-            brick.computedLayout!.top = baseline;
-            brick.computedLayout!.left = left;
-            left += brick.computedLayout!.width;
-          });
-
-          // Adjust brick top
-          layer.forEach((brick) => adjustTop(brick, prevLayer));
+          finishLayer(layer, prevLayer, layerWidth);
         }
       });
 
       // Adjust final layer
-      layers[layers.length - 1].forEach((brick) =>
-        adjustTop(brick, layers[layers.length - 2])
-      );
+      finishLayer(layers[layers.length - 1], layers[layers.length - 2]);
 
       // Compute final height
       state.container.computedLayout = {

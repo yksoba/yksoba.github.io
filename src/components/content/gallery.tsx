@@ -1,5 +1,5 @@
 import React from "react";
-import { Brick, Masonry } from "../containers/masonry";
+import { BetterMasonry, Brick } from "../containers/better-masonry";
 import { Box } from "@mui/material";
 import { Header } from "../common/header";
 import { MD } from "../common/theme";
@@ -23,9 +23,9 @@ export const Gallery = () => {
   const imageNodes = data.allFile.nodes;
   return (
     <Box pt={8} px={0.25}>
-      <Masonry columns={[2, 3, 4]} gutter={4} stamp=".stamp">
-        <Box
-          className="stamp"
+      <BetterMasonry /* columns={[2, 3, 4]} gutter={4} stamp=".stamp" */>
+        <Brick
+          stamp
           sx={(theme) => ({
             position: "absolute",
             top: -64,
@@ -40,19 +40,22 @@ export const Gallery = () => {
           })}
         >
           <Header />
-        </Box>
+        </Brick>
         {imageNodes.map((node) => {
           const image = node.childImageSharp?.previewImage;
           const aspectRatio = image ? image.width / image.height : 1;
-          const colSpan = Math.max(1, Math.round(aspectRatio));
 
           return (
-            <Brick colSpan={colSpan} key={node.name}>
+            <Brick
+              aspectRatio={aspectRatio}
+              _debugTag={node.name}
+              key={node.name}
+            >
               <ImageWrapper image={node} />
             </Brick>
           );
         })}
-      </Masonry>
+      </BetterMasonry>
     </Box>
   );
 };

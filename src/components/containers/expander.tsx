@@ -11,7 +11,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { Flex } from "../styled";
 import { ButtonBase, Typography } from "@mui/material";
-import { getScrollParent } from "../../lib/dom/get-scroll-parent";
 
 export const Expander = ({
   children,

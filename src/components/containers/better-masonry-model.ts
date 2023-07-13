@@ -1,93 +1,56 @@
-import { Rect, doesContain, doesOverlap } from "../../lib/dom/rects";
+import { Rect, doesOverlapX } from "../../lib/utils/rects";
 import { createModel } from "../hooks/create-model";
+import { Debouncer } from "../../lib/utils/debouncer";
 
 const EPS = 0.01;
 
 type Key = HTMLElement;
 type Item = {
   _debugTag?: any;
+  key: Key;
   stamp: boolean;
   aspectRatio: number;
   layout: Rect;
-  computedLayout?: {
-    left: number;
-    top: number;
-    width: number;
-  };
+  computedLayout?: Rect;
 };
 type Brick = Omit<Item, "layout">;
 type Stamp = Omit<Item, "aspectRatio">;
 
-type ContainerState = {
+type Container = {
   layout?: Rect;
+  computedLayout?: { height: number };
 };
 
 export const [useModel, Provider] = createModel(
   // State
   {
+    _invalidateDebouncer: ((cb) => cb()) as Debouncer,
+
     items: new Map<Key, Partial<Item>>(),
-    container: {} as ContainerState,
+    container: {} as Container,
     layoutParams: {
-      targetArea: 100000,
+      initialTargetArea: 200000,
     },
     isComputedLayoutValid: false,
   },
 
   // Methods
   {
-    upsertItem(state, key: Key, item?: Partial<Item>) {
-      const prev = state.items.get(key);
-      const next = { ...prev, ...item };
-      state.items.set(key, next);
-
-      if (
-        next.stamp === false &&
-        typeof next.aspectRatio === "number" &&
-        isNaN(1 / next.aspectRatio)
-      ) {
-        console.warn(
-          "Encountered brick with 0 area, this may lead to unexpected behavior",
-          key,
-          JSON.parse(JSON.stringify(next))
-        );
-      }
-
-      // Invalidates the computed layout if neccessary
-      if (
-        typeof next.stamp === "undefined" ||
-        (next.stamp
-          ? !prev?.layout ||
-            !next?.layout ||
-            Math.abs(prev.layout.left - next.layout.left) > EPS ||
-            Math.abs(prev.layout.top - next.layout.top) > EPS ||
-            Math.abs(prev.layout.width - next.layout.width) > EPS ||
-            Math.abs(prev.layout.height - next.layout.height) > EPS
-          : typeof prev?.aspectRatio !== "number" ||
-            typeof next?.aspectRatio !== "number" ||
-            Math.abs(prev.aspectRatio - next.aspectRatio) > EPS)
-      ) {
-        state.isComputedLayoutValid = false;
-      }
+    setInvalidateDebouncer(state, debouncer: Debouncer) {
+      state._invalidateDebouncer = debouncer;
     },
-    removeItem(state, key: Key) {
-      if (state.items.delete(key)) state.isComputedLayoutValid = false;
+
+    _setItem(state, key: Key, item: Partial<Item>) {
+      state.items.set(key, item);
     },
-    updateContainer(state, container: ContainerState) {
-      const prev = state.container;
-      const next = { ...state.container, ...container };
-
-      if (
-        !prev?.layout ||
-        !next?.layout ||
-        Math.abs(prev.layout.left - next.layout.left) > EPS ||
-        Math.abs(prev.layout.top - next.layout.top) > EPS ||
-        Math.abs(prev.layout.width - next.layout.width) > EPS ||
-        Math.abs(prev.layout.height - next.layout.height) > EPS
-      ) {
-        state.isComputedLayoutValid = false;
-      }
-
-      state.container = next;
+    _deleteItem(state, key: Key) {
+      state.items.delete(key);
+    },
+    _setContainer(state, container: Container) {
+      state.container = container;
+    },
+    _invalidate(state) {
+      state.isComputedLayoutValid = false;
     },
     computeLayout(state) {
       ////////// PRE-PROCESSING //////////
@@ -114,45 +77,113 @@ export const [useModel, Provider] = createModel(
         else bricks.push(item as Brick);
       }
 
-      ////////// LAYOUT //////////
+      ////////// HELPERS //////////
 
-      const exclusion: Rect[] = [];
-
-      const bounds = {
-        left: state.container.layout.left,
-        width: state.container.layout.width,
-        top: 0,
-        height: Infinity,
+      const computeBottom = (bricks?: Brick[]) =>
+        Math.max(
+          ...(bricks?.map(
+            (brick) => brick.computedLayout!.top + brick.computedLayout!.height
+          ) ?? []),
+          0
+        );
+      const adjustTop = (brick: Brick, prevLayer?: Brick[]) => {
+        brick.computedLayout!.top = computeBottom(
+          prevLayer?.filter((refbrick) =>
+            doesOverlapX(refbrick.computedLayout!, brick.computedLayout!)
+          )
+        );
       };
 
-      const checkPlacement = (query: Rect) =>
-        !doesOverlap(exclusion, query) && doesContain(bounds, query);
+      ////////// LAYOUT //////////
 
-      const anchors: [number, number][] = [[0, 0]];
+      const bounds = {
+        width: state.container.layout.width,
+      };
 
-      for (let brick of bricks) {
-        // Compute width that gives us the desired area
-        const width = Math.sqrt(
-          brick.aspectRatio * state.layoutParams.targetArea
-        );
+      const layers: Brick[][] = [[]];
+
+      bricks.forEach((brick) => {
+        // Compute desired area for brick to cover
+        const A = state.layoutParams.initialTargetArea;
+        const r = brick.aspectRatio;
+        const targetArea = A * (1 + 0.75 * Math.log(r) ** 2);
+
+        // Compute dimensions of brick
+        const width = Math.sqrt(brick.aspectRatio * targetArea);
         const height = width / brick.aspectRatio;
+        brick.computedLayout = { left: 0, top: 0, width, height };
 
-        const anchorIdx = anchors.findIndex(([left, top]) =>
-          checkPlacement({ left, top, width, height })
-        );
-        if (anchorIdx === -1) {
-          // Skip unplaceable items for now
-          continue;
+        // Compute layer width
+        const layer = layers[layers.length - 1];
+        let layerWidth = layer
+          .map((brick) => brick.computedLayout!.width)
+          .reduce((a, b) => a + b, 0);
+
+        if (layerWidth + width < bounds.width) {
+          // Add to layer
+          layer.push(brick);
+        } else {
+          // Handle overfull layer
+          const prevLayer = layers[layers.length - 2];
+
+          // Add to current layer or start a new layer
+          if (layerWidth + width - bounds.width < Math.SQRT1_2 * width) {
+            layer.push(brick);
+            layerWidth += width;
+          } else {
+            layers.push([brick]);
+          }
+
+          // Scale up bricks to fill width
+          const scaleFactor = bounds.width / layerWidth;
+          layer.forEach((brick) => {
+            brick.computedLayout!.width *= scaleFactor;
+            brick.computedLayout!.height *= scaleFactor;
+          });
+
+          // Place bricks into layer
+          const baseline = prevLayer
+            ? Math.min(
+                ...prevLayer.map(
+                  (brick) =>
+                    brick.computedLayout!.top + brick.computedLayout!.height
+                )
+              )
+            : 0;
+          let left = 0;
+          layer.forEach((brick) => {
+            brick.computedLayout!.top = baseline;
+            brick.computedLayout!.left = left;
+            left += brick.computedLayout!.width;
+          });
+
+          // Adjust brick top
+          layer.forEach((brick) => adjustTop(brick, prevLayer));
         }
-        const [left, top] = anchors[anchorIdx];
+      });
 
-        anchors.splice(anchorIdx, 1, [left + width, top], [left, top + height]);
-        exclusion.push({ left, top, width, height });
+      // Adjust final layer
+      layers[layers.length - 1].forEach((brick) =>
+        adjustTop(brick, layers[layers.length - 2])
+      );
 
-        brick.computedLayout = { left, top, width };
-      }
+      // Compute final height
+      state.container.computedLayout = {
+        height: computeBottom(layers[layers.length - 1]),
+      };
 
+      // Mark layout computation as complete
       state.isComputedLayoutValid = true;
+
+      // console.log(
+      //   JSON.parse(
+      //     JSON.stringify(
+      //       layers.map((layer) =>
+      //         layer.map((brick) => ({ ...brick, key: null }))
+      //       )
+      //     )
+      //   )
+      // );
     },
   },
 
@@ -176,16 +207,74 @@ export const [useModel, Provider] = createModel(
 
   // Dispatchers
   {
-    getComputedLayout(key: Key | null) {
-      return (model) => {
-        const item = model.getItemState(key);
-        if (!item || item.stamp) return undefined;
-        if (!model.isComputedLayoutValid) {
-          // Defer dispatch while rendering
-          setTimeout(() => model.computeLayout(), 0);
-        }
-        return item.computedLayout;
-      };
+    upsertItem(model, key: Key, item?: Partial<Item>) {
+      const prev = model.items.get(key);
+      const next = { key, ...prev, ...item };
+
+      // Validate args
+      if (
+        next.stamp === false &&
+        typeof next.aspectRatio === "number" &&
+        isNaN(1 / next.aspectRatio)
+      ) {
+        console.warn(
+          "Encountered brick with 0 area, this may lead to unexpected behavior",
+          key,
+          JSON.parse(JSON.stringify(next))
+        );
+      }
+
+      // Invalidates the computed layout if neccessary
+      if (
+        typeof next.stamp === "undefined" ||
+        (next.stamp
+          ? !prev?.layout ||
+            !next?.layout ||
+            Math.abs(prev.layout.left - next.layout.left) > EPS ||
+            Math.abs(prev.layout.top - next.layout.top) > EPS ||
+            Math.abs(prev.layout.width - next.layout.width) > EPS ||
+            Math.abs(prev.layout.height - next.layout.height) > EPS
+          : typeof prev?.aspectRatio !== "number" ||
+            typeof next?.aspectRatio !== "number" ||
+            Math.abs(prev.aspectRatio - next.aspectRatio) > EPS)
+      ) {
+        (model as any).invalidate();
+      }
+
+      model._setItem(key, next);
+    },
+    removeItem(model, key: Key) {
+      if (model.items.has(key)) (model as any).invalidate();
+      model._deleteItem(key);
+    },
+    invalidate(model) {
+      model._invalidateDebouncer(() => model._invalidate());
+    },
+    updateContainer(model, container: Container) {
+      const prev = model.container;
+      const next = { ...prev, ...container };
+
+      if (
+        !prev?.layout ||
+        !next?.layout ||
+        Math.abs(prev.layout.left - next.layout.left) > EPS ||
+        Math.abs(prev.layout.top - next.layout.top) > EPS ||
+        Math.abs(prev.layout.width - next.layout.width) > EPS ||
+        Math.abs(prev.layout.height - next.layout.height) > EPS
+      ) {
+        (model as any).invalidate();
+      }
+
+      model._setContainer(next);
+    },
+    getComputedLayout(model, key: Key | null) {
+      const item = model.getItemState(key);
+      if (!item || item.stamp) return undefined;
+      if (!model.isComputedLayoutValid) {
+        // Avoids setState while rendering another component error
+        setTimeout(() => model.computeLayout(), 0);
+      }
+      return item.computedLayout;
     },
   }
 );

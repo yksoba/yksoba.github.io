@@ -1,3 +1,4 @@
+import { State } from "@mdx-js/mdx/lib/plugin/recma-stringify";
 import React, {
   useContext,
   Reducer,
@@ -8,6 +9,7 @@ import React, {
   ReducerAction,
   useRef,
   useCallback,
+  useMemo,
 } from "react";
 
 export type Thunk<State, Action> = (
@@ -24,7 +26,9 @@ export type DispatchWithoutThunk<Action> = (action: Action) => void;
 export type DispatchWithThunk<State, Action> = DispatchWithoutThunk<Action> &
   ThunkDispatch<State, Action>;
 
-// export type Provider
+export type Dispatch<State, Action> = {
+  getState: () => State;
+} & DispatchWithThunk<State, Action>;
 
 export const createThunkReducerContext = <R extends Reducer<any, any>>(
   reducer: R,
@@ -32,15 +36,12 @@ export const createThunkReducerContext = <R extends Reducer<any, any>>(
 ) => {
   type S = ReducerState<R>;
   type A = ReducerAction<R>;
-  type D = DispatchWithThunk<S, A>;
+  type D = Dispatch<S, A>;
   type T = Thunk<S, A>;
 
   const ReducerContext = createContext<[state: S, dispatch: D]>([
     defaultInitialState,
-    () => {
-      // TODO: Write a more canonical error message
-      throw new Error("Cannot use dispatch outside of context");
-    },
+    undefined as any,
   ]);
 
   const Provider = ({
@@ -50,17 +51,21 @@ export const createThunkReducerContext = <R extends Reducer<any, any>>(
     const stateRef = useRef(initialState);
     const [state, setState] = useState(stateRef.current);
 
-    const getState = useCallback(() => stateRef.current, []);
-
-    const dispatch: D = useCallback((actionOrThunk: A | T) => {
-      if (typeof actionOrThunk === "function") {
-        const thunk = actionOrThunk as T;
-        return thunk(dispatch, getState);
-      } else {
-        const action = actionOrThunk as A;
-        stateRef.current = reducer(stateRef.current, action);
-        setState(stateRef.current);
-      }
+    const dispatch: D = useMemo(() => {
+      const getState = () => stateRef.current;
+      return Object.assign(
+        function (actionOrThunk: A | T) {
+          if (typeof actionOrThunk === "function") {
+            const thunk = actionOrThunk as T;
+            return thunk(dispatch, getState);
+          } else {
+            const action = actionOrThunk as A;
+            stateRef.current = reducer(stateRef.current, action);
+            setState(stateRef.current);
+          }
+        },
+        { getState }
+      );
     }, []);
 
     return (

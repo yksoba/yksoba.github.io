@@ -8,6 +8,7 @@ import React, {
 import { Flex } from "../styled";
 import { useMeasure } from "react-use";
 import { Provider, useModel } from "./better-masonry-model";
+import { makeDebouncer } from "../../lib/utils/debouncer";
 
 /// COMPONENTS ///
 
@@ -23,19 +24,35 @@ export const BetterMasonry = (
 
 const BetterMasonryContainer = ({
   children,
+  style,
   ...boxProps
 }: PropsWithChildren<{}> & PropsWithoutRef<BoxProps>) => {
-  const [measureRef, { top, left, width, height }] = useMeasure();
-
   const model = useModel();
 
+  // Initialize model
+  useEffect(() => {
+    const debouncer = makeDebouncer(200);
+    model.setInvalidateDebouncer(debouncer);
+  }, []);
+
   // Update layout info
+  const [measureRef, { top, left, width, height }] = useMeasure();
   useEffect(() => {
     model.updateContainer({ layout: { top, left, width, height } });
   }, [top, left, width, height]);
 
+  const computedLayout = model.container.computedLayout;
+
   return (
-    <Box ref={measureRef} position="relative" {...boxProps}>
+    <Box
+      ref={measureRef}
+      position="relative"
+      style={{
+        ...style,
+        ...(computedLayout && { height: `${computedLayout.height}px` }),
+      }}
+      {...boxProps}
+    >
       {children}
     </Box>
   );
@@ -97,6 +114,9 @@ export const Brick = ({
       ref={containerRef}
       style={{
         ...style,
+        ...{
+          transition: "opacity 200ms",
+        },
         ...(computedLayout
           ? {
               position: "absolute",

@@ -2,8 +2,7 @@ import { produce, enableMapSet } from "immer";
 import { useMemo } from "react";
 import {
   createThunkReducerContext,
-  DispatchWithoutThunk,
-  DispatchWithThunk,
+  Dispatch,
 } from "./create-thunk-reducer-context";
 
 enableMapSet();
@@ -25,17 +24,14 @@ type Action<Methods> = {
   };
 }[keyof Methods];
 
-export type Thunk<Model> = (dispatch: Model) => any;
+export type Thunk<Model> = (model: Model) => any;
 
-export type Dispatchers<Methods, Model> = {
-  [type: string]: (...args: any) => Thunk<Model> | Action<Methods>;
+export type Dispatchers<Model> = {
+  [type: string]: (model: Model, ...args: any) => any;
 };
 
 type ThunkDispatch<State, Methods, Accessors, Dispatchers> = <R>(
-  thunk: (
-    dispatch: Model<State, Methods, Accessors, Dispatchers>,
-    getState: () => State
-  ) => R
+  thunk: (model: Model<State, Methods, Accessors, Dispatchers>) => R
 ) => R;
 
 type MethodsDispatch<Methods> = {
@@ -58,18 +54,18 @@ type AccessorsDispatch<Accessors> = {
 
 type DispatchersDispatch<Dispatchers> = {
   [K in keyof Dispatchers]: (
-    ...args: Dispatchers[K] extends (...args: [...infer Args]) => any
+    ...args: Dispatchers[K] extends (
+      model: any,
+      ...args: [...infer Args]
+    ) => any
       ? Args
       : any
-  ) => Dispatchers[K] extends (...args: any) => infer ThunkOrAction
-    ? ThunkOrAction extends (...args: any) => infer Retval
-      ? Retval
-      : void
+  ) => Dispatchers[K] extends (model: any, ...args: any) => infer Retval
+    ? Retval
     : any;
 };
 
 export type Model<State, Methods, Accessors, Dispatchers> = State &
-  DispatchWithoutThunk<Action<Methods>> &
   ThunkDispatch<State, Methods, Accessors, Dispatchers> &
   MethodsDispatch<Methods> &
   AccessorsDispatch<Accessors> &
@@ -79,7 +75,7 @@ export const createModel = <
   S extends object,
   M extends Methods<S>,
   A extends Accessors<S>,
-  D extends Dispatchers<M, Model<S, M, A, D>>
+  D extends Dispatchers<Model<S, M, A, D>>
 >(
   initialState: S,
   methods: M,
@@ -99,15 +95,7 @@ export const createModel = <
     initialState
   );
 
-  const makeProxyFactory = (dispatch: DispatchWithThunk<S, AA>) => {
-    const proxiedThunkDispatch = (thunk: T) => {
-      return dispatch((_, getState) => thunk(makeProxy(getState())));
-    };
-    const proxiedDispatch = (actionOrThunk: AA | T) =>
-      typeof actionOrThunk === "function"
-        ? proxiedThunkDispatch(actionOrThunk)
-        : dispatch(actionOrThunk);
-
+  const makeProxyFactory = (dispatch: Dispatch<S, AA>) => {
     const proxyHandler: ProxyHandler<S> = {
       get(target, p, receiver) {
         if (typeof p === "string") {
@@ -116,10 +104,8 @@ export const createModel = <
           if (p in accessors)
             return (...args: any) => accessors[p](target, ...args);
           if (p in dispatchers)
-            return (...args: any) => {
-              const actionOrThunk = dispatchers[p](...args);
-              return proxiedDispatch(actionOrThunk);
-            };
+            return (...args: any) =>
+              proxiedDispatch((model) => dispatchers[p](model, ...args));
         }
         return Reflect.get(target, p, receiver);
       },
@@ -131,10 +117,13 @@ export const createModel = <
           p in dispatchers
         );
       },
-      apply(target, thisArg, [actionOrThunk]) {
-        return proxiedDispatch(actionOrThunk);
+      apply(target, thisArg, [thunk]: [T]) {
+        return proxiedDispatch(thunk);
       },
     };
+
+    const proxiedDispatch = (thunk: T) =>
+      thunk(makeProxy(makeGetStateProxy(dispatch.getState)));
 
     const makeProxy = (state: S) =>
       new Proxy(state, proxyHandler) as unknown as MM;
@@ -151,3 +140,34 @@ export const createModel = <
 
   return [useModel, Provider] as const;
 };
+
+///////// HELPER FUNCTIONS //////////
+const getStateProxyHandler: ProxyHandler<() => object> = Object.fromEntries(
+  (
+    [
+      "apply",
+      "construct",
+      "defineProperty",
+      "deleteProperty",
+      "get",
+      // "getOwnPropertyDescriptor",
+      "getPrototypeOf",
+      "has",
+      "isExtensible",
+      "ownKeys",
+      "preventExtensions",
+      "set",
+      "setPrototypeOf",
+    ] as const
+  ).map(
+    (name) =>
+      [
+        name,
+        (target: () => object, ...args: any) =>
+          (Reflect[name] as any)(target(), ...args),
+      ] as const
+  )
+);
+
+const makeGetStateProxy = <S extends object>(getState: () => S) =>
+  new Proxy(getState, getStateProxyHandler) as unknown as S;

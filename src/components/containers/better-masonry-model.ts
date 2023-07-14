@@ -1,6 +1,8 @@
-import { Rect, doesOverlapX } from "../../lib/utils/rects";
-import { createModel } from "../hooks/create-model";
+import { minBy } from "../../lib/utils/array";
+import { Cell, CellContainer } from "../../lib/utils/cell";
 import { Debouncer } from "../../lib/utils/debouncer";
+import { Rect } from "../../lib/utils/rect";
+import { createModel } from "../hooks/create-model";
 
 const EPS = 0.01;
 
@@ -11,10 +13,11 @@ type Item = {
   stamp: boolean;
   aspectRatio: number;
   layout: Rect;
-  computedLayout?: Rect;
+  targetArea: number;
+  computedLayout: Rect;
 };
 type Brick = Omit<Item, "layout">;
-type Stamp = Omit<Item, "aspectRatio">;
+type Stamp = Omit<Item, "aspectRatio" | "targetArea" | "computedLayout">;
 
 type Container = {
   layout?: Rect;
@@ -30,6 +33,7 @@ export const [useModel, Provider] = createModel(
     container: {} as Container,
     layoutParams: {
       initialTargetArea: 160000,
+      gap: 4,
     },
     isComputedLayoutValid: false,
   },
@@ -79,54 +83,11 @@ export const [useModel, Provider] = createModel(
 
       ////////// HELPERS //////////
 
-      const computeBottom = (bricks?: Brick[]) =>
-        Math.max(
-          ...(bricks?.map(
-            (brick) => brick.computedLayout!.top + brick.computedLayout!.height
-          ) ?? []),
-          0
-        );
-      const adjustTop = (brick: Brick, prevLayer?: Brick[]) => {
-        brick.computedLayout!.top = computeBottom(
-          prevLayer?.filter((refbrick) =>
-            doesOverlapX(refbrick.computedLayout!, brick.computedLayout!)
-          )
-        );
-      };
-
-      const finishLayer = (
-        layer: Brick[],
-        prevLayer: Brick[] | undefined,
-        layerWidth: number = layer
-          .map((brick) => brick.computedLayout!.width)
-          .reduce((a, b) => a + b, 0)
-      ) => {
-        // Scale up bricks to fill width
-        const scaleFactor = bounds.width / layerWidth;
-        layer.forEach((brick) => {
-          brick.computedLayout!.width *= scaleFactor;
-          brick.computedLayout!.height *= scaleFactor;
-        });
-
-        // Place bricks into layer
-        const baseline = prevLayer
-          ? Math.min(
-              ...prevLayer.map(
-                (brick) =>
-                  brick.computedLayout!.top + brick.computedLayout!.height
-              )
-            )
-          : 0;
-        let left = 0;
-        layer.forEach((brick) => {
-          brick.computedLayout!.top = baseline;
-          brick.computedLayout!.left = left;
-          left += brick.computedLayout!.width;
-        });
-
-        // Adjust brick top
-        layer.forEach((brick) => adjustTop(brick, prevLayer));
-      };
+      const gap = state.layoutParams.gap;
+      const max = Math.max;
+      const bottom = (cell: Cell) => cell.top + cell.height;
+      const pairwise = <T>(arr: readonly T[]) =>
+        arr.map((_, i) => [arr[i], arr[i + 1]] as const);
 
       ////////// LAYOUT //////////
 
@@ -134,64 +95,102 @@ export const [useModel, Provider] = createModel(
         width: state.container.layout.width,
       };
 
-      const layers: Brick[][] = [[]];
+      const placeLayer = (layout: CellContainer, layer: CellContainer) => {
+        // Scale up bricks to fill width
+        layer.width = bounds.width;
+
+        // Base case
+        if (layout.cells.length === 0) return layout.push(layer);
+
+        // Get last layer
+        const lastLayer = layout.cells[layout.cells.length - 1];
+        if (
+          !(lastLayer instanceof CellContainer) ||
+          lastLayer.layout.mode !== "row" ||
+          !lastLayer.layout.jagged
+        )
+          throw new Error("Assertion Error");
+
+        // Place bricks from new layer
+        const queue = [...layer.cells];
+        while (queue.length > 0) {
+          // Find least-cost action
+
+          const bestAction = minBy(
+            [
+              // Flatten last layer and start new layer
+              {
+                type: "newlayer",
+                cost: 0,
+              } as const,
+            ],
+            ({ cost }) => cost
+          );
+
+          break;
+        }
+
+        layout.push(layer);
+      };
+
+      let layout: CellContainer = new CellContainer([], {
+        gap,
+        mode: "col",
+        jagged: true,
+      });
+      let layer = new CellContainer([], { gap, mode: "row", jagged: true });
 
       bricks.forEach((brick) => {
         // Compute desired area for brick to cover
         const A = state.layoutParams.initialTargetArea;
         const r = brick.aspectRatio;
-        const targetArea = A * (1 + 0.75 * Math.log(r) ** 2);
+        brick.targetArea = A * (1 + 0.75 * Math.log(r) ** 2);
 
         // Compute dimensions of brick
-        const width = Math.sqrt(brick.aspectRatio * targetArea);
+        const width = Math.sqrt(brick.aspectRatio * brick.targetArea);
         const height = width / brick.aspectRatio;
         brick.computedLayout = { left: 0, top: 0, width, height };
 
-        // Compute layer width
-        const layer = layers[layers.length - 1];
-        let layerWidth = layer
-          .map((brick) => brick.computedLayout!.width)
-          .reduce((a, b) => a + b, 0);
-
-        if (layerWidth + width < bounds.width) {
-          // Add to layer
-          layer.push(brick);
+        // Check layer width
+        if (layer.width + width <= bounds.width) {
+          // Underfull layer: add brick to layer
+          layer.push(new BrickCell(brick));
         } else {
           // Handle overfull layer
-          const prevLayer = layers[layers.length - 2];
 
           // Add to current layer or start a new layer
-          if (layerWidth + width - bounds.width < Math.SQRT1_2 * width) {
-            layer.push(brick);
-            layerWidth += width;
+          let nextLayer: CellContainer;
+          if (layer.width + width - bounds.width < Math.SQRT1_2 * width) {
+            layer.push(new BrickCell(brick));
+            nextLayer = new CellContainer([], {
+              gap,
+              mode: "row",
+              jagged: true,
+            });
           } else {
-            layers.push([brick]);
+            nextLayer = new CellContainer([new BrickCell(brick)], {
+              gap,
+              mode: "row",
+              jagged: true,
+            });
           }
 
-          finishLayer(layer, prevLayer, layerWidth);
+          // Finalize layer placements
+          placeLayer(layout, layer);
+          layer = nextLayer;
         }
       });
 
-      // Adjust final layer
-      finishLayer(layers[layers.length - 1], layers[layers.length - 2]);
+      // Final layer
+      if (layer.cells.length) placeLayer(layout, layer);
 
       // Compute final height
       state.container.computedLayout = {
-        height: computeBottom(layers[layers.length - 1]),
+        height: max(0, bottom(layout)),
       };
 
       // Mark layout computation as complete
       state.isComputedLayoutValid = true;
-
-      // console.log(
-      //   JSON.parse(
-      //     JSON.stringify(
-      //       layers.map((layer) =>
-      //         layer.map((brick) => ({ ...brick, key: null }))
-      //       )
-      //     )
-      //   )
-      // );
     },
   },
 
@@ -286,3 +285,33 @@ export const [useModel, Provider] = createModel(
     },
   }
 );
+
+//////// LAYOUT HELPER ////////
+
+class BrickCell implements Cell {
+  constructor(private _brick: Brick) {}
+  get left() {
+    return this._brick.computedLayout.left;
+  }
+  get top() {
+    return this._brick.computedLayout.top;
+  }
+  get width() {
+    return this._brick.computedLayout.width;
+  }
+  get height() {
+    return this._brick.computedLayout.height;
+  }
+
+  set left(val) {
+    this._brick.computedLayout.left = val;
+  }
+  set top(val) {
+    this._brick.computedLayout.top = val;
+  }
+  set width(val) {
+    const scaleFactor = val / this._brick.computedLayout.width;
+    this._brick.computedLayout.width = val;
+    this._brick.computedLayout.height *= scaleFactor;
+  }
+}

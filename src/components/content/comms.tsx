@@ -5,6 +5,7 @@ import { ImageWrapper } from "../containers/image-wrapper";
 import { FlexCol, Flex } from "../styled";
 import { AutoHeightGrid, AutoHeightColumn } from "../containers/autosized";
 import { SM } from "../common/theme";
+import { FullDivider } from "../common/misc";
 
 export const Comms = () => {
   const data: Queries.CommsQuery = useStaticQuery(graphql`
@@ -23,6 +24,8 @@ export const Comms = () => {
               "584-line"
               "521"
               "498"
+              "471"
+              "sessy"
             ]
           }
         }
@@ -59,6 +62,7 @@ export const Comms = () => {
         mt={4}
         px={4}
         maxWidth="650px"
+        alignItems="center"
         sx={{ textAlign: "center" }}
       >
         <Typography variant="h2" sx={{ textTransform: "uppercase" }}>
@@ -147,6 +151,29 @@ export const Comms = () => {
             </AutoHeightColumn>
             <AutoHeightColumn>
               <ImageWrapper image={images["498"]} />
+            </AutoHeightColumn>
+          </AutoHeightGrid>
+        </PreviewCol>
+      </Option>
+
+      <FullDivider sx={{ mt: 2, width: "80%", alignSelf: "center" }} />
+      <Typography variant="h3" sx={{ textTransform: "uppercase" }}>
+        Special
+      </Typography>
+
+      <Option>
+        <InfoCol>
+          <Typography variant="h3">Pet Animal Crossing OC</Typography>
+          <Typography variant="body1">Flat-Shaded | 40</Typography>
+          <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=(Special)+Pet+Animal+Crossing+OC&entry.2129057693=Flat-Shaded" />
+        </InfoCol>
+        <PreviewCol>
+          <AutoHeightGrid>
+            <AutoHeightColumn>
+              <ImageWrapper image={images["sessy"]} />
+            </AutoHeightColumn>
+            <AutoHeightColumn>
+              <ImageWrapper image={images["471"]} />
             </AutoHeightColumn>
           </AutoHeightGrid>
         </PreviewCol>

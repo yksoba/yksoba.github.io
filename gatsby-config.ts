@@ -46,6 +46,13 @@ const config: GatsbyConfig = {
         path: "./src/images/artworks/",
       },
     },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "misc",
+        path: "./src/images/misc/",
+      },
+    },
   ],
   graphqlTypegen: true,
 };

@@ -1,7 +1,7 @@
 import { minBy } from "../../lib/utils/array";
-import { Cell, CellContainer } from "../../lib/utils/cell";
+import { Cell, CellContainer, LayoutOptions } from "../../lib/utils/cell";
 import { Debouncer } from "../../lib/utils/debouncer";
-import { Rect } from "../../lib/utils/rect";
+import { Rect, doesOverlapX } from "../../lib/utils/rect";
 import { createModel } from "../hooks/create-model";
 
 const EPS = 0.01;
@@ -13,11 +13,10 @@ type Item = {
   stamp: boolean;
   aspectRatio: number;
   layout: Rect;
-  targetArea: number;
   computedLayout: Rect;
 };
 type Brick = Omit<Item, "layout">;
-type Stamp = Omit<Item, "aspectRatio" | "targetArea" | "computedLayout">;
+type Stamp = Omit<Item, "aspectRatio" | "computedLayout">;
 
 type Container = {
   layout?: Rect;
@@ -84,12 +83,38 @@ export const [useModel, Provider] = createModel(
       ////////// HELPERS //////////
 
       const gap = state.layoutParams.gap;
-      const max = Math.max;
+      const max = (arr: number[]) => Math.max(...arr);
       const bottom = (cell: Cell) => cell.top + cell.height;
-      const pairwise = <T>(arr: readonly T[]) =>
-        arr.slice(0, -1).map((_, i) => [arr[i], arr[i + 1]] as const);
-      const computeCost = (dim1: number, dim2: number) =>
-        Math.log(dim1 / dim2) ** 2;
+      const right = (cell: Cell) => cell.left + cell.width;
+      const makeJaggedRow = (cells: Cell[] = []) =>
+        new CellContainer(cells, {
+          gap,
+          mode: "row",
+          jagged: true,
+        });
+      const makeRow = (cells: Cell[], options?: LayoutOptions) =>
+        new CellContainer(cells, {
+          gap,
+          mode: "row",
+          ...options,
+        });
+      const makeCol = (cells: Cell[], options?: LayoutOptions) =>
+        new CellContainer(cells, {
+          gap,
+          mode: "col",
+          ...options,
+        });
+      const mergeCost = (
+        first: Cell,
+        second: Cell,
+        direction: "row" | "col"
+      ) => {
+        let r =
+          direction === "row"
+            ? first.height / second.height
+            : first.width / second.width;
+        return Math.log(r) ** 2;
+      };
 
       ////////// LAYOUT //////////
 
@@ -97,136 +122,77 @@ export const [useModel, Provider] = createModel(
         width: state.container.layout.width,
       };
 
-      const placeLayer = (layout: CellContainer, layer: CellContainer) => {
-        // Scale up bricks to fill width
+      // 1. Separate into layers
+      const layers: CellContainer[] = [makeJaggedRow()];
+
+      const finishLayer = (layer: CellContainer, prevLayer?: CellContainer) => {
         layer.width = bounds.width;
-
-        // Base case
-        if (layout.cells.length === 0) return layout.push(layer);
-
-        // Get last layer
-        const lastLayer = layout.cells[layout.cells.length - 1];
-        if (
-          !(lastLayer instanceof CellContainer) ||
-          lastLayer.layout.mode !== "row" ||
-          !lastLayer.layout.jagged
-        )
-          throw new Error("Assertion Error");
-
-        // Place bricks from new layer
-        const matched = new Set<Cell>();
-        const queue = [...layer.cells];
-        while (queue.length > 0) {
-          // Find least-cost action
-          const action = minBy(
-            [
-              // Default
-              {
-                type: null,
-                cost: Infinity,
-              },
-
-              // Merge two cells from last layer
-              ...pairwise(lastLayer.cells).map(
-                ([left, right], i) =>
-                  ({
-                    type: "llmerge",
-                    cost: computeCost(left.height, right.height),
+        if (prevLayer) {
+          if (layer.cells.length <= prevLayer.cells.length) {
+            const table = Object.fromEntries(
+              prevLayer.cells.map(
+                (prev, i) =>
+                  [
                     i,
-                  } as const)
-              ),
+                    Object.fromEntries(
+                      layer.cells.map(
+                        (cell, j) =>
+                          [j, [i, j, mergeCost(prev, cell, "col")]] as const
+                      )
+                    ),
+                  ] as const
+              )
+            );
 
-              // Merge two cells from queue
-              ...queue.flatMap((left, i) =>
-                queue.map((right, j) =>
-                  i == j
-                    ? ({ type: null, cost: Infinity } as const)
-                    : ({
-                        type: "qmerge",
-                        cost: computeCost(left.height, right.height),
-                        i,
-                        j,
-                      } as const)
-                )
-              ),
+            const ranks: [Cell, number][] = [];
 
-              // Merge cell from queue into last layer
-              ...lastLayer.cells
-                .filter((cell) => !matched.has(cell))
-                .flatMap((upper, i) =>
-                  queue.map(
-                    (lower, j) =>
-                      ({
-                        type: "ulmerge",
-                        cost: computeCost(upper.width, lower.width),
-                        i,
-                        j,
-                      } as const)
-                  )
-                ),
-            ],
-            ({ cost }) => cost
-          );
-
-          // Execute least-cost action
-          if (action.type === "llmerge") {
-            if (lastLayer.cells.length === 2) {
-              // Even out last layer, reset new layer, and add to layout
-              lastLayer.setLayout({ jagged: false });
-              layer.pack();
-              layout.push(layer);
-              break;
-            } else {
-              // Merge two adjacent cells from last layer
-              const merged = new CellContainer(
-                lastLayer.cells.slice(action.i, action.i + 2),
-                { gap, mode: "row" }
+            while (ranks.length < layer.cells.length) {
+              const [i, j] = minBy(
+                Object.values(table).flatMap((row) => Object.values(row)),
+                (item) => item[2]
               );
-              lastLayer.splice(action.i, 2, merged);
+
+              ranks.push([layer.cells[j], i]);
+
+              delete table[i];
+              Object.keys(table).forEach((i) => delete table[i][j]);
             }
-          } else if (action.type === "qmerge") {
-            // Merge two cells from queue
-            const left = queue[action.i];
-            const right = queue[action.j];
-            queue.splice(Math.max(action.i, action.j), 1);
-            queue.splice(Math.min(action.i, action.j), 1);
-            queue.push(new CellContainer([left, right], { gap, mode: "row" }));
-          } else if (action.type === "ulmerge") {
-            // Merge cell from queue into last layer
-            const upper = lastLayer.cells[action.i];
-            const lower = queue[action.j];
-            const merged = new CellContainer([upper, lower], {
-              gap,
-              mode: "col",
-            });
-            queue.splice(action.j, 1);
-            lastLayer.splice(action.i, 1, merged);
-            matched.add(merged);
-          } else {
-            break;
+
+            const order = ranks
+              .sort((a, b) => a[1] - b[1])
+              .map(([cell]) => cell);
+
+            layer.splice(0, layer.cells.length, ...order);
           }
+
+          // Push cells out
+          layer.cells.forEach((cell) => {
+            cell.top =
+              gap +
+              max(
+                prevLayer.cells
+                  .filter((ref) => doesOverlapX(ref, cell))
+                  .map(bottom)
+              );
+          });
         }
       };
-
-      let layout: CellContainer = new CellContainer([], {
-        gap,
-        mode: "col",
-        jagged: true,
-      });
-      let layer = new CellContainer([], { gap, mode: "row", jagged: true });
 
       bricks.forEach((brick) => {
         // Compute desired area for brick to cover
         const A = state.layoutParams.initialTargetArea;
         const r = brick.aspectRatio;
-        brick.targetArea = A * (1 + 0.75 * Math.log(r) ** 2);
+        const targetArea = A * (1 + 0.75 * Math.log(r) ** 2);
 
         // Compute dimensions of brick
-        const width = Math.sqrt(brick.aspectRatio * brick.targetArea);
+        const width = Math.sqrt(brick.aspectRatio * targetArea);
         const height = width / brick.aspectRatio;
         brick.computedLayout = { left: 0, top: 0, width, height };
 
         // Check layer width
+        const prevLayer = layers[layers.length - 2];
+        const layer = layers[layers.length - 1];
+
         if (layer.width + width <= bounds.width) {
           // Underfull layer: add brick to layer
           layer.push(new BrickCell(brick));
@@ -234,34 +200,76 @@ export const [useModel, Provider] = createModel(
           // Handle overfull layer
 
           // Add to current layer or start a new layer
-          let nextLayer: CellContainer;
           if (layer.width + width - bounds.width < Math.SQRT1_2 * width) {
             layer.push(new BrickCell(brick));
-            nextLayer = new CellContainer([], {
-              gap,
-              mode: "row",
-              jagged: true,
-            });
+            layers.push(makeJaggedRow());
           } else {
-            nextLayer = new CellContainer([new BrickCell(brick)], {
-              gap,
-              mode: "row",
-              jagged: true,
-            });
+            layers.push(makeJaggedRow([new BrickCell(brick)]));
           }
 
-          // Finalize layer placements
-          placeLayer(layout, layer);
-          layer = nextLayer;
+          // Set y of layer
+          finishLayer(layer, prevLayer);
         }
       });
 
       // Final layer
-      if (layer.cells.length) placeLayer(layout, layer);
+      finishLayer(layers[layers.length - 1], layers[layers.length - 2]);
+
+      // // 2. Pair up elements into larger rectangles
+      // let _i = 0;
+      // const queue = layers.flatMap((layer) => layer.cells);
+      // while (queue.length > 1) {
+      //   // Find best merge
+      //   const { a, b, i, j } = minBy(
+      //     queue
+      //       .flatMap((a, i) => queue.map((b, j) => [a, b, i, j] as const))
+      //       .filter(([a, b, i, j]) => i < j)
+      //       .map(([a, b, i, j]) => {
+      //         const outerArea =
+      //           (Math.max(right(a), right(b)) - Math.min(a.left, b.left)) *
+      //           (Math.max(bottom(a), bottom(b)) - Math.min(a.top, b.top));
+      //         const innerArea = a.width * a.height + b.width * b.height;
+      //         return {
+      //           cost: Math.max(outerArea / innerArea, innerArea / outerArea),
+      //           a,
+      //           b,
+      //           i,
+      //           j,
+      //         };
+      //       }),
+      //     ({ cost }) => cost
+      //   );
+
+      //   queue.splice(j, 1);
+      //   queue.splice(i, 1);
+      //   if (doesOverlapX(a, b)) {
+      //     if (a.top < b.top) {
+      //       queue.push(
+      //         makeCol([a, b], { width: Math.sqrt(a.width * b.width) })
+      //       );
+      //     } else {
+      //       queue.push(
+      //         makeCol([b, a], { width: Math.sqrt(a.width * b.width) })
+      //       );
+      //     }
+      //   } else {
+      //     if (a.left < b.left) {
+      //       queue.push(makeRow([a, b], { width: a.width + b.width + gap }));
+      //     } else {
+      //       queue.push(makeRow([b, a], { width: a.width + b.width + gap }));
+      //     }
+      //   }
+
+      //   if (_i++ > 10) {
+      //     break;
+      //   }
+      // }
+
+      // const layout = queue[0];
 
       // Compute final height
       state.container.computedLayout = {
-        height: max(0, bottom(layout)),
+        height: 10000, // bottom(layout),
       };
 
       // Mark layout computation as complete

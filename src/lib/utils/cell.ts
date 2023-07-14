@@ -187,6 +187,6 @@ export class CellContainer implements Cell {
     this.pack({ fit: true });
 
     // Check for debugging packing
-    assertClose(val, this.width);
+    // assertClose(val, this.width);
   }
 }

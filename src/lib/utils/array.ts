@@ -2,6 +2,7 @@ const DEFAULT = Symbol();
 
 export const sum = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
 
+
 const minBy2 =
   <T>(key: (item: T) => any) =>
   (a: T, b: T) =>

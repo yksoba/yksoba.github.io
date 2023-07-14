@@ -45,6 +45,11 @@ export class CellContainer implements Cell {
     this.pack();
   }
 
+  splice(start: number, deleteCount: number, ...cells: Cell[]) {
+    this._cells.splice(start, deleteCount, ...cells);
+    this.pack();
+  }
+
   get layout() {
     return { ...this._layout } as const;
   }

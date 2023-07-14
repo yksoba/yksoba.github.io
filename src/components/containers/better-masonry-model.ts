@@ -87,7 +87,9 @@ export const [useModel, Provider] = createModel(
       const max = Math.max;
       const bottom = (cell: Cell) => cell.top + cell.height;
       const pairwise = <T>(arr: readonly T[]) =>
-        arr.map((_, i) => [arr[i], arr[i + 1]] as const);
+        arr.slice(0, -1).map((_, i) => [arr[i], arr[i + 1]] as const);
+      const computeCost = (dim1: number, dim2: number) =>
+        Math.log(dim1 / dim2) ** 2;
 
       ////////// LAYOUT //////////
 
@@ -112,25 +114,98 @@ export const [useModel, Provider] = createModel(
           throw new Error("Assertion Error");
 
         // Place bricks from new layer
+        const matched = new Set<Cell>();
         const queue = [...layer.cells];
         while (queue.length > 0) {
           // Find least-cost action
-
-          const bestAction = minBy(
+          const action = minBy(
             [
-              // Flatten last layer and start new layer
+              // Default
               {
-                type: "newlayer",
-                cost: 0,
-              } as const,
+                type: null,
+                cost: Infinity,
+              },
+
+              // Merge two cells from last layer
+              ...pairwise(lastLayer.cells).map(
+                ([left, right], i) =>
+                  ({
+                    type: "llmerge",
+                    cost: computeCost(left.height, right.height),
+                    i,
+                  } as const)
+              ),
+
+              // Merge two cells from queue
+              ...queue.flatMap((left, i) =>
+                queue.map((right, j) =>
+                  i == j
+                    ? ({ type: null, cost: Infinity } as const)
+                    : ({
+                        type: "qmerge",
+                        cost: computeCost(left.height, right.height),
+                        i,
+                        j,
+                      } as const)
+                )
+              ),
+
+              // Merge cell from queue into last layer
+              ...lastLayer.cells
+                .filter((cell) => !matched.has(cell))
+                .flatMap((upper, i) =>
+                  queue.map(
+                    (lower, j) =>
+                      ({
+                        type: "ulmerge",
+                        cost: computeCost(upper.width, lower.width),
+                        i,
+                        j,
+                      } as const)
+                  )
+                ),
             ],
             ({ cost }) => cost
           );
 
-          break;
+          // Execute least-cost action
+          if (action.type === "llmerge") {
+            if (lastLayer.cells.length === 2) {
+              // Even out last layer, reset new layer, and add to layout
+              lastLayer.setLayout({ jagged: false });
+              layer.pack();
+              layout.push(layer);
+              break;
+            } else {
+              // Merge two adjacent cells from last layer
+              const merged = new CellContainer(
+                lastLayer.cells.slice(action.i, action.i + 2),
+                { gap, mode: "row" }
+              );
+              lastLayer.splice(action.i, 2, merged);
+            }
+          } else if (action.type === "qmerge") {
+            // Merge two cells from queue
+            const left = queue[action.i];
+            const right = queue[action.j];
+            queue.splice(Math.max(action.i, action.j), 1);
+            queue.splice(Math.min(action.i, action.j), 1);
+            queue.push(new CellContainer([left, right], { gap, mode: "row" }));
+          } else if (action.type === "ulmerge") {
+            // Merge cell from queue into last layer
+            const upper = lastLayer.cells[action.i];
+            const lower = queue[action.j];
+            const merged = new CellContainer([upper, lower], {
+              gap,
+              mode: "col",
+            });
+            queue.splice(action.j, 1);
+            lastLayer.splice(action.i, 1, merged);
+            matched.add(merged);
+          } else {
+            break;
+          }
         }
-
-        layout.push(layer);
       };
 
       let layout: CellContainer = new CellContainer([], {

@@ -126,43 +126,52 @@ export const [useModel, Provider] = createModel(
       const layers: CellContainer[] = [makeJaggedRow()];
 
       const finishLayer = (layer: CellContainer, prevLayer?: CellContainer) => {
-        layer.width = bounds.width;
+        layer.setLayout({ width: bounds.width, fit: true });
+
         if (prevLayer) {
-          if (layer.cells.length <= prevLayer.cells.length) {
-            const table = Object.fromEntries(
-              prevLayer.cells.map(
-                (prev, i) =>
-                  [
-                    i,
-                    Object.fromEntries(
-                      layer.cells.map(
-                        (cell, j) =>
-                          [j, [i, j, mergeCost(prev, cell, "col")]] as const
-                      )
-                    ),
-                  ] as const
-              )
-            );
+          if (layers.length < 4) {
+            const stems = prevLayer.cells.map((cell, i) => [cell, i] as any);
+            const leaves = layer.cells.map((cell, j) => [cell, j] as any);
 
-            const ranks: [Cell, number][] = [];
+            if (stems.length >= leaves.length) {
+              while (leaves.length > 0) {
+                // Find best column-wise merge
+                const [_, i, j] = minBy(
+                  leaves.flatMap(([cell], j) =>
+                    stems.map(
+                      ([prev], i) =>
+                        [mergeCost(cell, prev, "col"), i, j] as const
+                    )
+                  ),
+                  ([cost]) => cost
+                );
 
-            while (ranks.length < layer.cells.length) {
-              const [i, j] = minBy(
-                Object.values(table).flatMap((row) => Object.values(row)),
-                (item) => item[2]
-              );
+                // Pop from queue
+                const [[prev, prevIdx]] = stems.splice(i, 1);
+                const [[cell, cellIdx]] = leaves.splice(j, 1);
 
-              ranks.push([layer.cells[j], i]);
+                // Compute column dims
+                const width = Math.sqrt(cell.width * prev.width);
+                const left = prev.left;
 
-              delete table[i];
-              Object.keys(table).forEach((i) => delete table[i][j]);
+                // Make column
+                const merged = makeCol([prev, cell], { width, left });
+                prevLayer.splice(prevIdx, 1, merged);
+                prevLayer.pack();
+
+                layer.splice(cellIdx, 1, {
+                  left: cell.left,
+                  top: cell.top,
+                  width: cell.width,
+                  height: cell.height,
+                });
+                layer.pack();
+              }
+
+              // Copy previous into new layer
+              layer.splice(0, layer.cells.length, ...prevLayer.cells);
+              return;
             }
-
-            const order = ranks
-              .sort((a, b) => a[1] - b[1])
-              .map(([cell]) => cell);
-
-            layer.splice(0, layer.cells.length, ...order);
           }
 
           // Push cells out

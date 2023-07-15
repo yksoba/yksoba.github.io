@@ -1,8 +1,8 @@
 import React from "react";
 import { Brick, Masonry } from "../containers/masonry";
-import { Box } from "@mui/material";
+import { Box, Theme, useMediaQuery } from "@mui/material";
 import { Header } from "../common/header";
-import { MD } from "../common/theme";
+import { SM, MD } from "../common/theme";
 import { ImageWrapper } from "../containers/image-wrapper";
 import { useStaticQuery, graphql } from "gatsby";
 
@@ -21,6 +21,8 @@ export const Gallery = () => {
   `);
 
   const imageNodes = data.allFile.nodes;
+  const isXS = useMediaQuery((theme: Theme) => theme.breakpoints.down(SM));
+
   return (
     <Box pt={8} px={0.25}>
       <Masonry columns={[2, 3, 4]} gutter={4} stamp=".stamp">
@@ -44,7 +46,8 @@ export const Gallery = () => {
         {imageNodes.map((node) => {
           const image = node.childImageSharp?.previewImage;
           const aspectRatio = image ? image.width / image.height : 1;
-          const colSpan = Math.max(1, Math.round(aspectRatio));
+          let colSpan = Math.max(1, Math.round(aspectRatio));
+          if (isXS) colSpan = Math.min(2, colSpan);
 
           return (
             <Brick colSpan={colSpan} key={node.name}>

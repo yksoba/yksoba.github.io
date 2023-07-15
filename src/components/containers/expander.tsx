@@ -35,7 +35,7 @@ export const Expander = ({
           height: innerHeight + controlHeight,
           minHeight: initialHeight,
           maxHeight: isExpanded ? innerHeight + controlHeight : initialHeight,
-          overflowY: "clip",
+          overflowY: "hidden",
           transition: "max-height 1s ease",
         }}
       >

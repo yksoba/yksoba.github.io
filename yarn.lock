@@ -3931,6 +3931,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@material-ui/types@npm:^4.0.0":
+  version: 4.1.1
+  resolution: "@material-ui/types@npm:4.1.1"
+  dependencies:
+    "@types/react": "*"
+  checksum: 987a4ae1848b25ca14d644fa59d4c5ba46b5f1900318930b48bcc63b92b12757cc4413c8e50d3e7660c39b2f44653ce831f818cb648bac3836f14b7de8193e3e
+  languageName: node
+  linkType: hard
+
 "@mdx-js/mdx@npm:^2.1.1":
   version: 2.1.1
   resolution: "@mdx-js/mdx@npm:2.1.1"
@@ -5343,6 +5352,26 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: bceec20a57c91fa9b6b63898a228f6074b8d62dce29b7069a7e986bc7f8cd910ffd197808b559b0a0dd53221e6058db13622a1d1f1faa708557e8c41af1326e4
+  languageName: node
+  linkType: hard
+
+"@types/react-swipeable-views-utils@npm:^0.13.4":
+  version: 0.13.4
+  resolution: "@types/react-swipeable-views-utils@npm:0.13.4"
+  dependencies:
+    "@material-ui/types": ^4.0.0
+    "@types/react": "*"
+    "@types/react-swipeable-views": "*"
+  checksum: 81e03aebc616d0b9e45a4b2318b3ded394f9b76cc3107a2c674a21bd9c1c24ce7b4f526093c928593f99b69d1e9ca046657dda94ea09753ffefabcc48c11192a
+  languageName: node
+  linkType: hard
+
+"@types/react-swipeable-views@npm:*":
+  version: 0.13.2
+  resolution: "@types/react-swipeable-views@npm:0.13.2"
+  dependencies:
+    "@types/react": "*"
+  checksum: 733f700ef6c59dec5e2e36ee534ffd6b4df420e49cc3bb0306bf368358d49af7a3e2b006f93fb6953769d27ad4308bb536c733068a0e3f031a792cbe2c54e916
   languageName: node
   linkType: hard
 
@@ -16116,6 +16145,7 @@ __metadata:
     "@types/react-anchor-link-smooth-scroll": ^1.0.2
     "@types/react-dom": ^18.0.3
     "@types/react-swipeable-views": ^0.13.1
+    "@types/react-swipeable-views-utils": ^0.13.4
     "@types/three": ^0.144.0
     aos: ^2.3.4
     autoprefixer: ^10.4.14
@@ -16140,6 +16170,7 @@ __metadata:
     react-dom: ^18.1.0
     react-scroll-trigger: ^0.6.14
     react-swipeable-views: ^0.14.0
+    react-swipeable-views-utils: ^0.14.0
     react-use: ^17.4.0
     three: ^0.145.0
     typescript: ^5.1.6

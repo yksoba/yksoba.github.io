@@ -1,7 +1,11 @@
 import { Button, Link, Theme, Typography, useMediaQuery } from "@mui/material";
 import { graphql, useStaticQuery } from "gatsby";
 import React, { PropsWithChildren } from "react";
-import { ImageWrapper } from "../containers/image-wrapper";
+import {
+  ImageData,
+  ImageViewerProvider,
+  ImageViewerThumbnail,
+} from "../containers/image-viewer";
 import { FlexCol, Flex } from "../styled";
 import { AutoHeightGrid, AutoHeightColumn } from "../containers/autosized";
 import { SM } from "../common/theme";
@@ -89,14 +93,14 @@ export const Comms = () => {
           </Typography>
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Full-Body/Reference" />
         </InfoCol>
-        <PreviewCol>
+        <PreviewCol images={[images["542"], images["588"], images["593"]]}>
           <AutoHeightGrid>
             <AutoHeightColumn>
-              <ImageWrapper image={images["542"]} />
-              <ImageWrapper image={images["588"]} />
+              <ImageViewerThumbnail index={0} />
+              <ImageViewerThumbnail index={1} />
             </AutoHeightColumn>
             <AutoHeightColumn>
-              <ImageWrapper image={images["593"]} />
+              <ImageViewerThumbnail index={2} />
             </AutoHeightColumn>
           </AutoHeightGrid>
         </PreviewCol>
@@ -110,13 +114,13 @@ export const Comms = () => {
           <Typography variant="body1">Full-Color | 100</Typography>
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Half-Body" />
         </InfoCol>
-        <PreviewCol>
+        <PreviewCol images={[images["453"], images["575b"]]}>
           <AutoHeightGrid>
             <AutoHeightColumn>
-              <ImageWrapper image={images["453"]} />
+              <ImageViewerThumbnail index={0} />
             </AutoHeightColumn>
             <AutoHeightColumn>
-              <ImageWrapper image={images["575b"]} />
+              <ImageViewerThumbnail index={1} />
             </AutoHeightColumn>
           </AutoHeightGrid>
         </PreviewCol>
@@ -133,24 +137,32 @@ export const Comms = () => {
           <Typography variant="body1">Full-Color | 80</Typography>
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Bust-Up/Headshot" />
         </InfoCol>
-        <PreviewCol>
+        <PreviewCol
+          images={[
+            images["500"],
+            images["507"],
+            images["584-line"],
+            images["521"],
+            images["498"],
+          ]}
+        >
           <AutoHeightGrid>
             <AutoHeightColumn>
-              <ImageWrapper image={images["500"]} />
+              <ImageViewerThumbnail index={0} />
             </AutoHeightColumn>
             <AutoHeightColumn>
-              <ImageWrapper image={images["507"]} />
+              <ImageViewerThumbnail index={1} />
             </AutoHeightColumn>
           </AutoHeightGrid>
           <AutoHeightGrid>
             <AutoHeightColumn>
-              <ImageWrapper image={images["584-line"]} />
+              <ImageViewerThumbnail index={2} />
             </AutoHeightColumn>
             <AutoHeightColumn>
-              <ImageWrapper image={images["521"]} />
+              <ImageViewerThumbnail index={3} />
             </AutoHeightColumn>
             <AutoHeightColumn>
-              <ImageWrapper image={images["498"]} />
+              <ImageViewerThumbnail index={4} />
             </AutoHeightColumn>
           </AutoHeightGrid>
         </PreviewCol>
@@ -167,13 +179,13 @@ export const Comms = () => {
           <Typography variant="body1">Flat-Shaded | 40</Typography>
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=(Special)+Pet+Animal+Crossing+OC&entry.2129057693=Flat-Shaded" />
         </InfoCol>
-        <PreviewCol>
+        <PreviewCol images={[images["sessy"], images["471"]]}>
           <AutoHeightGrid>
             <AutoHeightColumn>
-              <ImageWrapper image={images["sessy"]} />
+              <ImageViewerThumbnail index={0} />
             </AutoHeightColumn>
             <AutoHeightColumn>
-              <ImageWrapper image={images["471"]} />
+              <ImageViewerThumbnail index={1} />
             </AutoHeightColumn>
           </AutoHeightGrid>
         </PreviewCol>
@@ -216,9 +228,12 @@ const InfoCol = ({ children }: PropsWithChildren<{}>) => (
   </FlexCol>
 );
 
-const PreviewCol = ({ children }: PropsWithChildren<{}>) => (
+const PreviewCol = ({
+  children,
+  images,
+}: PropsWithChildren<{ images: readonly ImageData[] }>) => (
   <FlexCol className="preview-col" width={["100%", "60%", "66%"]}>
-    {children}
+    <ImageViewerProvider images={images}>{children}</ImageViewerProvider>
   </FlexCol>
 );
 

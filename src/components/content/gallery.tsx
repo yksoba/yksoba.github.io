@@ -3,7 +3,10 @@ import { Brick, Masonry } from "../containers/masonry";
 import { Box, Theme, useMediaQuery } from "@mui/material";
 import { Header } from "../common/header";
 import { SM, MD } from "../common/theme";
-import { ImageWrapper } from "../containers/image-wrapper";
+import {
+  ImageViewerProvider,
+  ImageViewerThumbnail,
+} from "../containers/image-viewer";
 import { useStaticQuery, graphql } from "gatsby";
 
 export const Gallery = () => {
@@ -20,7 +23,8 @@ export const Gallery = () => {
     }
   `);
 
-  const imageNodes = data.allFile.nodes;
+  const images = data.allFile.nodes;
+
   const isXS = useMediaQuery((theme: Theme) => theme.breakpoints.down(SM));
 
   return (
@@ -43,18 +47,20 @@ export const Gallery = () => {
         >
           <Header />
         </Box>
-        {imageNodes.map((node) => {
-          const image = node.childImageSharp?.previewImage;
-          const aspectRatio = image ? image.width / image.height : 1;
-          let colSpan = Math.max(1, Math.round(aspectRatio));
-          if (isXS) colSpan = Math.min(2, colSpan);
+        <ImageViewerProvider images={images}>
+          {images.map((node, i) => {
+            const image = node.childImageSharp?.previewImage;
+            const aspectRatio = image ? image.width / image.height : 1;
+            let colSpan = Math.max(1, Math.round(aspectRatio));
+            if (isXS) colSpan = Math.min(2, colSpan);
 
-          return (
-            <Brick colSpan={colSpan} key={node.name}>
-              <ImageWrapper image={node} />
-            </Brick>
-          );
-        })}
+            return (
+              <Brick colSpan={colSpan} key={i}>
+                <ImageViewerThumbnail index={i} />
+              </Brick>
+            );
+          })}
+        </ImageViewerProvider>
       </Masonry>
     </Box>
   );

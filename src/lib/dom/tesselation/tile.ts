@@ -1,20 +1,37 @@
-interface Tile {
+export interface Rect {
   left: number;
   top: number;
   width: number;
   height: number;
+}
+
+export type TileConstraints = {
+  readonly scaling:
+    | {
+        readonly type: "free";
+      }
+    | {
+        readonly type: "proportional";
+        readonly paddingX: number;
+        readonly paddingY: number;
+      };
+};
+
+export interface Tile extends Rect {
   readonly right: number;
   readonly bottom: number;
+  readonly constraints: TileConstraints;
   readonly cost: number;
 
   clone(): Tile;
 }
 
-abstract class TileBase implements Tile {
+export abstract class TileBase implements Tile {
   abstract left: number;
   abstract top: number;
   abstract width: number;
   abstract height: number;
+  abstract constraints: TileConstraints;
   abstract cost: number;
   abstract clone(): Tile;
 
@@ -26,7 +43,7 @@ abstract class TileBase implements Tile {
   }
 }
 
-abstract class AreaCostTile extends TileBase {
+export abstract class AreaCostTile extends TileBase {
   abstract initialWidth: number;
   abstract initialHeight: number;
 
@@ -38,7 +55,8 @@ abstract class AreaCostTile extends TileBase {
     );
   }
 }
-class FixedAspectTile extends AreaCostTile {
+
+export class FixedAspectTile extends AreaCostTile {
   private _aspectRatio?: number;
   private _initialHeight?: number;
   private _initialWidth?: number;
@@ -49,7 +67,11 @@ class FixedAspectTile extends AreaCostTile {
   private _height: number;
 
   constructor({
-    aspectRatio, initialWidth, initialHeight, width, height,
+    aspectRatio,
+    initialWidth,
+    initialHeight,
+    width,
+    height,
   }: {
     aspectRatio?: number;
     initialWidth?: number;
@@ -67,13 +89,15 @@ class FixedAspectTile extends AreaCostTile {
   }
 
   private _validate() {
-    if (typeof this._initialHeight === "undefined"
-      ? 0
-      : 1 + typeof this._initialWidth === "undefined"
+    if (
+      typeof this._initialHeight === "undefined"
+        ? 0
+        : 1 + typeof this._initialWidth === "undefined"
         ? 0
         : 1 + typeof this._aspectRatio === "undefined"
-          ? 0
-          : 1 < 2)
+        ? 0
+        : 1 < 2
+    )
       throw new Error(
         "at least two of `initialHeight`, `initialWidth`, or `aspectRatio` must be defined"
       );
@@ -100,6 +124,16 @@ class FixedAspectTile extends AreaCostTile {
 
   get height() {
     return this._height;
+  }
+
+  get constraints() {
+    return {
+      scaling: {
+        type: "proportional",
+        paddingX: 0,
+        paddingY: 0,
+      },
+    } as TileConstraints;
   }
 
   set aspectRatio(val) {

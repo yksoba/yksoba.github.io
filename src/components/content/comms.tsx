@@ -83,11 +83,11 @@ export const Comms = () => {
             Full-Body / {isXS || <br />}
             Reference
           </Typography>
-          <Typography variant="body1">Line Only | 60</Typography>
-          <Typography variant="body1">Flat-Shaded | 80</Typography>
-          <Typography variant="body1">Full-Color | 120</Typography>
+          <Typography variant="body1">Line Only | 30</Typography>
+          <Typography variant="body1">Flat-Shaded | 50</Typography>
+          <Typography variant="body1">Full-Color | 80</Typography>
           <Typography variant="body1">
-            Full-Color + Background&nbsp;|&nbsp;180
+            Full-Color + Background&nbsp;|&nbsp;120
           </Typography>
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Full-Body/Reference" />
         </InfoCol>
@@ -107,9 +107,9 @@ export const Comms = () => {
       <Option>
         <InfoCol>
           <Typography variant="h3">Half-Body</Typography>
-          <Typography variant="body1">Line Only | 50</Typography>
-          <Typography variant="body1">Flat-Shaded | 70</Typography>
-          <Typography variant="body1">Full-Color | 100</Typography>
+          <Typography variant="body1">Line Only | 20</Typography>
+          <Typography variant="body1">Flat-Shaded | 40</Typography>
+          <Typography variant="body1">Full-Color | 70</Typography>
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Half-Body" />
         </InfoCol>
         <PreviewCol>
@@ -130,9 +130,9 @@ export const Comms = () => {
             Bust-Up / {isXS || <br />}
             Headshot
           </Typography>
-          <Typography variant="body1">Line Only | 30</Typography>
-          <Typography variant="body1">Flat-Shaded | 40</Typography>
-          <Typography variant="body1">Full-Color | 80</Typography>
+          <Typography variant="body1">Line Only | 10</Typography>
+          <Typography variant="body1">Flat-Shaded | 30</Typography>
+          <Typography variant="body1">Full-Color | 60</Typography>
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Bust-Up/Headshot" />
         </InfoCol>
         <PreviewCol>
@@ -166,7 +166,7 @@ export const Comms = () => {
         <InfoCol>
           <Typography variant="h3">YCH</Typography>
           <Typography variant="body1">
-            Full-Color + Background&nbsp;|&nbsp;150
+            Full-Color + Background&nbsp;|&nbsp;100
           </Typography>
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSdoLiGr_XH75ixZI-KXsjDysbm7exeGBOeNrHlFIS92h9ksLQ/viewform?usp=sf_link" />
         </InfoCol>

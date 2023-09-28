@@ -24,9 +24,9 @@ export const Gallery = () => {
   const isXS = useMediaQuery((theme: Theme) => theme.breakpoints.down(SM));
 
   return (
-    <Box pt={8} px={0.25}>
+    <Box pt={0.5} px={0.25}>
       <Masonry columns={[2, 3, 4]} gutter={4} stamp=".stamp">
-        <Box
+        {/* <Box
           className="stamp"
           sx={(theme) => ({
             position: "absolute",
@@ -42,7 +42,7 @@ export const Gallery = () => {
           })}
         >
           <Header />
-        </Box>
+        </Box> */}
         {imageNodes.map((node) => {
           const image = node.childImageSharp?.previewImage;
           const aspectRatio = image ? image.width / image.height : 1;

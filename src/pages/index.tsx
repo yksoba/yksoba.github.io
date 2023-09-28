@@ -10,6 +10,7 @@ import { Contact } from "../components/content/contact";
 import { PageProps } from "gatsby";
 import { useIntersection } from "react-use";
 import { Box } from "@mui/material";
+import { Header } from "../components/common/header";
 
 const Home = (props: PageProps) => {
   const commsRef = useRef<HTMLElement>(null);
@@ -33,7 +34,8 @@ const Home = (props: PageProps) => {
   return (
     <Layout pageProps={props} currentSection={currentSection}>
       <FullDivider />
-      <Box id="gallery" position="relative" top="160px" />
+      <Header />
+      <FullDivider id="gallery" />
       <Expander initialHeight="100vh">
         <Gallery />
       </Expander>

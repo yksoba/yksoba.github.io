@@ -62,7 +62,7 @@ export const Masthead = forwardRef<HTMLDivElement, {}>(({}, ref) => (
       minHeight: 150,
     }}
   >
-    <Box sx={{ px: 1.5, maxWidth: 550, width: "100%" }}>
+    <Box sx={{ px: 1.5, maxWidth: 500, width: "100%" }}>
       <TitleLink variant="large" />
     </Box>
     <FlexCol mt={0.5} alignItems="center" justifyContent="center">
@@ -89,12 +89,12 @@ export const Masthead = forwardRef<HTMLDivElement, {}>(({}, ref) => (
 ));
 
 const TitleImage = ({ variant }: { variant: "large" | "small" }) => (
-  <Box sx={{ aspectRatio: "550/131", width: "100%", height: "auto" }}>
+  <Box sx={{ aspectRatio: "500/131", width: "100%", height: "auto" }}>
     {variant === "large" ? (
       <StaticImage
         alt="YK_SOBA"
         src="../../images/title.png"
-        width={550}
+        width={500}
         height={131}
         loading="eager"
         placeholder="none"
@@ -104,7 +104,7 @@ const TitleImage = ({ variant }: { variant: "large" | "small" }) => (
         alt="YK_SOBA"
         src="../../images/title.png"
         layout="fixed"
-        width={110}
+        width={100}
         height={26}
         loading="eager"
         placeholder="none"

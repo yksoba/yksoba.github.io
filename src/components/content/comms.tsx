@@ -7,6 +7,11 @@ import { AutoHeightGrid, AutoHeightColumn } from "../containers/autosized";
 import { LG, MD, SM } from "../common/theme";
 import { FullDivider } from "../common/misc";
 import { maxWidth } from "@mui/system";
+import {
+  AspectColumn,
+  AspectContainer,
+  AspectRow,
+} from "../containers/aspectbox";
 
 export const Comms = () => {
   const data: Queries.CommsQuery = useStaticQuery(graphql`
@@ -19,7 +24,7 @@ export const Comms = () => {
               "404-n"
               "593"
               "453"
-              "575b"
+              "575-2"
               "500"
               "507"
               "584-line"
@@ -72,7 +77,7 @@ export const Comms = () => {
           Commissions
         </Typography>
         <Typography variant="subtitle1" sx={{ fontStyle: "italic", mt: 2 }}>
-          Prices below are estimates per character, and final prices may differ.{" "}
+          Prices are estimates, and final prices may differ.{" "}
           <br />
           See{" "}
           <Link href="https://docs.google.com/document/d/e/2PACX-1vTe2VjqpfGHmivYstoIyK7LtAhVScGIJTlRdbOhWvbHPXQ-cNQppWAsOHuqfXRN4XRg1YaV59tCvl0G/pub">
@@ -99,15 +104,15 @@ export const Comms = () => {
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Full-Body/Reference" />
         </InfoCol>
         <PreviewCol>
-          <AutoHeightGrid>
-            <AutoHeightColumn>
+          <AspectRow>
+            <AspectColumn>
               <ImageWrapper image={images["542"]} />
               <ImageWrapper image={images["404-n"]} />
-            </AutoHeightColumn>
-            <AutoHeightColumn>
+            </AspectColumn>
+            <AspectColumn>
               <ImageWrapper image={images["593"]} />
-            </AutoHeightColumn>
-          </AutoHeightGrid>
+            </AspectColumn>
+          </AspectRow>
         </PreviewCol>
       </Option>
 
@@ -119,14 +124,14 @@ export const Comms = () => {
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Half-Body" />
         </InfoCol>
         <PreviewCol>
-          <AutoHeightGrid>
-            <AutoHeightColumn>
+          <AspectRow>
+            <AspectColumn>
               <ImageWrapper image={images["611.1-p"]} />
-            </AutoHeightColumn>
-            <AutoHeightColumn>
-              <ImageWrapper image={images["575b"]} />
-            </AutoHeightColumn>
-          </AutoHeightGrid>
+            </AspectColumn>
+            <AspectColumn>
+              <ImageWrapper image={images["453"]} />
+            </AspectColumn>
+          </AspectRow>
         </PreviewCol>
       </Option>
 
@@ -141,25 +146,27 @@ export const Comms = () => {
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Bust-Up/Headshot" />
         </InfoCol>
         <PreviewCol>
-          <AutoHeightGrid>
-            <AutoHeightColumn>
-              <ImageWrapper image={images["500"]} />
-            </AutoHeightColumn>
-            <AutoHeightColumn>
-              <ImageWrapper image={images["507"]} />
-            </AutoHeightColumn>
-          </AutoHeightGrid>
-          <AutoHeightGrid>
-            <AutoHeightColumn>
-              <ImageWrapper image={images["584-line"]} />
-            </AutoHeightColumn>
-            <AutoHeightColumn>
-              <ImageWrapper image={images["521"]} />
-            </AutoHeightColumn>
-            <AutoHeightColumn>
-              <ImageWrapper image={images["498"]} />
-            </AutoHeightColumn>
-          </AutoHeightGrid>
+          <AspectColumn>
+            <AspectRow>
+              <AspectColumn>
+                <ImageWrapper image={images["500"]} />
+              </AspectColumn>
+              <AspectColumn>
+                <ImageWrapper image={images["507"]} />
+              </AspectColumn>
+            </AspectRow>
+            <AspectRow>
+              <AspectColumn>
+                <ImageWrapper image={images["584-line"]} />
+              </AspectColumn>
+              <AspectColumn>
+                <ImageWrapper image={images["521"]} />
+              </AspectColumn>
+              <AspectColumn>
+                <ImageWrapper image={images["498"]} />
+              </AspectColumn>
+            </AspectRow>
+          </AspectColumn>
         </PreviewCol>
       </Option>
 

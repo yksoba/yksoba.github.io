@@ -16,7 +16,7 @@ export const Comms = () => {
           name: {
             in: [
               "542"
-              "588"
+              "404-n"
               "593"
               "453"
               "575b"
@@ -28,6 +28,7 @@ export const Comms = () => {
               "471"
               "sessy"
               "597"
+              "611.1-p"
             ]
           }
         }
@@ -70,32 +71,38 @@ export const Comms = () => {
         <Typography variant="h2" sx={{ textTransform: "uppercase" }}>
           Commissions
         </Typography>
-        <Typography variant="subtitle1" sx={{ fontStyle: "italic" }}>
-          Read the <Link href="/terms-of-service">Terms of Service</Link>.
-          Prices below are estimates, final prices may differ. <br />
-          All prices in USD.
+        <Typography variant="subtitle1" sx={{ fontStyle: "italic", mt: 2 }}>
+          Prices below are estimates per character, and final prices may differ.{" "}
+          <br />
+          See{" "}
+          <Link href="https://docs.google.com/document/d/e/2PACX-1vTe2VjqpfGHmivYstoIyK7LtAhVScGIJTlRdbOhWvbHPXQ-cNQppWAsOHuqfXRN4XRg1YaV59tCvl0G/pub">
+            here
+          </Link>{" "}
+          for the full pricing sheet. All prices in USD.
+          <br />
+          <Link
+            href="https://docs.google.com/document/d/e/2PACX-1vTimCN2_ovUX2HI7RiQk21wpcz8yfg9qjMAMZh3zrWF0DuZ2xovh3aImOUHte0D9e8zBhh-I9Wj-VUN/pub"
+            target="_blank"
+          >
+            Terms of Service
+          </Link>
+          <br />
+          <SubmitRequestButton />
         </Typography>
       </FlexCol>
 
       <Option>
         <InfoCol>
-          <Typography variant="h3">
-            Full-Body / {isXS || <br />}
-            Reference
-          </Typography>
-          <Typography variant="body1">Line Only | 30</Typography>
-          <Typography variant="body1">Flat-Shaded | 50</Typography>
-          <Typography variant="body1">Full-Color | 80</Typography>
-          <Typography variant="body1">
-            Full-Color + Background&nbsp;|&nbsp;120
-          </Typography>
+          <Typography variant="h3">Full-Body</Typography>
+          <Typography variant="body1">Flat Colors&nbsp;|&nbsp;120</Typography>
+          <Typography variant="body1">Shaded&nbsp;|&nbsp;150</Typography>
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Full-Body/Reference" />
         </InfoCol>
         <PreviewCol>
           <AutoHeightGrid>
             <AutoHeightColumn>
               <ImageWrapper image={images["542"]} />
-              <ImageWrapper image={images["588"]} />
+              <ImageWrapper image={images["404-n"]} />
             </AutoHeightColumn>
             <AutoHeightColumn>
               <ImageWrapper image={images["593"]} />
@@ -107,15 +114,14 @@ export const Comms = () => {
       <Option>
         <InfoCol>
           <Typography variant="h3">Half-Body</Typography>
-          <Typography variant="body1">Line Only | 20</Typography>
-          <Typography variant="body1">Flat-Shaded | 40</Typography>
-          <Typography variant="body1">Full-Color | 70</Typography>
+          <Typography variant="body1">Flat Colors | 80</Typography>
+          <Typography variant="body1">Shaded | 100</Typography>
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Half-Body" />
         </InfoCol>
         <PreviewCol>
           <AutoHeightGrid>
             <AutoHeightColumn>
-              <ImageWrapper image={images["453"]} />
+              <ImageWrapper image={images["611.1-p"]} />
             </AutoHeightColumn>
             <AutoHeightColumn>
               <ImageWrapper image={images["575b"]} />
@@ -130,9 +136,8 @@ export const Comms = () => {
             Bust-Up / {isXS || <br />}
             Headshot
           </Typography>
-          <Typography variant="body1">Line Only | 10</Typography>
-          <Typography variant="body1">Flat-Shaded | 30</Typography>
-          <Typography variant="body1">Full-Color | 60</Typography>
+          <Typography variant="body1">Flat Colors | 40</Typography>
+          <Typography variant="body1">Shaded | 50</Typography>
           <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Bust-Up/Headshot" />
         </InfoCol>
         <PreviewCol>
@@ -159,50 +164,8 @@ export const Comms = () => {
       </Option>
 
       <FullDivider sx={{ mt: 2, width: "80%", alignSelf: "center" }} />
-      <Typography variant="h3" sx={{ textTransform: "uppercase" }}>
-        Special
-      </Typography>
-      <Option>
-        <InfoCol>
-          <Typography variant="h3">YCH</Typography>
-          <Typography variant="body1">
-            Full-Color + Background&nbsp;|&nbsp;100
-          </Typography>
-          <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSdoLiGr_XH75ixZI-KXsjDysbm7exeGBOeNrHlFIS92h9ksLQ/viewform?usp=sf_link" />
-        </InfoCol>
-        <PreviewCol>
-          <Flex
-            sx={(theme) => ({
-              [theme.breakpoints.up(MD)]: {
-                maxWidth: "50vw",
-              },
-              [theme.breakpoints.up(LG)]: {
-                maxWidth: "33vw",
-              },
-            })}
-          >
-            <ImageWrapper image={images["597"]} />
-          </Flex>
-        </PreviewCol>
-      </Option>
 
-      <Option>
-        <InfoCol>
-          <Typography variant="h3">Pet Animal Crossing OC</Typography>
-          <Typography variant="body1">Flat-Shaded | 40</Typography>
-          <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=(Special)+Pet+Animal+Crossing+OC&entry.2129057693=Flat-Shaded" />
-        </InfoCol>
-        <PreviewCol>
-          <AutoHeightGrid>
-            <AutoHeightColumn>
-              <ImageWrapper image={images["sessy"]} />
-            </AutoHeightColumn>
-            <AutoHeightColumn>
-              <ImageWrapper image={images["471"]} />
-            </AutoHeightColumn>
-          </AutoHeightGrid>
-        </PreviewCol>
-      </Option>
+      <SubmitRequestButton />
     </FlexCol>
   );
 };
@@ -248,7 +211,11 @@ const PreviewCol = ({ children }: PropsWithChildren<{}>) => (
   </FlexCol>
 );
 
-const SubmitRequestButton = ({ href }: { href: string }) => (
+const SubmitRequestButton = ({
+  href = "https://forms.gle/SuE2buZKXEZMnJvX7",
+}: {
+  href?: string;
+}) => (
   <Button
     component="a"
     href={href}
@@ -258,6 +225,6 @@ const SubmitRequestButton = ({ href }: { href: string }) => (
       mt: 1,
     }}
   >
-    Submit Request
+    Request A Slot
   </Button>
 );

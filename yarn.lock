@@ -3931,6 +3931,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mdi/js@npm:^7.3.67":
+  version: 7.3.67
+  resolution: "@mdi/js@npm:7.3.67"
+  checksum: bba88d6f1305a02c3b7372930746314aec1ddc31f04372c4da419a345661de3be34181a749afa00b1c0cd8281d9f443efe1876ee9ba683032e88f35466886900
+  languageName: node
+  linkType: hard
+
+"@mdi/react@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "@mdi/react@npm:1.6.1"
+  dependencies:
+    prop-types: ^15.7.2
+  checksum: d0408c5fcc1cf6e4b1fc7be57a5516453b12c076dc682fe320c2fe7c19a333c265cd16dd2348d5587356f9f9a35cec46fb5f5f530d34c485d23975dcd240f834
+  languageName: node
+  linkType: hard
+
 "@mdx-js/mdx@npm:^2.1.1":
   version: 2.1.1
   resolution: "@mdx-js/mdx@npm:2.1.1"
@@ -16097,6 +16113,8 @@ __metadata:
     "@emotion/react": ^11.9.0
     "@emotion/styled": ^11.8.1
     "@fontsource/metropolis": ^4.5.3
+    "@mdi/js": ^7.3.67
+    "@mdi/react": ^1.6.1
     "@mdx-js/mdx": ^2.1.1
     "@mdx-js/react": ^2.1.1
     "@mui/icons-material": ^5.6.2

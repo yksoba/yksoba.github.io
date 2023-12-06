@@ -77,10 +77,12 @@ export const Comms = () => {
           Commissions
         </Typography>
         <Typography variant="subtitle1" sx={{ fontStyle: "italic", mt: 2 }}>
-          Prices are estimates, and final prices may differ.{" "}
-          <br />
+          Prices are estimates, and final prices may differ. <br />
           See{" "}
-          <Link href="https://docs.google.com/document/d/e/2PACX-1vTe2VjqpfGHmivYstoIyK7LtAhVScGIJTlRdbOhWvbHPXQ-cNQppWAsOHuqfXRN4XRg1YaV59tCvl0G/pub">
+          <Link
+            href="https://docs.google.com/document/d/e/2PACX-1vTe2VjqpfGHmivYstoIyK7LtAhVScGIJTlRdbOhWvbHPXQ-cNQppWAsOHuqfXRN4XRg1YaV59tCvl0G/pub"
+            target="_blank"
+          >
             here
           </Link>{" "}
           for the full pricing sheet. All prices in USD.

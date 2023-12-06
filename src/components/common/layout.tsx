@@ -22,8 +22,7 @@ export const useLayoutContext = () => useContext(LayoutContext);
 export const Layout = ({
   children,
   pageProps,
-  currentSection,
-}: PropsWithChildren<{ pageProps: PageProps; currentSection?: string }>) => {
+}: PropsWithChildren<{ pageProps: PageProps; }>) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -37,7 +36,7 @@ export const Layout = ({
           },
         }}
       />
-      <LayoutContext.Provider value={{ pageProps, currentSection }}>
+      <LayoutContext.Provider value={{ pageProps }}>
         <FlexCol minHeight="100vh">
           {children}
           <Footer />

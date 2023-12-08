@@ -39,6 +39,7 @@ export const Comms = () => {
               "sessy"
               "597"
               "611.1-p"
+              "600-a"
             ]
           }
         }
@@ -111,7 +112,7 @@ export const Comms = () => {
         <PreviewCol>
           <AspectRow>
             <AspectColumn>
-              <ImageWrapper image={images["542"]} />
+              <ImageWrapper image={images["600-a"]} />
               <ImageWrapper image={images["404-n"]} />
             </AspectColumn>
             <AspectColumn>

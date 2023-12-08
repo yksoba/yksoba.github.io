@@ -1,4 +1,5 @@
-import { Box } from "@mui/material";
+import React from "react";
+import { Box, Divider, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 export const Flex = styled(Box)({ display: "flex" });
@@ -13,3 +14,25 @@ export const Section = styled("section")({
   flexDirection: "column",
   alignItems: "center",
 });
+
+export const Divider2 = ({ children }: React.PropsWithChildren<{}>) =>
+  children ? (
+    <Divider
+      flexItem
+      orientation="horizontal"
+      sx={{
+        color: "primary.light",
+        "&::before, &::after": {
+          borderColor: "primary.light",
+        },
+      }}
+    >
+      <Typography variant="overline">{children}</Typography>
+    </Divider>
+  ) : (
+    <Divider
+      flexItem
+      orientation="horizontal"
+      sx={{ bgcolor: "primary.light" }}
+    />
+  );

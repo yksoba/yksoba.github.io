@@ -65,8 +65,8 @@ export const AspectContainer = ({
 
   useEffect(() => {
     if (ref.current && typeof window !== "undefined") {
-      recomputeAspectRatio();
       mutationObserver?.observe(ref.current, { childList: true });
+      recomputeAspectRatio();
     }
   }, [ref.current]);
 
@@ -96,7 +96,7 @@ export const AspectColumn = (props: BoxProps) => (
 /////
 
 const parseAspectRatio = (aspectRatio: string) => {
-  if (aspectRatio == "auto") {
+  if (aspectRatio === "auto") {
     return null;
   }
 

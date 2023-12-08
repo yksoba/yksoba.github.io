@@ -2,7 +2,7 @@ import { Button, Link, Theme, Typography, useMediaQuery } from "@mui/material";
 import { graphql, useStaticQuery } from "gatsby";
 import React, { PropsWithChildren } from "react";
 import { ImageWrapper } from "../containers/image-wrapper";
-import { FlexCol, Flex } from "../styled";
+import { FlexCol, Flex, Divider2 } from "../styled";
 import { AutoHeightGrid, AutoHeightColumn } from "../containers/autosized";
 import { LG, MD, SM } from "../common/theme";
 import { FullDivider } from "../common/misc";
@@ -12,6 +12,11 @@ import {
   AspectContainer,
   AspectRow,
 } from "../containers/aspectbox";
+import {
+  INFO_SHEET_DOC,
+  PRICING_SHEET_DOC,
+  TERMS_OF_SERVICE_DOC,
+} from "../../constants";
 
 export const Comms = () => {
   const data: Queries.CommsQuery = useStaticQuery(graphql`
@@ -62,40 +67,36 @@ export const Comms = () => {
             fontSize: "3rem",
           },
         },
+        maxWidth: "800px",
       })}
-      alignItems="center"
     >
-      <FlexCol
-        mb={2}
-        mt={4}
-        px={4}
-        maxWidth="650px"
-        alignItems="center"
-        sx={{ textAlign: "center" }}
-      >
+      <FlexCol mt={4} px={4} alignItems="center" sx={{ textAlign: "center" }}>
         <Typography variant="h2" sx={{ textTransform: "uppercase" }}>
           Commissions
         </Typography>
         <Typography variant="subtitle1" sx={{ fontStyle: "italic", mt: 2 }}>
-          Prices are estimates, and final prices may differ. <br />
-          See{" "}
-          <Link
-            href="https://docs.google.com/document/d/e/2PACX-1vTe2VjqpfGHmivYstoIyK7LtAhVScGIJTlRdbOhWvbHPXQ-cNQppWAsOHuqfXRN4XRg1YaV59tCvl0G/pub"
-            target="_blank"
-          >
-            here
-          </Link>{" "}
-          for the full pricing sheet. All prices in USD.
-          <br />
-          <Link
-            href="https://docs.google.com/document/d/e/2PACX-1vTimCN2_ovUX2HI7RiQk21wpcz8yfg9qjMAMZh3zrWF0DuZ2xovh3aImOUHte0D9e8zBhh-I9Wj-VUN/pub"
-            target="_blank"
-          >
-            Terms of Service
+          Prices below are estimates for one character. For more options and
+          multiple characters, see the{" "}
+          <Link href={PRICING_SHEET_DOC} target="_blank">
+            full pricing sheet
           </Link>
-          <br />
-          <SubmitRequestButton />
+          . All prices in USD.
         </Typography>
+      </FlexCol>
+
+      <FlexCol gap={2} alignItems="center">
+        <Divider2 />
+        <Link href={INFO_SHEET_DOC} target="_blank">
+          Commissions Info Sheet
+        </Link>
+        <Link href={PRICING_SHEET_DOC} target="_blank">
+          Pricing Sheet
+        </Link>
+        <Link href={TERMS_OF_SERVICE_DOC} target="_blank">
+          Terms of Service
+        </Link>
+        <SubmitRequestButton />
+        <Divider2 />
       </FlexCol>
 
       <Option>
@@ -103,7 +104,9 @@ export const Comms = () => {
           <Typography variant="h3">Full-Body</Typography>
           <Typography variant="body1">Flat Colors&nbsp;|&nbsp;120</Typography>
           <Typography variant="body1">Shaded&nbsp;|&nbsp;150</Typography>
-          <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Full-Body/Reference" />
+          <Typography variant="body1">
+            Shaded+Detailed Background&nbsp;|&nbsp;200
+          </Typography>
         </InfoCol>
         <PreviewCol>
           <AspectRow>
@@ -117,13 +120,13 @@ export const Comms = () => {
           </AspectRow>
         </PreviewCol>
       </Option>
+      <Divider2 />
 
       <Option>
         <InfoCol>
           <Typography variant="h3">Half-Body</Typography>
           <Typography variant="body1">Flat Colors | 80</Typography>
           <Typography variant="body1">Shaded | 100</Typography>
-          <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Half-Body" />
         </InfoCol>
         <PreviewCol>
           <AspectRow>
@@ -136,16 +139,16 @@ export const Comms = () => {
           </AspectRow>
         </PreviewCol>
       </Option>
+      <Divider2 />
 
       <Option>
         <InfoCol>
           <Typography variant="h3">
-            Bust-Up / {isXS || <br />}
+            Bust-Up / <br />
             Headshot
           </Typography>
           <Typography variant="body1">Flat Colors | 40</Typography>
           <Typography variant="body1">Shaded | 50</Typography>
-          <SubmitRequestButton href="https://docs.google.com/forms/d/e/1FAIpQLSflH2ZHvjNFfAsXCJY9ddRMdJT1_cx9mck_n6teXIfifWE4iQ/viewform?usp=pp_url&entry.1764984693=Bust-Up/Headshot" />
         </InfoCol>
         <PreviewCol>
           <AspectColumn>
@@ -171,10 +174,19 @@ export const Comms = () => {
           </AspectColumn>
         </PreviewCol>
       </Option>
-
-      <FullDivider sx={{ mt: 2, width: "80%", alignSelf: "center" }} />
-
-      <SubmitRequestButton />
+      <Divider2 />
+      <FlexCol px={4} alignItems="center" sx={{ textAlign: "center" }}>
+        <Typography variant="subtitle1" sx={{ fontStyle: "italic" }}>
+          See the{" "}
+          <Link href={PRICING_SHEET_DOC} target="_blank">
+            full pricing sheet
+          </Link>{" "}
+          for more options!
+        </Typography>
+      </FlexCol>
+      <FlexCol px={4} alignItems="center" sx={{ textAlign: "center" }}>
+        <SubmitRequestButton />
+      </FlexCol>
     </FlexCol>
   );
 };
@@ -183,13 +195,10 @@ const Option = ({ children }: PropsWithChildren<{}>) => (
   <Flex
     gap={2}
     width="100%"
-    sx={(theme) => ({
-      [theme.breakpoints.down(SM)]: {
-        flexDirection: "column-reverse",
-        px: 4,
-        pb: 4,
-      },
-    })}
+    sx={{
+      flexDirection: "column",
+      px: 4,
+    }}
   >
     {children}
   </Flex>
@@ -198,15 +207,14 @@ const Option = ({ children }: PropsWithChildren<{}>) => (
 const InfoCol = ({ children }: PropsWithChildren<{}>) => (
   <FlexCol
     className="info-col"
-    width={["100%", "40%", "33%"]}
     alignItems="end"
     sx={{
       textAlign: "right",
       "& h3": {
-        fontSize: ["2rem", "2.4rem", "3rem"],
+        fontSize: "3rem",
       },
       "& p": {
-        fontSize: [".99rem", "1.15rem", "1.3rem"],
+        fontSize: "1.5rem",
       },
     }}
   >
@@ -215,9 +223,7 @@ const InfoCol = ({ children }: PropsWithChildren<{}>) => (
 );
 
 const PreviewCol = ({ children }: PropsWithChildren<{}>) => (
-  <FlexCol className="preview-col" width={["100%", "60%", "66%"]}>
-    {children}
-  </FlexCol>
+  <FlexCol className="preview-col">{children}</FlexCol>
 );
 
 const SubmitRequestButton = ({
@@ -225,15 +231,7 @@ const SubmitRequestButton = ({
 }: {
   href?: string;
 }) => (
-  <Button
-    component="a"
-    href={href}
-    target="_blank"
-    variant="outlined"
-    sx={{
-      mt: 1,
-    }}
-  >
+  <Button component="a" href={href} target="_blank" variant="outlined">
     Request A Slot
   </Button>
 );

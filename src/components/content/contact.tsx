@@ -4,7 +4,6 @@ import {
   Button,
   ButtonProps,
   Container,
-  Divider,
   Link,
   Typography,
 } from "@mui/material";
@@ -22,6 +21,7 @@ import {
   TELEGRAM,
 } from "../../constants";
 import { Link as GatsbyLink } from "gatsby";
+import { Divider2 } from "../styled";
 
 const Socials: React.FC = () => (
   <Box display="flex" flexDirection="column" alignItems="start">
@@ -48,28 +48,6 @@ const Socials: React.FC = () => (
     </Button>
   </Box>
 );
-
-const Divider2 = ({ children }: React.PropsWithChildren<{}>) =>
-  children ? (
-    <Divider
-      flexItem
-      orientation="horizontal"
-      sx={{
-        color: "primary.light",
-        "&::before, &::after": {
-          borderColor: "primary.light",
-        },
-      }}
-    >
-      <Typography variant="overline">{children}</Typography>
-    </Divider>
-  ) : (
-    <Divider
-      flexItem
-      orientation="horizontal"
-      sx={{ bgcolor: "primary.light" }}
-    />
-  );
 
 export const Contact = () => (
   <FlexCol maxWidth="650px" px={4}>

@@ -2,10 +2,10 @@ import { BreakpointOverrides } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
   interface BreakpointOverrides {
-    xs: true;
+    xs:false;
     sm: true;
     md: true;
-    lg: true;
-    xl: true;
+    lg:true;
+    xl: false;
   }
 }

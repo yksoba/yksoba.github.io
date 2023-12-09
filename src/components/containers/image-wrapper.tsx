@@ -12,6 +12,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { Flex } from "../styled";
 import { graphql } from "gatsby";
+import { AspectItem } from "./aspectbox";
 
 export const ImageWrapper = ({
   alt,
@@ -76,16 +77,12 @@ export const ImageWrapper = ({
 
   return (
     <>
-      <ButtonBase
-        sx={{
-          aspectRatio: `${previewImage.width}/${previewImage.height}`,
-          height: "auto",
-          width: "100%",
-        }}
+      <AspectItem
+        aspectRatio={[previewImage.width, previewImage.height]}
         onClick={openModal}
       >
         <GatsbyImage alt={_alt} image={previewImage} />
-      </ButtonBase>
+      </AspectItem>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

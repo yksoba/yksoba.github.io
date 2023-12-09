@@ -3,7 +3,6 @@ import { graphql, useStaticQuery } from "gatsby";
 import React, { PropsWithChildren } from "react";
 import { ImageWrapper } from "../containers/image-wrapper";
 import { FlexCol, Flex, Divider2 } from "../styled";
-import { AutoHeightGrid, AutoHeightColumn } from "../containers/autosized";
 import { LG, MD, SM } from "../common/theme";
 import { FullDivider } from "../common/misc";
 import { maxWidth } from "@mui/system";
@@ -55,7 +54,6 @@ export const Comms = () => {
     data.allFile.nodes.map((node) => [node.name, node] as const)
   );
 
-  const isXS = useMediaQuery((theme: Theme) => theme.breakpoints.down(SM));
 
   return (
     <FlexCol

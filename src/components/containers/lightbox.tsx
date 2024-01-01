@@ -69,12 +69,15 @@ const useLightboxProviderContext = (images: ImageData[]) => {
   const [isOpen, _setIsOpen] = useState(false);
   const [currentIndex, _setCurrentIndex] = useState(0);
   const [nextIndex, _setNextIndex] = useState(0);
+
   const _sliderObs = useMemo(
     () => new BehaviorSubject<Slider | null>(null),
     []
   );
-  const _nextSlider = () =>
-    _sliderObs.pipe(first((value) => !!value)) as Observable<Slider>;
+  const _nextSlider = useCallback(
+    () => _sliderObs.pipe(first((value) => !!value)) as Observable<Slider>,
+    []
+  );
 
   const _onPopState = useCallback(() => {
     window.history.pushState(null, "", window.location.href);
@@ -82,8 +85,10 @@ const useLightboxProviderContext = (images: ImageData[]) => {
   }, []);
 
   const open = useCallback((index?: number) => {
-    if (typeof index === "number")
+    if (typeof index === "number") {
+      _setCurrentIndex(index);
       _nextSlider().subscribe((slider) => slider?.slickGoTo(index, true));
+    }
 
     _setIsOpen((isOpen) => {
       if (!isOpen) {
@@ -111,7 +116,6 @@ const useLightboxProviderContext = (images: ImageData[]) => {
     _setCurrentIndex(index);
   }, []);
   const beforeChange = useCallback((oldIndex: number, newIndex: number) => {
-    _setCurrentIndex(oldIndex);
     _setNextIndex(newIndex);
   }, []);
 
@@ -185,6 +189,7 @@ const LightboxImageWrapper: React.FC<{
 const Lightbox = () => {
   const context = useLightboxContext();
   const currentImage = context.images[context.currentIndex];
+  console.log(context.currentIndex);
   return (
     <Modal
       aria-labelledby="transition-modal-title"

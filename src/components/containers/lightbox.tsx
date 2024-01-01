@@ -163,7 +163,7 @@ const LightboxImageWrapper: React.FC<{
         sx={[
           {
             mx: 1,
-            bgcolor: "black",
+            bgcolor: "white",
             aspectRatio: `${image.highResImage!.width} / ${
               image.highResImage!.height
             }`,
@@ -179,7 +179,10 @@ const LightboxImageWrapper: React.FC<{
         <GatsbyImage
           alt={image.alt ?? "image"}
           image={image.highResImage!}
-          style={{ transition: "opacity .2s", opacity: isCurrent ? 1 : 0.75 }}
+          style={{
+            transition: "filter .2s",
+            filter: `brightness(${isCurrent ? 1 : 0.5})`,
+          }}
         />
       </Box>
     </Box>
@@ -189,7 +192,6 @@ const LightboxImageWrapper: React.FC<{
 const Lightbox = () => {
   const context = useLightboxContext();
   const currentImage = context.images[context.currentIndex];
-  console.log(context.currentIndex);
   return (
     <Modal
       aria-labelledby="transition-modal-title"

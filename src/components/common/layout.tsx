@@ -27,6 +27,14 @@ export const Layout = ({
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+      />
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+      />
       <GlobalStyles
         styles={{
           "html, body": {

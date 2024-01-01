@@ -28,8 +28,6 @@ import {
 } from "rxjs";
 
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { useWindowSize } from "react-use";
 
 interface ImageData {
@@ -218,6 +216,7 @@ const Lightbox = () => {
               (image, index) =>
                 image?.highResImage && (
                   <LightboxImageWrapper
+                    key={index}
                     image={image}
                     isCurrent={context.nextIndex == index}
                   />

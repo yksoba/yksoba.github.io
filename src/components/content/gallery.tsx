@@ -44,7 +44,7 @@ export const MainGallery = () => {
       <Box pt={0.5} px={0.25}>
         <Masonry columns={[2, 3, 4]} spacing={0.5}>
           {images.map((_, i) => (
-            <LightboxPreview index={i} />
+            <LightboxPreview key={i} index={i} />
           ))}
         </Masonry>
       </Box>

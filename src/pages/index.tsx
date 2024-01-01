@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Layout } from "../components/common/layout";
-import { Gallery } from "../components/content/gallery";
+import { MainGallery } from "../components/content/gallery";
 import { FullDivider } from "../components/common/misc";
 
 import { Expander } from "../components/containers/expander";
@@ -37,7 +37,7 @@ const Home = (props: PageProps) => {
       <Header />
       <FullDivider id="gallery" />
       <Expander initialHeight="100vh">
-        <Gallery />
+        <MainGallery />
       </Expander>
       <FullDivider id="commissions" />
       <Section ref={commsRef} sx={{ bgcolor: "rgba(0,0,0,0.5)" }}>

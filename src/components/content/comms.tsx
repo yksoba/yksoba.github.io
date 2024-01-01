@@ -1,9 +1,7 @@
 import { Button, Link, Theme, Typography, useMediaQuery } from "@mui/material";
 import { graphql, useStaticQuery } from "gatsby";
 import React, { PropsWithChildren } from "react";
-import { ImageWrapper } from "../containers/image-wrapper";
 import { FlexCol, Flex, Divider2 } from "../styled";
-import { AutoHeightGrid, AutoHeightColumn } from "../containers/autosized";
 import { LG, MD, SM } from "../common/theme";
 import { FullDivider } from "../common/misc";
 import { maxWidth } from "@mui/system";
@@ -17,6 +15,8 @@ import {
   PRICING_SHEET_DOC,
   TERMS_OF_SERVICE_DOC,
 } from "../../constants";
+import { LightboxPreview, LightboxProvider } from "../containers/lightbox";
+import { unpackImageData } from "./gallery";
 
 export const Comms = () => {
   const data: Queries.CommsQuery = useStaticQuery(graphql`
@@ -110,15 +110,21 @@ export const Comms = () => {
           </Typography>
         </InfoCol>
         <PreviewCol>
-          <AspectRow>
-            <AspectColumn>
-              <ImageWrapper image={images["600-a"]} />
-              <ImageWrapper image={images["404-n"]} />
-            </AspectColumn>
-            <AspectColumn>
-              <ImageWrapper image={images["593"]} />
-            </AspectColumn>
-          </AspectRow>
+          <LightboxProvider
+            images={[images["600-a"], images["404-n"], images["593"]].map(
+              unpackImageData
+            )}
+          >
+            <AspectRow>
+              <AspectColumn>
+                <LightboxPreview index={0} />
+                <LightboxPreview index={1} />
+              </AspectColumn>
+              <AspectColumn>
+                <LightboxPreview index={2} />
+              </AspectColumn>
+            </AspectRow>
+          </LightboxProvider>
         </PreviewCol>
       </Option>
       <Divider2 />
@@ -130,14 +136,18 @@ export const Comms = () => {
           <Typography variant="body1">Shaded | 100</Typography>
         </InfoCol>
         <PreviewCol>
-          <AspectRow>
-            <AspectColumn>
-              <ImageWrapper image={images["611.1-p"]} />
-            </AspectColumn>
-            <AspectColumn>
-              <ImageWrapper image={images["453"]} />
-            </AspectColumn>
-          </AspectRow>
+          <LightboxProvider
+            images={[images["611.1-p"], images["453"]].map(unpackImageData)}
+          >
+            <AspectRow>
+              <AspectColumn>
+                <LightboxPreview index={0} />
+              </AspectColumn>
+              <AspectColumn>
+                <LightboxPreview index={1} />
+              </AspectColumn>
+            </AspectRow>
+          </LightboxProvider>
         </PreviewCol>
       </Option>
       <Divider2 />
@@ -152,27 +162,33 @@ export const Comms = () => {
           <Typography variant="body1">Shaded | 50</Typography>
         </InfoCol>
         <PreviewCol>
-          <AspectColumn>
-            <AspectRow>
-              <AspectColumn>
-                <ImageWrapper image={images["500"]} />
-              </AspectColumn>
-              <AspectColumn>
-                <ImageWrapper image={images["507"]} />
-              </AspectColumn>
-            </AspectRow>
-            <AspectRow>
-              <AspectColumn>
-                <ImageWrapper image={images["584-line"]} />
-              </AspectColumn>
-              <AspectColumn>
-                <ImageWrapper image={images["521"]} />
-              </AspectColumn>
-              <AspectColumn>
-                <ImageWrapper image={images["498"]} />
-              </AspectColumn>
-            </AspectRow>
-          </AspectColumn>
+          <LightboxProvider
+            images={[
+              images["500"],
+              images["507"],
+              images["521"],
+              images["498"],
+            ].map(unpackImageData)}
+          >
+            <AspectColumn>
+              <AspectRow>
+                <AspectColumn>
+                  <LightboxPreview index={0} />
+                </AspectColumn>
+                <AspectColumn>
+                  <LightboxPreview index={1} />
+                </AspectColumn>
+              </AspectRow>
+              <AspectRow>
+                <AspectColumn>
+                  <LightboxPreview index={2} />
+                </AspectColumn>
+                <AspectColumn>
+                  <LightboxPreview index={3} />
+                </AspectColumn>
+              </AspectRow>
+            </AspectColumn>
+          </LightboxProvider>
         </PreviewCol>
       </Option>
       <Divider2 />

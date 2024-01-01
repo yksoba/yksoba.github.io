@@ -7,12 +7,6 @@ import { Container, Link, Typography, Box } from "@mui/material";
 import { useEffectOnce } from "react-use";
 
 const Page = (props: PageProps) => {
-  useEffectOnce(() => {
-    if (typeof window !== "undefined") {
-      window.location.href =
-        "https://docs.google.com/document/d/e/2PACX-1vTimCN2_ovUX2HI7RiQk21wpcz8yfg9qjMAMZh3zrWF0DuZ2xovh3aImOUHte0D9e8zBhh-I9Wj-VUN/pub";
-    }
-  });
   return (
     <Layout pageProps={props}>
       <Header />
@@ -30,12 +24,10 @@ const Page = (props: PageProps) => {
           }}
           fixed
         >
-          This page has been temporarily moved. If you are not redirected
-          automatically, click
+          This page has been temporarily moved.{" "}
           <a href="https://docs.google.com/document/d/e/2PACX-1vTimCN2_ovUX2HI7RiQk21wpcz8yfg9qjMAMZh3zrWF0DuZ2xovh3aImOUHte0D9e8zBhh-I9Wj-VUN/pub">
-            here
+            Click here for the terms of service.
           </a>
-          .
         </Container>
       </Box>
     </Layout>

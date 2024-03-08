@@ -158,8 +158,8 @@ export const Comms = () => {
             Bust-Up / <br />
             Headshot
           </Typography>
-          <Typography variant="body1">Flat Colors | 40</Typography>
-          <Typography variant="body1">Shaded | 50</Typography>
+          <Typography variant="body1">Flat Colors | 50</Typography>
+          <Typography variant="body1">Shaded | 60</Typography>
         </InfoCol>
         <PreviewCol>
           <LightboxProvider

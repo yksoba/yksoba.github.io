@@ -5,7 +5,7 @@ import { StaticImage } from "gatsby-plugin-image";
 import { Box } from "@mui/system";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import { Fade, Portal, SvgIcon, Link } from "@mui/material";
+import { Button, Fade, Portal, SvgIcon, Link } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import FuraffinityIcon from "../../images/svgs/furaffinity.svg";
 import { useIntersection } from "react-use";
@@ -67,7 +67,7 @@ export const Masthead = forwardRef<HTMLDivElement, {}>(({}, ref) => (
     </Box>
     <FlexCol mt={0.5} alignItems="center" justifyContent="center">
       <NavBar />
-      <Flex gap={1}>
+      <Flex gap={1} mt={1} mb={2}>
         <NavIconLink href="https://www.furaffinity.net/user/yksoba">
           <SvgIcon
             component={FuraffinityIcon}
@@ -84,6 +84,16 @@ export const Masthead = forwardRef<HTMLDivElement, {}>(({}, ref) => (
           <EmailIcon sx={{ color: "#FFF" }} />
         </NavIconLink>
       </Flex>
+
+      <Button
+        component="a"
+        href="https://shop.yksoba.art"
+        target="_blank"
+        variant="outlined"
+      
+      >
+        (New!) Shop
+      </Button>
     </FlexCol>
   </FlexCol>
 ));

@@ -103,10 +103,12 @@ export const Comms = () => {
       <Option>
         <InfoCol>
           <Typography variant="h3">Full-Body</Typography>
-          <Typography variant="body1">Flat Colors&nbsp;|&nbsp;120</Typography>
-          <Typography variant="body1">Shaded&nbsp;|&nbsp;150</Typography>
+          <Typography variant="body1">Flat Style&nbsp;|&nbsp;120</Typography>
           <Typography variant="body1">
-            Shaded+Detailed Background&nbsp;|&nbsp;200
+            Rendered Style&nbsp;|&nbsp;150
+          </Typography>
+          <Typography variant="body1">
+            Rendered+Detailed Background&nbsp;|&nbsp;200
           </Typography>
         </InfoCol>
         <PreviewCol>
@@ -132,8 +134,8 @@ export const Comms = () => {
       <Option>
         <InfoCol>
           <Typography variant="h3">Half-Body</Typography>
-          <Typography variant="body1">Flat Colors | 80</Typography>
-          <Typography variant="body1">Shaded | 100</Typography>
+          <Typography variant="body1">Flat Style | 80</Typography>
+          <Typography variant="body1">Rendered Style | 100</Typography>
         </InfoCol>
         <PreviewCol>
           <LightboxProvider
@@ -158,8 +160,8 @@ export const Comms = () => {
             Bust-Up / <br />
             Headshot
           </Typography>
-          <Typography variant="body1">Flat Colors | 50</Typography>
-          <Typography variant="body1">Shaded | 60</Typography>
+          <Typography variant="body1">Flat Style | 50</Typography>
+          <Typography variant="body1">Rendered Style | 60</Typography>
         </InfoCol>
         <PreviewCol>
           <LightboxProvider

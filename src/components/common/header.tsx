@@ -14,6 +14,8 @@ import { useLayoutContext } from "./layout";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { SM } from "./theme";
+import { Send } from "@mui/icons-material";
+import { TELEGRAM } from "../../constants";
 
 export const Header = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -83,6 +85,9 @@ export const Masthead = forwardRef<HTMLDivElement, {}>(({}, ref) => (
         <NavIconLink href="mailto:the.yk.soba@gmail.com">
           <EmailIcon sx={{ color: "#FFF" }} />
         </NavIconLink>
+        <NavIconLink href={`https://t.me/${TELEGRAM}`}>
+          <Send sx={{ color: "#FFF" }} />
+        </NavIconLink>
       </Flex>
 
       <Button
@@ -90,7 +95,6 @@ export const Masthead = forwardRef<HTMLDivElement, {}>(({}, ref) => (
         href="https://shop.yksoba.art"
         target="_blank"
         variant="outlined"
-      
       >
         (New!) Shop
       </Button>

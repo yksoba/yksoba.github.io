@@ -14,6 +14,7 @@ import {
   INFO_SHEET_DOC,
   PRICING_SHEET_DOC,
   TERMS_OF_SERVICE_DOC,
+  TRELLO as COMMS_TRELLO,
 } from "../../constants";
 import { LightboxPreview, LightboxProvider } from "../containers/lightbox";
 import { unpackImageData } from "./gallery";
@@ -87,6 +88,9 @@ export const Comms = () => {
 
       <FlexCol gap={2} alignItems="center">
         <Divider2 />
+        <Link href={COMMS_TRELLO} target="_blank">
+          Commissions Trello Board
+        </Link>
         <Link href={INFO_SHEET_DOC} target="_blank">
           Commissions Info Sheet
         </Link>

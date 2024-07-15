@@ -10,6 +10,7 @@ export const INSTAGRAM = "yk_soba";
 export const EMAIL = "the.yk.soba@gmail.com";
 export const TELEGRAM = "yksoba";
 
+export const TRELLO = "https://trello.com/b/mP4Pc6Ax/commissions";
 export const INFO_SHEET_DOC =
   "https://docs.google.com/document/u/2/d/e/2PACX-1vTe4L9KW4wiF-H2qB0vF-9vKsYpbhHLnJjpI_2UCVpuUifOeQ1KCpE1fDH83Y0USBA7S1mm35jd9qZf/pub";
 export const PRICING_SHEET_DOC =

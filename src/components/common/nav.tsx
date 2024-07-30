@@ -68,7 +68,7 @@ export const NavBar = forwardRef<
   const { currentSection } = useLayoutContext();
 
   return (
-    <Flex ref={ref} style={style} gap={1} sx={sx}>
+    <Flex ref={ref} style={style} gap={1} sx={sx} flexWrap="wrap" justifyContent="center">
       <NavLink
         href="/#gallery"
         highlight={floating && currentSection === "gallery"}

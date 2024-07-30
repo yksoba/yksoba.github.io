@@ -10,7 +10,6 @@ import EmailIcon from "@mui/icons-material/Email";
 import FuraffinityIcon from "../../images/svgs/furaffinity.svg";
 import { useIntersection } from "react-use";
 import { FullDivider } from "./misc";
-import { useLayoutContext } from "./layout";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { SM } from "./theme";

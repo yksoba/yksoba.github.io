@@ -1,7 +1,6 @@
 import React from "react";
-import { PropsWithChildren, createContext, useContext } from "react";
+import { PropsWithChildren } from "react";
 import { CssBaseline, GlobalStyles } from "@mui/material";
-import { Box } from "@mui/system";
 import { ThemeProvider } from "@mui/material/styles";
 
 import "@fontsource/metropolis/300.css";
@@ -11,19 +10,8 @@ import "@fontsource/metropolis/700.css";
 import { FlexCol } from "../styled";
 import { theme } from "./theme";
 import { Footer } from "./footer";
-import { PageProps } from "gatsby";
 
-const LayoutContext = createContext<{
-  pageProps: PageProps;
-  currentSection?: string;
-}>(undefined as any);
-export const useLayoutContext = () => useContext(LayoutContext);
-
-export const Layout = ({
-  children,
-  pageProps,
-  currentSection,
-}: PropsWithChildren<{ pageProps: PageProps; currentSection?: string }>) => {
+export const Layout = ({ children }: PropsWithChildren<{}>) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -45,12 +33,10 @@ export const Layout = ({
           },
         }}
       />
-      <LayoutContext.Provider value={{ pageProps, currentSection }}>
-        <FlexCol minHeight="100vh">
-          {children}
-          <Footer />
-        </FlexCol>
-      </LayoutContext.Provider>
+      <FlexCol minHeight="100vh">
+        {children}
+        <Footer />
+      </FlexCol>
     </ThemeProvider>
   );
 };

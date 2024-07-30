@@ -89,6 +89,13 @@ export const NavBar = forwardRef<
       >
         Contact
       </NavLink>
+      <NavDivider />
+      <NavLink
+        href="/conventions/portfolio"
+        highlight={floating && currentSection === "contact"}
+      >
+        Conventions
+      </NavLink>
     </Flex>
   );
 });

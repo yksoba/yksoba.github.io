@@ -16,6 +16,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { SM } from "./theme";
 import { Send } from "@mui/icons-material";
 import { TELEGRAM } from "../../constants";
+import Icon from "@mdi/react";
+import { mdiStore } from "@mdi/js";
 
 export const Header = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -88,16 +90,10 @@ export const Masthead = forwardRef<HTMLDivElement, {}>(({}, ref) => (
         <NavIconLink href={`https://t.me/${TELEGRAM}`}>
           <Send sx={{ color: "#FFF" }} />
         </NavIconLink>
+        <NavIconLink href={`https://shop.yksoba.art`}>
+          <Icon path={mdiStore} color="#FFF" size={1} />
+        </NavIconLink>
       </Flex>
-
-      <Button
-        component="a"
-        href="https://shop.yksoba.art"
-        target="_blank"
-        variant="outlined"
-      >
-        (New!) Shop
-      </Button>
     </FlexCol>
   </FlexCol>
 ));

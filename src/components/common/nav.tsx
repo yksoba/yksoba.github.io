@@ -3,8 +3,7 @@ import { styled } from "@mui/material/styles";
 import { Divider, Link, LinkProps } from "@mui/material";
 import { Flex } from "../styled";
 import { SxProps } from "@mui/system";
-import { useLayoutContext } from "./layout";
-import { SM } from "./theme";
+import { SM } from "../../theme";
 
 export const NavLink = styled(
   ({ className, highlight, ...props }: LinkProps & { highlight?: boolean }) => (
@@ -65,34 +64,29 @@ export const NavBar = forwardRef<
     floating?: boolean;
   }
 >(({ style, sx, floating }, ref) => {
-  const { currentSection } = useLayoutContext();
 
   return (
     <Flex ref={ref} style={style} gap={1} sx={sx} flexWrap="wrap" justifyContent="center">
       <NavLink
         href="/#gallery"
-        highlight={floating && currentSection === "gallery"}
       >
         Gallery
       </NavLink>
       <NavDivider />
       <NavLink
         href="/#commissions"
-        highlight={floating && currentSection === "commissions"}
       >
         Commissions
       </NavLink>
       <NavDivider />
       <NavLink
         href="/#contact"
-        highlight={floating && currentSection === "contact"}
       >
         Contact
       </NavLink>
       <NavDivider />
       <NavLink
         href="/conventions/portfolio"
-        highlight={floating && currentSection === "contact"}
       >
         Conventions
       </NavLink>

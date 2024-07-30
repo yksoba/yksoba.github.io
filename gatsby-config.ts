@@ -3,14 +3,13 @@ import type { GatsbyConfig } from "gatsby";
 const config: GatsbyConfig = {
   flags: {
     DEV_SSR: true,
-    FAST_DEV: true
+    FAST_DEV: true,
   },
   siteMetadata: {
     title: "yksoba",
     siteUrl: "https://yksoba.art/",
   },
   plugins: [
-    "gatsby-plugin-transition-link",
     "gatsby-plugin-image",
     "gatsby-transformer-sharp",
     {
@@ -53,6 +52,9 @@ const config: GatsbyConfig = {
         name: "misc",
         path: "./src/images/misc/",
       },
+    },
+    {
+      resolve: "gatsby-plugin-layout",
     },
   ],
   graphqlTypegen: true,

@@ -2,7 +2,7 @@ import { Button, Link, Theme, Typography, useMediaQuery } from "@mui/material";
 import { graphql, useStaticQuery } from "gatsby";
 import React, { PropsWithChildren } from "react";
 import { FlexCol, Flex, Divider2 } from "../styled";
-import { LG, MD, SM } from "../common/theme";
+import { LG, MD, SM } from "../../theme";
 import { FullDivider } from "../common/misc";
 import { maxWidth } from "@mui/system";
 import {

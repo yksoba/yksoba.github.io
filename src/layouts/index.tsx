@@ -8,22 +8,16 @@ import "@fontsource/metropolis/300.css";
 import "@fontsource/metropolis/400.css";
 import "@fontsource/metropolis/500.css";
 import "@fontsource/metropolis/700.css";
-import { FlexCol } from "../styled";
-import { theme } from "./theme";
-import { Footer } from "./footer";
+import { FlexCol } from "../components/styled";
+import { theme } from "../theme";
+import { Footer } from "../components/common/footer";
 import { PageProps } from "gatsby";
-
-const LayoutContext = createContext<{
-  pageProps: PageProps;
-  currentSection?: string;
-}>(undefined as any);
-export const useLayoutContext = () => useContext(LayoutContext);
+import { Header } from "../components/common/header";
 
 export const Layout = ({
   children,
-  pageProps,
-  currentSection,
-}: PropsWithChildren<{ pageProps: PageProps; currentSection?: string }>) => {
+  location,
+}: PropsWithChildren<{}> & PageProps) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -45,12 +39,14 @@ export const Layout = ({
           },
         }}
       />
-      <LayoutContext.Provider value={{ pageProps, currentSection }}>
-        <FlexCol minHeight="100vh">
-          {children}
-          <Footer />
-        </FlexCol>
-      </LayoutContext.Provider>
+      
+      <FlexCol minHeight="100vh">
+        <Header />
+        {children}
+        <Footer />
+      </FlexCol>
     </ThemeProvider>
   );
 };
+
+export default Layout;

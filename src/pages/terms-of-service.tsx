@@ -1,14 +1,14 @@
 import { PageProps } from "gatsby";
 import React from "react";
 import { Header } from "../components/common/header";
-import { Layout } from "../components/common/layout";
+import { Layout } from "../layouts";
 import { FullDivider } from "../components/common/misc";
 import { Container, Link, Typography, Box } from "@mui/material";
 import { useEffectOnce } from "react-use";
 
 const Page = (props: PageProps) => {
   return (
-    <Layout pageProps={props}>
+    <>
       <Header />
       <FullDivider />
       <Box bgcolor="rgba(0,0,0,0.5)">
@@ -30,7 +30,7 @@ const Page = (props: PageProps) => {
           </a>
         </Container>
       </Box>
-    </Layout>
+    </>
   );
 };
 

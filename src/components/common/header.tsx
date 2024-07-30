@@ -10,10 +10,9 @@ import EmailIcon from "@mui/icons-material/Email";
 import FuraffinityIcon from "../../images/svgs/furaffinity.svg";
 import { useIntersection } from "react-use";
 import { FullDivider } from "./misc";
-import { useLayoutContext } from "./layout";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { SM } from "./theme";
+import { SM } from "../../theme";
 import { Send } from "@mui/icons-material";
 import { TELEGRAM } from "../../constants";
 import Icon from "@mdi/react";
@@ -124,29 +123,8 @@ const TitleImage = ({ variant }: { variant: "large" | "small" }) => (
 );
 
 const TitleLink = ({ variant }: { variant: "large" | "small" }) => {
-  const {
-    pageProps: { location },
-  } = useLayoutContext();
-
-  const isHomePage = location.pathname === "" || location.pathname === "/";
-
   return (
-    <Link
-      href="/#"
-      onClick={
-        isHomePage
-          ? (event) => {
-              window.scroll({ top: 0 });
-              window.history.pushState(
-                null,
-                "",
-                window.location.pathname + window.location.search
-              );
-              event.preventDefault();
-            }
-          : undefined
-      }
-    >
+    <Link href="/">
       <TitleImage variant={variant} />
     </Link>
   );

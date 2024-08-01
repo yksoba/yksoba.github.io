@@ -289,7 +289,11 @@ export const LightboxPreview = ({ index }: { index: number }) => {
       }}
       onClick={() => context.open(index)}
     >
-      <GatsbyImage alt={image.alt ?? "image"} image={image.previewImage} />
+      <GatsbyImage
+        alt={image.alt ?? "image"}
+        image={image.previewImage}
+        imgStyle={{ willChange: "auto" }}
+      />
     </ButtonBase>
   ) : null;
 };

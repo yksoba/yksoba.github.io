@@ -8,13 +8,6 @@ export const XL = "xl";
 
 export const theme = createTheme({
   typography: { fontFamily: "Metropolis, sans-serif" },
-  breakpoints: {
-    values: {
-      [SM]: 600,
-      [MD]: 900,
-      [LG]: 1200,
-    },
-  },
   palette: {
     text: { primary: "#FFF" },
     primary: {

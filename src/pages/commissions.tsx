@@ -1,25 +1,27 @@
 import { Button, Link, Theme, Typography, useMediaQuery } from "@mui/material";
 import { graphql, useStaticQuery } from "gatsby";
 import React, { PropsWithChildren } from "react";
-import { FlexCol, Flex, Divider2 } from "../styled";
-import { LG, MD, SM } from "../../theme";
-import { FullDivider } from "../common/misc";
+import { FlexCol, Flex, Divider2 } from "../components/styled";
+import { LG, MD, SM } from "../theme";
 import { maxWidth } from "@mui/system";
 import {
   AspectColumn,
   AspectContainer,
   AspectRow,
-} from "../containers/aspectbox";
+} from "../components/containers/aspectbox";
 import {
   INFO_SHEET_DOC,
   PRICING_SHEET_DOC,
   TERMS_OF_SERVICE_DOC,
   TRELLO as COMMS_TRELLO,
-} from "../../constants";
-import { LightboxPreview, LightboxProvider } from "../containers/lightbox";
-import { unpackImageData } from "./gallery";
+} from "../constants";
+import {
+  LightboxPreview,
+  LightboxProvider,
+} from "../components/containers/lightbox";
+import { unpackImageData } from "../components/content/gallery";
 
-export const Comms = () => {
+const Commissions = () => {
   const data: Queries.CommsQuery = useStaticQuery(graphql`
     query Comms {
       allFile(
@@ -73,7 +75,11 @@ export const Comms = () => {
       })}
     >
       <FlexCol mt={4} px={4} alignItems="center" sx={{ textAlign: "center" }}>
-        <Typography variant="h2" sx={{ textTransform: "uppercase" }}>
+        <Typography
+          component="h1"
+          variant="h2"
+          sx={{ textTransform: "uppercase" }}
+        >
           Commissions
         </Typography>
         <Typography variant="subtitle1" sx={{ fontStyle: "italic", mt: 2 }}>
@@ -213,6 +219,8 @@ export const Comms = () => {
     </FlexCol>
   );
 };
+
+export default Commissions;
 
 const Option = ({ children }: PropsWithChildren<{}>) => (
   <Flex

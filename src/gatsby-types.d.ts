@@ -1790,22 +1790,18 @@ type SiteFilterInput = {
 
 type SiteFlags = {
   readonly DEV_SSR: Maybe<Scalars['Boolean']>;
-  readonly FAST_DEV: Maybe<Scalars['Boolean']>;
 };
 
 type SiteFlagsFieldSelector = {
   readonly DEV_SSR: InputMaybe<FieldSelectorEnum>;
-  readonly FAST_DEV: InputMaybe<FieldSelectorEnum>;
 };
 
 type SiteFlagsFilterInput = {
   readonly DEV_SSR: InputMaybe<BooleanQueryOperatorInput>;
-  readonly FAST_DEV: InputMaybe<BooleanQueryOperatorInput>;
 };
 
 type SiteFlagsSortInput = {
   readonly DEV_SSR: InputMaybe<SortOrderEnum>;
-  readonly FAST_DEV: InputMaybe<SortOrderEnum>;
 };
 
 type SiteFunction = Node & {

@@ -5,6 +5,7 @@ import { Masonry } from "@mui/lab";
 import { useStaticQuery, graphql } from "gatsby";
 import { LightboxProvider, LightboxPreview } from "../containers/lightbox";
 import { IGatsbyImageData } from "gatsby-plugin-image";
+import _ from "lodash";
 
 export const query = graphql`
   fragment ImageData on ImageSharp {
@@ -42,7 +43,7 @@ export const MainGallery = () => {
   return (
     <LightboxProvider images={images}>
       <Box pt={0.5} px={0.25}>
-        <Masonry columns={[2, 3, 4]} spacing={0.5}>
+        <Masonry columns={2} spacing={0.5}>
           {images.map((_, i) => (
             <LightboxPreview key={i} index={i} />
           ))}

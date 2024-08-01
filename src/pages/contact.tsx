@@ -7,7 +7,7 @@ import {
   Link,
   Typography,
 } from "@mui/material";
-import { FlexCol } from "../styled";
+import { FlexCol } from "../components/styled";
 import { Icon } from "@mdi/react";
 import { mdiSquareRounded, mdiPaw } from "@mdi/js";
 import { Twitter, Instagram, Email, Send } from "@mui/icons-material";
@@ -19,9 +19,9 @@ import {
   COMMISSIONS_FORM_URL,
   EMAIL,
   TELEGRAM,
-} from "../../constants";
+} from "../constants";
 import { Link as GatsbyLink } from "gatsby";
-import { Divider2 } from "../styled";
+import { Divider2 } from "../components/styled";
 
 const Socials: React.FC = () => (
   <Box display="flex" flexDirection="column" alignItems="start">
@@ -49,9 +49,10 @@ const Socials: React.FC = () => (
   </Box>
 );
 
-export const Contact = () => (
+const Contact = () => (
   <FlexCol maxWidth="650px" px={4}>
     <Typography
+      component="h1"
       variant="h2"
       textAlign="center"
       sx={{ mb: 2, mt: 4, textTransform: "uppercase" }}
@@ -80,3 +81,5 @@ export const Contact = () => (
     </Box>
   </FlexCol>
 );
+
+export default Contact;

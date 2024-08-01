@@ -2,13 +2,10 @@ import { Container, Typography } from "@mui/material";
 import React from "react";
 import { Layout } from "../layouts";
 import { PageProps } from "gatsby";
-import { Header } from "../components/common/header";
-import { FullDivider } from "../components/common/misc";
+import { Header } from "../components/layout/header";
 
 const Page = (props: PageProps) => (
   <>
-    <Header />
-    <FullDivider />
     <Container fixed sx={{ pt: 4 }}>
       <Typography variant="h1">404</Typography>
       <Typography variant="h4">

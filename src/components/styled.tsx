@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Divider, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { Link } from "gatsby";
 
 export const Flex = styled(Box)({ display: "flex" });
 
@@ -14,6 +15,8 @@ export const Section = styled("section")({
   flexDirection: "column",
   alignItems: "center",
 });
+
+export const InternalLink = styled(Link)();
 
 export const Divider2 = ({ children }: React.PropsWithChildren<{}>) =>
   children ? (

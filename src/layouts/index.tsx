@@ -48,7 +48,7 @@ export const Layout = ({
           </Box>
         )}
 
-        <FlexCol minHeight="100vh">
+        <FlexCol minHeight="100vh" >
           <Header />
           <Box
             sx={{

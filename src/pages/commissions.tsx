@@ -66,7 +66,7 @@ const Commissions = () => {
       gap={2}
       pb={4}
       sx={(theme) => ({
-        "& h2": {
+        "& h1": {
           [theme.breakpoints.down(SM)]: {
             fontSize: "3rem",
           },

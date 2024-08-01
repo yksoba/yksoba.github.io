@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Box } from "@mui/material";
 import { Masonry } from "@mui/lab";
@@ -7,6 +7,7 @@ import { LightboxProvider, LightboxPreview } from "../containers/lightbox";
 import { IGatsbyImageData } from "gatsby-plugin-image";
 import _ from "lodash";
 import { useIsSSR } from "../hooks/use-is-ssr";
+import { useIntersection } from "react-use";
 
 export const query = graphql`
   fragment ImageData on ImageSharp {
@@ -50,7 +51,6 @@ export const MainGallery = () => {
         pt={0.5}
         px={0.25}
         sx={{
-          transition: "opacity 200ms",
           opacity: isSSR ? 0 : 1,
         }}
       >

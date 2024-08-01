@@ -12,6 +12,7 @@ import {
   Box,
   ButtonBase,
   Fade,
+  Grow,
   IconButton,
   Modal,
   Typography,
@@ -28,7 +29,8 @@ import {
 } from "rxjs";
 
 import Slider from "react-slick";
-import { useWindowSize } from "react-use";
+import { useIntersection, useWindowSize } from "react-use";
+import { useIsSSR } from "../hooks/use-is-ssr";
 
 interface ImageData {
   alt?: string;

@@ -31,14 +31,7 @@ export const Layout = ({
     <LayoutContext.Provider value={{ path }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-        />
+
         <GlobalStyles
           styles={{
             "html, body": {
@@ -63,6 +56,8 @@ export const Layout = ({
                 "linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%)",
               backgroundAttachment: "fixed",
               flexGrow: 1,
+              position: "relative",
+              zIndex: 1,
             }}
           >
             <TransitionGroup>
@@ -104,3 +99,16 @@ export const Layout = ({
 };
 
 export default Layout;
+
+export const Head = () => (
+  <>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+    />
+  </>
+);

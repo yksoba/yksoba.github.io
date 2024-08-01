@@ -34,13 +34,13 @@ export const Header = () => {
   // Only show navigation drawer if full navigation bar is out of view
   const fullNavRef = useRef<HTMLElement>(null);
   const fullNavX = useIntersection(fullNavRef, {});
-  const showDrawer = fullNavX && !fullNavX?.isIntersecting;
+  const showDrawer = !!fullNavX && !fullNavX?.isIntersecting;
 
   return (
     <>
       <Box>
         {/* Banner */}
-        <Box position="fixed" width="100vw" zIndex={-1} bgcolor="#000">
+        <Box position="fixed" width="100vw"  bgcolor="#000">
           <StaticImage
             src="../../assets/banner.png"
             alt="banner"
@@ -93,6 +93,8 @@ export const Header = () => {
 const Navigation = forwardRef(({ title }: { title?: boolean }, ref) => (
   <FlexCol
     sx={{
+      position: "relative",
+      zIndex: 1,
       p: 2,
       bgcolor: "#000",
     }}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { PropsWithChildren, createContext, useContext } from "react";
 import { CssBaseline, GlobalStyles } from "@mui/material";
 import { Box } from "@mui/system";
@@ -13,13 +13,20 @@ import { theme } from "../theme";
 import { Footer } from "../components/layout/footer";
 import { PageProps } from "gatsby";
 import { Header } from "../components/layout/header";
+import { Transition, TransitionGroup } from "react-transition-group";
 
 export const LayoutContext = createContext<{ path: string } | null>(null);
 
 export const Layout = ({
   children,
-  path,
+  location,
 }: PropsWithChildren<{}> & PageProps) => {
+  const transitionTimeout = 200;
+  const childRef = useRef<HTMLElement>(null);
+  const path = location.pathname;
+
+  let debug = false;
+  // debug = true;
   return (
     <LayoutContext.Provider value={{ path }}>
       <ThemeProvider theme={theme}>
@@ -40,6 +47,14 @@ export const Layout = ({
           }}
         />
 
+        {debug && (
+          <Box zIndex={10} bgcolor="#00f" position="fixed">
+            <b>Debug</b>
+            <br />
+            Path: {path}
+          </Box>
+        )}
+
         <FlexCol minHeight="100vh">
           <Header />
           <Box
@@ -50,7 +65,36 @@ export const Layout = ({
               flexGrow: 1,
             }}
           >
-            {children}
+            <TransitionGroup>
+              <Transition
+                nodeRef={childRef}
+                key={path}
+                timeout={transitionTimeout}
+              >
+                {(status) => (
+                  <Box
+                    ref={childRef}
+                    className={status}
+                    sx={{
+                      "&.entering": {
+                        position: "absolute",
+                        opacity: 0,
+                      },
+                      "&.entered": {
+                        transition: `opacity ${transitionTimeout}ms`,
+                        opacity: 1,
+                      },
+                      "&.exiting": {
+                        transition: `opacity ${transitionTimeout}ms`,
+                        opacity: 0,
+                      },
+                    }}
+                  >
+                    {children}
+                  </Box>
+                )}
+              </Transition>
+            </TransitionGroup>
           </Box>
           <Footer />
         </FlexCol>

@@ -238,9 +238,10 @@ const InternalNavLink = ({
   return (
     <InternalLink
       to={to}
+      className={currentPath ? "current" : ""}
       sx={(theme) => ({
         textTransform: "uppercase",
-        color: currentPath ? theme.palette.primary.main : "#FFF",
+        color: "#FFF",
         fontWeight: "300",
         opacity: "95%",
         textDecoration: "none",
@@ -251,6 +252,10 @@ const InternalNavLink = ({
 
         "&:hover": {
           textDecoration: "underline",
+        },
+
+        "&.current": {
+          color: theme.palette.primary.main,
         },
       })}
     >

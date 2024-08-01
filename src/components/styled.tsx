@@ -16,7 +16,7 @@ export const Section = styled("section")({
   alignItems: "center",
 });
 
-export const InternalLink = styled(Link)();
+export const InternalLink = styled(Link)({});
 
 export const Divider2 = ({ children }: React.PropsWithChildren<{}>) =>
   children ? (

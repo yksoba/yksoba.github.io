@@ -25,6 +25,8 @@ import { useIsSSR } from "../hooks/use-is-ssr";
 
 export const Header = () => {
   const layout = useContext(LayoutContext);
+  const fullNavRef = useRef<HTMLElement>(null);
+  const fullNavX = useIntersection(fullNavRef, {});
 
   const bannerHeight = "125vw";
 
@@ -32,23 +34,20 @@ export const Header = () => {
   const showBanner = layout?.path === "/";
 
   // Only show navigation drawer if full navigation bar is out of view
-  const fullNavRef = useRef<HTMLElement>(null);
-  const fullNavX = useIntersection(fullNavRef, {});
   const showDrawer = !!fullNavX && !fullNavX?.isIntersecting;
 
   return (
     <>
       <Box>
         {/* Banner */}
-        <Box position="fixed" width="100vw"  bgcolor="#000">
+        <Box position="fixed" width="100vw" bgcolor="#000">
           <StaticImage
             src="../../assets/banner.png"
             alt="banner"
             imgStyle={{ willChange: "auto" }}
             style={{
               opacity: showBanner ? 1 : 0,
-              transition: "opacity 500ms",
-              transitionDelay: "50ms",
+              transition: "opacity 500ms ease-in-out 50ms",
             }}
           />
         </Box>
@@ -63,8 +62,9 @@ export const Header = () => {
             width: "100%",
 
             maxHeight: showBanner ? bannerHeight : 0,
-            transition: "max-height 500ms",
-            transitionDelay: "50ms",
+            transition: showDrawer
+              ? undefined
+              : "max-height 500ms ease-in-out 50ms",
           }}
         >
           <Box

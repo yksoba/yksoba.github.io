@@ -21,6 +21,7 @@ import {
   mdiTwitter,
 } from "@mdi/js";
 import { LayoutContext } from "../../layouts";
+import { useIsSSR } from "../hooks/use-is-ssr";
 
 export const Header = () => {
   const layout = useContext(LayoutContext);
@@ -33,7 +34,7 @@ export const Header = () => {
   // Only show navigation drawer if full navigation bar is out of view
   const fullNavRef = useRef<HTMLElement>(null);
   const fullNavX = useIntersection(fullNavRef, {});
-  const showDrawer = !fullNavX?.isIntersecting;
+  const showDrawer = fullNavX && !fullNavX?.isIntersecting;
 
   return (
     <>

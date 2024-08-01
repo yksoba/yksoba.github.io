@@ -6,6 +6,7 @@ import { useStaticQuery, graphql } from "gatsby";
 import { LightboxProvider, LightboxPreview } from "../containers/lightbox";
 import { IGatsbyImageData } from "gatsby-plugin-image";
 import _ from "lodash";
+import { useIsSSR } from "../hooks/use-is-ssr";
 
 export const query = graphql`
   fragment ImageData on ImageSharp {
@@ -40,10 +41,20 @@ export const MainGallery = () => {
 
   const images = data.allFile.nodes.map(unpackImageData);
 
+  const isSSR = useIsSSR();
+  const columns = isSSR ? 1 : 2;
+
   return (
     <LightboxProvider images={images}>
-      <Box pt={0.5} px={0.25}>
-        <Masonry columns={2} spacing={0.5}>
+      <Box
+        pt={0.5}
+        px={0.25}
+        sx={{
+          transition: "opacity 200ms",
+          opacity: isSSR ? 0 : 1,
+        }}
+      >
+        <Masonry columns={columns} spacing={0.5}>
           {images.map((_, i) => (
             <LightboxPreview key={i} index={i} />
           ))}

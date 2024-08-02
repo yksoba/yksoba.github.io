@@ -58,41 +58,19 @@ const Commissions = () => {
     data.allFile.nodes.map((node) => [node.name, node] as const)
   );
 
-  const isXS = useMediaQuery((theme: Theme) => theme.breakpoints.down(SM));
-
   return (
-    <FlexCol
-      m={[0.5, 1]}
-      gap={2}
-      pb={4}
-      sx={(theme) => ({
-        "& h1": {
-          [theme.breakpoints.down(SM)]: {
-            fontSize: "3rem",
-          },
-        },
-        maxWidth: "800px",
-      })}
-    >
-      <FlexCol mt={4} px={4} alignItems="center" sx={{ textAlign: "center" }}>
-        <Typography
-          component="h1"
-          variant="h2"
-          sx={{ textTransform: "uppercase" }}
-        >
-          Commissions
-        </Typography>
-        <Typography variant="subtitle1" sx={{ fontStyle: "italic", mt: 2 }}>
-          Prices below are estimates for one character. For more options and
-          multiple characters, see the{" "}
-          <Link href={PRICING_SHEET_DOC} target="_blank">
-            full pricing sheet
-          </Link>
-          . All prices in USD.
-        </Typography>
-      </FlexCol>
+    <FlexCol width="100%" maxWidth="900px" px={4} bgcolor="rgba(0,0,0,0.5)">
+      <Typography variant="h1">Commissions</Typography>
+      <Typography variant="subtitle1">
+        Prices below are estimates for one character. For more options and
+        multiple characters, see the{" "}
+        <Link href={PRICING_SHEET_DOC} target="_blank">
+          full pricing sheet
+        </Link>
+        . All prices in USD.
+      </Typography>
 
-      <FlexCol gap={2} alignItems="center">
+      <FlexCol gap={2} mt={1} alignItems="center">
         <Divider2 />
         <Link href={COMMS_TRELLO} target="_blank">
           Commissions Trello Board
@@ -112,12 +90,10 @@ const Commissions = () => {
 
       <Option>
         <InfoCol>
-          <Typography variant="h3">Full-Body</Typography>
-          <Typography variant="body1">Flat Style&nbsp;|&nbsp;120</Typography>
-          <Typography variant="body1">
-            Rendered Style&nbsp;|&nbsp;150
-          </Typography>
-          <Typography variant="body1">
+          <Typography variant="h2">Full-Body</Typography>
+          <Typography variant="h3">Flat Style&nbsp;|&nbsp;120</Typography>
+          <Typography variant="h3">Rendered Style&nbsp;|&nbsp;150</Typography>
+          <Typography variant="h3">
             Rendered+Detailed Background&nbsp;|&nbsp;200
           </Typography>
         </InfoCol>
@@ -143,9 +119,9 @@ const Commissions = () => {
 
       <Option>
         <InfoCol>
-          <Typography variant="h3">Half-Body</Typography>
-          <Typography variant="body1">Flat Style | 80</Typography>
-          <Typography variant="body1">Rendered Style | 100</Typography>
+          <Typography variant="h2">Half-Body</Typography>
+          <Typography variant="h3">Flat Style | 80</Typography>
+          <Typography variant="h3">Rendered Style | 100</Typography>
         </InfoCol>
         <PreviewCol>
           <LightboxProvider
@@ -166,12 +142,12 @@ const Commissions = () => {
 
       <Option>
         <InfoCol>
-          <Typography variant="h3">
+          <Typography variant="h2">
             Bust-Up / <br />
             Headshot
           </Typography>
-          <Typography variant="body1">Flat Style | 50</Typography>
-          <Typography variant="body1">Rendered Style | 60</Typography>
+          <Typography variant="h3">Flat Style | 50</Typography>
+          <Typography variant="h3">Rendered Style | 60</Typography>
         </InfoCol>
         <PreviewCol>
           <LightboxProvider
@@ -210,10 +186,10 @@ const Commissions = () => {
           <Link href={PRICING_SHEET_DOC} target="_blank">
             full pricing sheet
           </Link>{" "}
-          for more options!
+          for more options and details!
         </Typography>
       </FlexCol>
-      <FlexCol px={4} alignItems="center" sx={{ textAlign: "center" }}>
+      <FlexCol alignItems="center" my={4}>
         <SubmitRequestButton />
       </FlexCol>
     </FlexCol>
@@ -241,12 +217,6 @@ const InfoCol = ({ children }: PropsWithChildren<{}>) => (
     alignItems="end"
     sx={{
       textAlign: "right",
-      "& h3": {
-        fontSize: "3rem",
-      },
-      "& p": {
-        fontSize: "1.5rem",
-      },
     }}
   >
     {children}

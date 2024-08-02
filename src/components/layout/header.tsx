@@ -8,9 +8,15 @@ import React, {
 } from "react";
 import { Flex, FlexCol, InternalLink } from "../styled";
 import { StaticImage } from "gatsby-plugin-image";
-import { Box, SxProps } from "@mui/system";
-import { Portal, Link as ExternalLink, ButtonBase } from "@mui/material";
-import { useIntersection } from "react-use";
+import { Box, SxProps, useMediaQuery } from "@mui/system";
+import {
+  Portal,
+  Link as ExternalLink,
+  ButtonBase,
+  useForkRef,
+  Theme,
+} from "@mui/material";
+import { useIntersection, useMeasure } from "react-use";
 import { TELEGRAM } from "../../constants";
 import Icon from "@mdi/react";
 import {
@@ -25,13 +31,21 @@ import { useIsSSR } from "../hooks/use-is-ssr";
 
 export const Header = () => {
   const layout = useContext(LayoutContext);
-  const fullNavRef = useRef<HTMLElement>(null);
-  const fullNavX = useIntersection(fullNavRef, {});
+  const fullNavXRef = useRef<HTMLElement>(null);
+  const fullNavX = useIntersection(fullNavXRef, {});
+  const [fullNavMeasureRef, fullNavRect] = useMeasure();
+  const fullNavRef = useForkRef(fullNavXRef, fullNavMeasureRef);
+  const isXS = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
-  const bannerHeight = "125vw";
+  // Adjust banner height based on size of the navigation bar
+  const bannerHeight = [
+    `calc(min(125vw, 80vh - ${fullNavRect.height}px))`,
+    "45vw",
+    "405px",
+  ];
 
-  // Only show banner on home page/gallery
-  const showBanner = layout?.path === "/";
+  // Only show banner on home page/gallery on xs
+  const showBanner = !isXS || layout?.path === "/";
 
   // Only show navigation drawer if full navigation bar is out of view
   const showDrawer = !!fullNavX && !fullNavX?.isIntersecting;
@@ -39,45 +53,12 @@ export const Header = () => {
   return (
     <>
       <Box>
-        {/* Banner */}
-        <Box position="fixed" width="100vw" bgcolor="#000">
-          <StaticImage
-            src="../../assets/banner.png"
-            alt="banner"
-            imgStyle={{ willChange: "auto" }}
-            style={{
-              opacity: showBanner ? 1 : 0,
-              transition: "opacity 500ms ease-in-out 50ms",
-            }}
-          />
-        </Box>
-
-        {/* Banner Overlay */}
-        <Box
-          sx={{
-            pointerEvents: "none",
-            overflow: "clip",
-            position: "relative",
-            height: bannerHeight,
-            width: "100%",
-
-            maxHeight: showBanner ? bannerHeight : 0,
-            transition: showDrawer
-              ? undefined
-              : "max-height 500ms ease-in-out 50ms",
-          }}
-        >
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: 0,
-              height: bannerHeight,
-              width: "100%",
-              backgroundImage:
-                "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0) 100%)",
-            }}
-          />
-        </Box>
+        {/* <Banner
+          bannerHeight={bannerHeight}
+          isXS={isXS}
+          showBanner={showBanner}
+          showDrawer={showDrawer}
+        /> */}
 
         {/* Full Navigation */}
         <Navigation title ref={fullNavRef} />
@@ -90,30 +71,99 @@ export const Header = () => {
   );
 };
 
+const Banner: React.FC<{
+  bannerHeight: string[];
+  isXS: unknown;
+  showBanner: boolean;
+  showDrawer: boolean;
+}> = ({ bannerHeight, isXS, showBanner, showDrawer }) => (
+  <>
+    {/* Banner Image */}
+    <Box
+      position="fixed"
+      top={["0vw", "-15vw", "-135px"]}
+      width="100vw"
+      bgcolor="#000"
+      display="flex"
+      justifyContent="center"
+    >
+      <StaticImage
+        src="../../assets/banner.png"
+        alt="banner"
+        imgStyle={{ willChange: "auto" }}
+        style={{
+          opacity: showBanner ? 1 : 0,
+          transition: "opacity 500ms ease-in-out 50ms",
+          maxWidth: "900px",
+        }}
+      />
+    </Box>
+
+    {/* Banner Overlay */}
+    <Box
+      sx={{
+        pointerEvents: "none",
+        overflow: "clip",
+        position: "relative",
+        height: bannerHeight,
+        width: "100%",
+
+        maxHeight: showBanner ? bannerHeight : 0,
+        transition:
+          !isXS || showDrawer ? undefined : "max-height 500ms ease-in-out 50ms",
+      }}
+    >
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          height: bannerHeight,
+          width: "100%",
+          backgroundImage:
+            "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0) 100%)",
+        }}
+      />
+    </Box>
+  </>
+);
+
 const Navigation = forwardRef(({ title }: { title?: boolean }, ref) => (
   <FlexCol
+    component="nav"
     sx={{
       position: "relative",
       zIndex: 1,
       p: 2,
       bgcolor: "#000",
+      gap: 2,
     }}
     ref={ref}
   >
-    <FlexCol component="nav" gap={1}>
-      {title && (
-        <InternalLink to="/">
-          <TitleImage />
-        </InternalLink>
-      )}
+    {title && (
+      <InternalLink to="/" sx={{ display: "flex", justifyContent: "center" }}>
+        <TitleImage />
+      </InternalLink>
+    )}
+    <Flex
+      sx={(theme) => ({
+        justifyContent: "center",
+        flexDirection: "column",
+        gap: 1,
+
+        [theme.breakpoints.up("sm")]: {
+          flexDirection: "row",
+          gap: 2,
+        },
+      })}
+    >
       <InternalNavLink to="/">Gallery</InternalNavLink>
       <InternalNavLink to="/commissions/">Commissions</InternalNavLink>
       <InternalNavLink to="/contact/">Contact</InternalNavLink>
       <InternalNavLink to="/conventions/portfolio/">
         Conventions
       </InternalNavLink>
-    </FlexCol>
-    <Flex gap={1} mt={1} justifyContent="center" alignItems="center">
+    </Flex>
+    <Flex gap={1} justifyContent="center" alignItems="center">
       <ExternalNavIconLink
         href="https://bsky.app/profile/yksoba.art"
         path={bskySvgPath}
@@ -259,6 +309,10 @@ const InternalNavLink = ({
 
         "&.current": {
           color: theme.palette.primary.main,
+        },
+
+        [theme.breakpoints.up("sm")]: {
+          width: "fit-content",
         },
       })}
     >

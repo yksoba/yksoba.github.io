@@ -104,7 +104,7 @@ const Page = (props: PageProps) => {
         </FlexCol>
         <p>
           You can also see some of my previous at-con sketch comms which ppl
-          have brought home!
+          have brought home! (May take a moment to load)
         </p>
         <Flex gap={1}>
           <FlexCol width="100%">

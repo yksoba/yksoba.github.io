@@ -50,15 +50,14 @@ const Socials: React.FC = () => (
 );
 
 const Contact = () => (
-  <FlexCol maxWidth="650px" px={4}>
-    <Typography
-      component="h1"
-      variant="h2"
-      textAlign="center"
-      sx={{ mb: 2, mt: 4, textTransform: "uppercase" }}
-    >
-      Contact
-    </Typography>
+  <FlexCol
+    width="100%"
+    height="100%"
+    maxWidth="600px"
+    px={4}
+    bgcolor="rgba(0,0,0,0.5)"
+  >
+    <Typography variant="h1">Contact</Typography>
 
     <Box
       display="flex"

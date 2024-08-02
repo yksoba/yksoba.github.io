@@ -14,7 +14,7 @@ import { Footer } from "../components/layout/footer";
 import { PageProps } from "gatsby";
 import { Header } from "../components/layout/header";
 import { Transition, TransitionGroup } from "react-transition-group";
-
+import { Debug } from "../components/layout/debug";
 export const LayoutContext = createContext<{ path: string } | null>(null);
 
 export const Layout = ({
@@ -25,8 +25,6 @@ export const Layout = ({
   const childRef = useRef<HTMLElement>(null);
   const path = location.pathname;
 
-  let debug = false;
-  // debug = true;
   return (
     <LayoutContext.Provider value={{ path }}>
       <ThemeProvider theme={theme}>
@@ -40,15 +38,9 @@ export const Layout = ({
           }}
         />
 
-        {debug && (
-          <Box zIndex={10} bgcolor="#00f" position="fixed">
-            <b>Debug</b>
-            <br />
-            Path: {path}
-          </Box>
-        )}
+        {/* <Debug /> */}
 
-        <FlexCol minHeight="100vh" >
+        <FlexCol minHeight="100vh">
           <Header />
           <Box
             sx={{
@@ -71,6 +63,9 @@ export const Layout = ({
                     ref={childRef}
                     className={status}
                     sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
                       "&.entering": {
                         position: "absolute",
                         opacity: 0,

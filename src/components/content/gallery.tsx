@@ -43,7 +43,7 @@ export const MainGallery = () => {
   const images = data.allFile.nodes.map(unpackImageData);
 
   const isSSR = useIsSSR();
-  const columns = isSSR ? 1 : 2;
+  const columns = isSSR ? 1 : [2, 2, 3, 4];
 
   return (
     <LightboxProvider images={images}>

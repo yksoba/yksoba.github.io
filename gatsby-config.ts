@@ -12,6 +12,8 @@ const config: GatsbyConfig = {
   plugins: [
     "gatsby-plugin-image",
     "gatsby-transformer-sharp",
+    "gatsby-plugin-react-helmet",
+    "gatsby-plugin-layout",
     {
       resolve: "gatsby-plugin-sharp",
       options: {
@@ -21,7 +23,7 @@ const config: GatsbyConfig = {
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        icon: "src/images/favicon.png",
+        icon: "src/static/favicon.png",
       },
     },
     {
@@ -29,14 +31,6 @@ const config: GatsbyConfig = {
       options: {
         name: "pages",
         path: "./src/pages/",
-      },
-    },
-    {
-      resolve: "gatsby-plugin-react-svg",
-      options: {
-        rule: {
-          include: /\.svg$/,
-        },
       },
     },
     {
@@ -52,9 +46,6 @@ const config: GatsbyConfig = {
         name: "misc",
         path: "./src/images/misc/",
       },
-    },
-    {
-      resolve: "gatsby-plugin-layout",
     },
   ],
   graphqlTypegen: true,

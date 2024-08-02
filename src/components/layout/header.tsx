@@ -88,7 +88,7 @@ const Banner: React.FC<{
       justifyContent="center"
     >
       <StaticImage
-        src="../../assets/banner.png"
+        src="../../static/banner.png"
         alt="banner"
         imgStyle={{ willChange: "auto" }}
         style={{
@@ -273,7 +273,7 @@ const TitleImage = ({ sx }: { sx?: SxProps }) => (
   <Box sx={[{ aspectRatio: "500/131", height: "auto" }, (sx as any) ?? {}]}>
     <StaticImage
       alt="YKSOBA"
-      src="../../images/title.png"
+      src="../../static/title.png"
       width={500}
       height={131}
       loading="eager"

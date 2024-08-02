@@ -46,7 +46,7 @@ const Page = (props: PageProps) => {
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
           <Flex gap={1}>
             <StaticImage
-              src={"../../assets/conventions/portfolio/image2.jpg"}
+              src={"../../static/conventions/portfolio/image2.jpg"}
               alt={
                 "Four acrylic charms of various canids (and a red fox) dangling from rope toys"
               }
@@ -54,13 +54,13 @@ const Page = (props: PageProps) => {
           </Flex>
           <Flex gap={1}>
             <StaticImage
-              src={"../../assets/conventions/portfolio/image3.jpg"}
+              src={"../../static/conventions/portfolio/image3.jpg"}
               alt={
                 "Two stickers of a neapolitan ice cream themed fox character"
               }
             />
             <StaticImage
-              src={"../../assets/conventions/portfolio/image5.jpg"}
+              src={"../../static/conventions/portfolio/image5.jpg"}
               alt={
                 "Two stickers of canids sitting and holding pride flags in their mouths"
               }
@@ -68,7 +68,7 @@ const Page = (props: PageProps) => {
           </Flex>
           <Flex gap={1}>
             <StaticImage
-              src={"../../assets/conventions/portfolio/image4.jpg"}
+              src={"../../static/conventions/portfolio/image4.jpg"}
               alt={
                 "Three prints (in order from left to right): fox about to bite into a watermelon; a wolf playing with a foxes ears; a fox touching the nose of another dog"
               }
@@ -87,17 +87,17 @@ const Page = (props: PageProps) => {
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
           <Flex gap={1}>
             <StaticImage
-              src="../../assets/conventions/portfolio/GSDc_yNXYAA5Bvj.jpg"
+              src="../../static/conventions/portfolio/GSDc_yNXYAA5Bvj.jpg"
               alt="one sketch commission"
             />
             <StaticImage
-              src="../../assets/conventions/portfolio/GSDc_ymXMAEGujZ.jpg"
+              src="../../static/conventions/portfolio/GSDc_ymXMAEGujZ.jpg"
               alt="one sketch commission"
             />
           </Flex>
           <Flex gap={1}>
             <StaticImage
-              src="../../assets/conventions/portfolio/GRxAekGa4AALyH9.jpg"
+              src="../../static/conventions/portfolio/GRxAekGa4AALyH9.jpg"
               alt="several sketch commissions"
             />
           </Flex>
@@ -150,17 +150,17 @@ const Page = (props: PageProps) => {
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
           <Flex gap={1}>
             <StaticImage
-              src="../../assets/conventions/portfolio/image1.jpg"
+              src="../../static/conventions/portfolio/image1.jpg"
               alt="Soba (me) behind the table at Anthrocon '24"
             />
             <StaticImage
-              src="../../assets/conventions/portfolio/image7.jpg"
+              src="../../static/conventions/portfolio/image7.jpg"
               alt="Higher angle view of my table"
             />
           </Flex>
           <Flex gap={1}>
             <StaticImage
-              src="../../assets/conventions/portfolio/image6.jpg"
+              src="../../static/conventions/portfolio/image6.jpg"
               alt="Lower angle view of my table"
             />
           </Flex>
@@ -170,7 +170,7 @@ const Page = (props: PageProps) => {
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
           <Flex gap={1}>
             <StaticImage
-              src="../../assets/conventions/portfolio/image8.jpg"
+              src="../../static/conventions/portfolio/image8.jpg"
               alt="My table at MFF '23"
             />
           </Flex>

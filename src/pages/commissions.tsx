@@ -59,7 +59,7 @@ const Commissions = () => {
   );
 
   return (
-    <FlexCol width="100%" maxWidth="900px" px={4} bgcolor="rgba(0,0,0,0.5)">
+    <FlexCol width="100%" maxWidth="900px" px={[1,4]} bgcolor="rgba(0,0,0,0.5)">
       <Typography variant="h1">Commissions</Typography>
       <Typography variant="subtitle1">
         Prices below are estimates for one character. For more options and

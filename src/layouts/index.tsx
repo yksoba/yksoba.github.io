@@ -53,7 +53,7 @@ export const Layout = ({
 
           {/* <Debug /> */}
 
-          <FlexCol minHeight="100vh">
+          <FlexCol minHeight="100vh" width="100vw" sx={{overflowX: "clip"}}>
             <Header />
             <Box
               sx={{

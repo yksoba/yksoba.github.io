@@ -6,7 +6,8 @@
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "typecheck": "tsc --noEmit",
-    "deploy": "gatsby build && touch public/.nojekyll && echo yksoba.art > public/CNAME && gh-pages -t -d public -b gh-pages"
+    "deploy": "gatsby build && touch public/.nojekyll && echo yksoba.art > public/CNAME && gh-pages -t -d public -b gh-pages",
+    "prepare": "husky"
   },
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.24.7",

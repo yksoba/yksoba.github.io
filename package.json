@@ -78,5 +78,8 @@
     "three": "^0.167.1",
     "typescript": "^5.5.4",
     "yet-another-react-lightbox": "^3.21.1"
+  },
+  "devDependencies": {
+    "husky": "^9.1.4"
   }
 }

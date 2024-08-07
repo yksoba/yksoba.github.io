@@ -9720,6 +9720,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"husky@npm:^9.1.4":
+  version: 9.1.4
+  resolution: "husky@npm:9.1.4"
+  bin:
+    husky: bin.js
+  checksum: 7608a6dfac264876a2ff37f2db8520e0f9f0ea2b810a9ca151548327e9eca0b7ed58a63e0a208d20d3f43b191d8f111edcab46c3c8132c95e10ef7bd7115ee9b
+  languageName: node
+  linkType: hard
+
 "hyphenate-style-name@npm:^1.0.3":
   version: 1.1.0
   resolution: "hyphenate-style-name@npm:1.1.0"
@@ -14644,6 +14653,7 @@ __metadata:
     gatsby-transformer-sharp: ^5.13.1
     gh-pages: ^6.1.1
     granim: ^2.0.0
+    husky: ^9.1.4
     immer: ^10.1.1
     lodash: ^4.17.21
     masonry-layout: ^4.2.2

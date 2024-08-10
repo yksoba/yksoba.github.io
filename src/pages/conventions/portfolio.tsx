@@ -84,7 +84,7 @@ const Page = (props: PageProps) => {
           You can find photos of my previous table setups below, which will have
           the most comprehensive representation of the kind of merch I plan to
           sell. You can also find some examples at my online store:{" "}
-          <AutoLink href="http://shop.yksoba.art" />.
+          <AutoLink href="https://www.etsy.com/shop/YKSOBA" />.
         </p>
 
         <h2>At-Con Commissions</h2>

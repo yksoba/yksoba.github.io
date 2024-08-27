@@ -20,6 +20,7 @@ import {
   LightboxProvider,
 } from "../components/containers/lightbox";
 import { unpackImageData } from "../components/content/gallery";
+import { Link as InternalLink } from "gatsby";
 
 const Commissions = () => {
   const data: Queries.CommsQuery = useStaticQuery(graphql`
@@ -59,14 +60,20 @@ const Commissions = () => {
   );
 
   return (
-    <FlexCol width="100%" maxWidth="900px" px={[1,4]} bgcolor="rgba(0,0,0,0.5)">
+    <FlexCol
+      width="100%"
+      maxWidth="900px"
+      px={[1, 4]}
+      bgcolor="rgba(0,0,0,0.5)"
+    >
       <Typography variant="h1">Commissions</Typography>
       <Typography variant="subtitle1">
         Prices below are estimates for one character. For more options and
-        multiple characters, see the{" "}
+        multiple characters, please <Link href={"/contact"}>contact me</Link>
+        {/* see the{" "}
         <Link href={PRICING_SHEET_DOC} target="_blank">
           full pricing sheet
-        </Link>
+        </Link> */}
         . All prices in USD.
       </Typography>
 
@@ -78,9 +85,9 @@ const Commissions = () => {
         <Link href={INFO_SHEET_DOC} target="_blank">
           Commissions Info Sheet
         </Link>
-        <Link href={PRICING_SHEET_DOC} target="_blank">
+        {/* <Link href={PRICING_SHEET_DOC} target="_blank">
           Pricing Sheet
-        </Link>
+        </Link> */}
         <Link href={TERMS_OF_SERVICE_DOC} target="_blank">
           Terms of Service
         </Link>
@@ -91,11 +98,12 @@ const Commissions = () => {
       <Option>
         <InfoCol>
           <Typography variant="h2">Full-Body</Typography>
-          <Typography variant="h3">Flat Style&nbsp;|&nbsp;120</Typography>
+          <Typography variant="h3">200-300 USD</Typography>
+          {/* <Typography variant="h3">Flat Style&nbsp;|&nbsp;120</Typography>
           <Typography variant="h3">Rendered Style&nbsp;|&nbsp;150</Typography>
           <Typography variant="h3">
             Rendered+Detailed Background&nbsp;|&nbsp;200
-          </Typography>
+          </Typography> */}
         </InfoCol>
         <PreviewCol>
           <LightboxProvider
@@ -120,8 +128,9 @@ const Commissions = () => {
       <Option>
         <InfoCol>
           <Typography variant="h2">Half-Body</Typography>
-          <Typography variant="h3">Flat Style | 80</Typography>
-          <Typography variant="h3">Rendered Style | 100</Typography>
+          <Typography variant="h3">150-200 USD</Typography>
+          {/* <Typography variant="h3">Flat Style | 80</Typography> */}
+          {/* <Typography variant="h3">Rendered Style | 100</Typography> */}
         </InfoCol>
         <PreviewCol>
           <LightboxProvider
@@ -146,8 +155,9 @@ const Commissions = () => {
             Bust-Up / <br />
             Headshot
           </Typography>
-          <Typography variant="h3">Flat Style | 50</Typography>
-          <Typography variant="h3">Rendered Style | 60</Typography>
+          <Typography variant="h3">50-100 USD</Typography>
+          {/* <Typography variant="h3">Flat Style | 50</Typography> */}
+          {/* <Typography variant="h3">Rendered Style | 60</Typography> */}
         </InfoCol>
         <PreviewCol>
           <LightboxProvider

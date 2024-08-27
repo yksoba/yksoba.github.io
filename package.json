@@ -74,6 +74,7 @@
     "react-swipeable-views": "^0.14.0",
     "react-transition-group": "^4.4.5",
     "react-use": "^17.5.1",
+    "react-virtualized": "^9.22.5",
     "rxjs": "^7.8.1",
     "slick-carousel": "^1.8.1",
     "three": "^0.167.1",

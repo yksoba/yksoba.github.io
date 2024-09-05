@@ -68,12 +68,10 @@ const Commissions = () => {
     >
       <Typography variant="h1">Commissions</Typography>
       <Typography variant="subtitle1">
-        Prices below are estimates for one character. For more options and
-        multiple characters, please <Link href={"/contact"}>contact me</Link>
-        {/* see the{" "}
+        Prices below are estimates for one character. For more detailed estimated on pricing, please see the{" "}
         <Link href={PRICING_SHEET_DOC} target="_blank">
           full pricing sheet
-        </Link> */}
+        </Link>
         . All prices in USD.
       </Typography>
 

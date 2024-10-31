@@ -15,6 +15,7 @@ import {
   Grow,
   IconButton,
   Modal,
+  SxProps,
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -280,15 +281,24 @@ export const LightboxProvider = ({
   );
 };
 
-export const LightboxPreview = ({ index }: { index: number }) => {
+export const LightboxPreview = ({
+  index,
+  sx,
+}: {
+  index: number;
+  sx?: SxProps;
+}) => {
   const context = useLightboxContext();
   const image = context.images[index];
 
   return image.previewImage ? (
     <ButtonBase
-      sx={{
-        aspectRatio: `${image.previewImage.width} / ${image.previewImage.height}`,
-      }}
+      sx={[
+        {
+          aspectRatio: `${image.previewImage.width} / ${image.previewImage.height}`,
+        },
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
       onClick={() => context.open(index)}
     >
       <GatsbyImage

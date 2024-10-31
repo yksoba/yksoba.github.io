@@ -1,7 +1,7 @@
 import { Button, Link, Theme, Typography, useMediaQuery } from "@mui/material";
 import { graphql, useStaticQuery } from "gatsby";
 import React, { PropsWithChildren } from "react";
-import { FlexCol, Flex, Divider2 } from "../components/styled";
+import { FlexCol, Flex, Divider2, InternalLink } from "../components/styled";
 import { LG, MD, SM } from "../theme";
 import { maxWidth } from "@mui/system";
 import {
@@ -20,7 +20,7 @@ import {
   LightboxProvider,
 } from "../components/containers/lightbox";
 import { unpackImageData } from "../components/content/gallery";
-import { Link as InternalLink } from "gatsby";
+
 
 const Commissions = () => {
   const data: Queries.CommsQuery = useStaticQuery(graphql`
@@ -29,21 +29,13 @@ const Commissions = () => {
         filter: {
           name: {
             in: [
-              "542"
-              "404-n"
               "593"
-              "453"
-              "575-2"
-              "500"
-              "507"
-              "584-line"
-              "521"
-              "498"
-              "471"
-              "sessy"
-              "597"
-              "611.1-p"
-              "600-a"
+              "717"
+              "741"
+              "704a"
+              "702"
+              "704"
+              "735-3a"
             ]
           }
         }
@@ -68,11 +60,16 @@ const Commissions = () => {
     >
       <Typography variant="h1">Commissions</Typography>
       <Typography variant="subtitle1">
-        Prices below are estimates for one character. For more detailed estimated on pricing, please see the{" "}
+        Prices below are estimates for one character.
+        {/* For a more detailed pricing guide, please see the{" "}
         <Link href={PRICING_SHEET_DOC} target="_blank">
           full pricing sheet
-        </Link>
-        . All prices in USD.
+        </Link>. */}{" "}
+        All prices in USD.
+        {/* For more detailed estimate on pricing, please don't
+        hesitate to <Link>contact me</Link>. */}
+        <br />
+        <b><InternalLink to="/contact" sx={(theme) => ({ color: theme.palette.primary.main })}>Contact me</InternalLink> for commission inquiries!</b>
       </Typography>
 
       <FlexCol gap={2} mt={1} alignItems="center">
@@ -80,44 +77,65 @@ const Commissions = () => {
         <Link href={COMMS_TRELLO} target="_blank">
           Commissions Trello Board
         </Link>
-        <Link href={INFO_SHEET_DOC} target="_blank">
+        {/* <Link href={INFO_SHEET_DOC} target="_blank">
           Commissions Info Sheet
-        </Link>
-        {/* <Link href={PRICING_SHEET_DOC} target="_blank">
-          Pricing Sheet
         </Link> */}
         <Link href={TERMS_OF_SERVICE_DOC} target="_blank">
           Terms of Service
         </Link>
-        <SubmitRequestButton />
+        {/* <SubmitRequestButton /> */}
         <Divider2 />
       </FlexCol>
 
       <Option>
         <InfoCol>
+          <Typography variant="h2">Headshot / Bust-Up</Typography>
+          <Typography variant="h3">50-150 USD</Typography>
+        </InfoCol>
+        <PreviewCol>
+          <LightboxProvider
+            images={[images["741"], images["717"]].map(unpackImageData)}
+          >
+            <Flex>
+              <LightboxPreview index={0} sx={{ width: "50%" }} />
+              <LightboxPreview index={1} sx={{ width: "50%" }} />
+            </Flex>
+          </LightboxProvider>
+        </PreviewCol>
+      </Option>
+      <Divider2 />
+
+      <Option>
+        <InfoCol>
+          <Typography variant="h2">Half-Body / Thigh-Up</Typography>
+          <Typography variant="h3">100-250 USD</Typography>
+        </InfoCol>
+        <PreviewCol>
+          <LightboxProvider
+            images={[images["702"], images["704a"]].map(unpackImageData)}
+          >
+            <Flex>
+              <LightboxPreview index={0} sx={{ width: "43%" }} />
+              <LightboxPreview index={1} sx={{ width: "57%" }} />
+            </Flex>
+          </LightboxProvider>
+        </PreviewCol>
+      </Option>
+      <Divider2 />
+
+      <Option>
+        <InfoCol>
           <Typography variant="h2">Full-Body</Typography>
-          <Typography variant="h3">200-300 USD</Typography>
-          {/* <Typography variant="h3">Flat Style&nbsp;|&nbsp;120</Typography>
-          <Typography variant="h3">Rendered Style&nbsp;|&nbsp;150</Typography>
-          <Typography variant="h3">
-            Rendered+Detailed Background&nbsp;|&nbsp;200
-          </Typography> */}
+          <Typography variant="h3">200+ USD</Typography>
         </InfoCol>
         <PreviewCol>
           <LightboxProvider
-            images={[images["600-a"], images["404-n"], images["593"]].map(
-              unpackImageData
-            )}
+            images={[images["735-3a"], images["593"]].map(unpackImageData)}
           >
-            <AspectRow>
-              <AspectColumn>
-                <LightboxPreview index={0} />
-                <LightboxPreview index={1} />
-              </AspectColumn>
-              <AspectColumn>
-                <LightboxPreview index={2} />
-              </AspectColumn>
-            </AspectRow>
+            <Flex>
+              <LightboxPreview index={0} sx={{ width: "46.4%" }} />
+              <LightboxPreview index={1} sx={{ width: "53.6%" }} />
+            </Flex>
           </LightboxProvider>
         </PreviewCol>
       </Option>
@@ -125,21 +143,14 @@ const Commissions = () => {
 
       <Option>
         <InfoCol>
-          <Typography variant="h2">Half-Body</Typography>
-          <Typography variant="h3">150-200 USD</Typography>
-          {/* <Typography variant="h3">Flat Style | 80</Typography> */}
-          {/* <Typography variant="h3">Rendered Style | 100</Typography> */}
+          <Typography variant="h2">Ref Sheet</Typography>
+          <Typography variant="h3">300+ USD</Typography>
         </InfoCol>
         <PreviewCol>
-          <LightboxProvider
-            images={[images["611.1-p"], images["453"]].map(unpackImageData)}
-          >
+          <LightboxProvider images={[images["704"]].map(unpackImageData)}>
             <AspectRow>
               <AspectColumn>
                 <LightboxPreview index={0} />
-              </AspectColumn>
-              <AspectColumn>
-                <LightboxPreview index={1} />
               </AspectColumn>
             </AspectRow>
           </LightboxProvider>
@@ -147,47 +158,6 @@ const Commissions = () => {
       </Option>
       <Divider2 />
 
-      <Option>
-        <InfoCol>
-          <Typography variant="h2">
-            Bust-Up / <br />
-            Headshot
-          </Typography>
-          <Typography variant="h3">50-100 USD</Typography>
-          {/* <Typography variant="h3">Flat Style | 50</Typography> */}
-          {/* <Typography variant="h3">Rendered Style | 60</Typography> */}
-        </InfoCol>
-        <PreviewCol>
-          <LightboxProvider
-            images={[
-              images["500"],
-              images["507"],
-              images["521"],
-              images["498"],
-            ].map(unpackImageData)}
-          >
-            <AspectColumn>
-              <AspectRow>
-                <AspectColumn>
-                  <LightboxPreview index={0} />
-                </AspectColumn>
-                <AspectColumn>
-                  <LightboxPreview index={1} />
-                </AspectColumn>
-              </AspectRow>
-              <AspectRow>
-                <AspectColumn>
-                  <LightboxPreview index={2} />
-                </AspectColumn>
-                <AspectColumn>
-                  <LightboxPreview index={3} />
-                </AspectColumn>
-              </AspectRow>
-            </AspectColumn>
-          </LightboxProvider>
-        </PreviewCol>
-      </Option>
-      <Divider2 />
       <FlexCol px={4} alignItems="center" sx={{ textAlign: "center" }}>
         <Typography variant="subtitle1" sx={{ fontStyle: "italic" }}>
           See the{" "}
@@ -197,9 +167,9 @@ const Commissions = () => {
           for more options and details!
         </Typography>
       </FlexCol>
-      <FlexCol alignItems="center" my={4}>
+      {/* <FlexCol alignItems="center" my={4}>
         <SubmitRequestButton />
-      </FlexCol>
+      </FlexCol> */}
     </FlexCol>
   );
 };
@@ -232,7 +202,9 @@ const InfoCol = ({ children }: PropsWithChildren<{}>) => (
 );
 
 const PreviewCol = ({ children }: PropsWithChildren<{}>) => (
-  <FlexCol className="preview-col">{children}</FlexCol>
+  <FlexCol className="preview-col" mb={3}>
+    {children}
+  </FlexCol>
 );
 
 const SubmitRequestButton = ({

@@ -1577,7 +1577,7 @@ type Query_staticImageArgs = {
   base: InputMaybe<StringQueryOperatorInput>;
   birthTime: InputMaybe<DateQueryOperatorInput>;
   birthtime: InputMaybe<DateQueryOperatorInput>;
-  birthtimeMs: InputMaybe<IntQueryOperatorInput>;
+  birthtimeMs: InputMaybe<FloatQueryOperatorInput>;
   blksize: InputMaybe<IntQueryOperatorInput>;
   blocks: InputMaybe<IntQueryOperatorInput>;
   changeTime: InputMaybe<DateQueryOperatorInput>;
@@ -2406,7 +2406,7 @@ type StaticImage = Node & {
   readonly base: Maybe<Scalars['String']>;
   readonly birthTime: Maybe<Scalars['Date']>;
   readonly birthtime: Maybe<Scalars['Date']>;
-  readonly birthtimeMs: Maybe<Scalars['Int']>;
+  readonly birthtimeMs: Maybe<Scalars['Float']>;
   readonly blksize: Maybe<Scalars['Int']>;
   readonly blocks: Maybe<Scalars['Int']>;
   readonly changeTime: Maybe<Scalars['Date']>;
@@ -2593,7 +2593,7 @@ type StaticImageFilterInput = {
   readonly base: InputMaybe<StringQueryOperatorInput>;
   readonly birthTime: InputMaybe<DateQueryOperatorInput>;
   readonly birthtime: InputMaybe<DateQueryOperatorInput>;
-  readonly birthtimeMs: InputMaybe<IntQueryOperatorInput>;
+  readonly birthtimeMs: InputMaybe<FloatQueryOperatorInput>;
   readonly blksize: InputMaybe<IntQueryOperatorInput>;
   readonly blocks: InputMaybe<IntQueryOperatorInput>;
   readonly changeTime: InputMaybe<DateQueryOperatorInput>;

@@ -8,13 +8,18 @@ import React, {
 } from "react";
 import { Flex, FlexCol, InternalLink } from "../styled";
 import { StaticImage } from "gatsby-plugin-image";
-import { Box, SxProps, useMediaQuery } from "@mui/system";
+import { SxProps, useMediaQuery } from "@mui/system";
 import {
   Portal,
   Link as ExternalLink,
   ButtonBase,
   useForkRef,
   Theme,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Box,
+  Menu
 } from "@mui/material";
 import { useIntersection, useMeasure } from "react-use";
 import { TELEGRAM } from "../../constants";
@@ -25,6 +30,7 @@ import {
   mdiPaw,
   mdiStore,
   mdiTwitter,
+  mdiOpenInNew
 } from "@mdi/js";
 import { LayoutContext } from "../../layouts";
 import { useIsSSR } from "../hooks/use-is-ssr";
@@ -133,14 +139,14 @@ const Navigation = forwardRef(({ title }: { title?: boolean }, ref) => (
     sx={{
       position: "relative",
       zIndex: 1,
-      p: 2,
+      py: 2,
       bgcolor: "#000",
       gap: 2,
     }}
     ref={ref}
   >
     {title && (
-      <InternalLink to="/" sx={{ display: "flex", justifyContent: "center" }}>
+      <InternalLink to="/" sx={{ display: "flex", justifyContent: "center", px: 2 }}>
         <TitleImage />
       </InternalLink>
     )}
@@ -162,6 +168,7 @@ const Navigation = forwardRef(({ title }: { title?: boolean }, ref) => (
       <InternalNavLink to="/conventions/portfolio/">
         Conventions
       </InternalNavLink>
+      <MerchMenu />
     </Flex>
     <Flex gap={1} justifyContent="center" alignItems="center">
       <ExternalNavIconLink
@@ -180,10 +187,57 @@ const Navigation = forwardRef(({ title }: { title?: boolean }, ref) => (
         href={`https://t.me/${TELEGRAM}`}
         path={telegramSvgPath}
       />
-      <ExternalNavIconLink href={`https://www.etsy.com/shop/YKSOBA`} path={mdiStore} />
+      {/* <ExternalNavIconLink href={`https://www.etsy.com/shop/YKSOBA`} path={mdiStore} /> */}
     </Flex>
   </FlexCol>
 ));
+
+const MerchMenu = () => {
+  const isXS = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = !!anchorEl;
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return <>
+    {isXS ?
+      <Accordion disableGutters elevation={0} sx={[{ bgcolor: "unset" }]}>
+        <AccordionSummary sx={{
+          px: 0,
+          minHeight: "unset",
+          "& .MuiAccordionSummary-content": { my: 0 }
+        }}><Box sx={navLinkSX}>Merch</Box></AccordionSummary>
+        <AccordionDetails sx={{ p: 1, bgcolor: "rgba(255,255,255,0.25)" }}>
+          <FlexCol gap={1}>
+            <ExternalNavLink href="//shop.yksoba.art">Shop</ExternalNavLink>
+            <ExternalNavLink href="//yksoba.bigcartel.com">Pre-Orders</ExternalNavLink>
+          </FlexCol>
+        </AccordionDetails>
+      </Accordion> :
+      <>
+        <ButtonBase sx={[{ fontFamily: "Metropolis, sans-serif" }, navLinkSX]} onClick={handleClick} disableRipple>MERCH</ButtonBase>
+        <Menu open={open} anchorEl={anchorEl} onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          sx={{
+            "& .MuiList-root": {
+              p: 1,
+              bgcolor: "#444"
+            }
+          }}>
+          <FlexCol gap={1}>
+            <ExternalNavLink href="//shop.yksoba.art">Shop</ExternalNavLink>
+            <ExternalNavLink href="//yksoba.bigcartel.com">Pre-Orders</ExternalNavLink>
+          </FlexCol>
+        </Menu>
+      </>
+    }
+
+  </>;
+};
 
 const NavigationDrawer: React.FC<{
   showDrawer: boolean;
@@ -282,6 +336,30 @@ const TitleImage = ({ sx }: { sx?: SxProps }) => (
   </Box>
 );
 
+const navLinkSX: SxProps<Theme> = (theme) => ({
+  textTransform: "uppercase",
+  color: "#FFF",
+  fontWeight: "300",
+  opacity: "95%",
+  textDecoration: "none",
+  width: "100%",
+  textAlign: "center",
+
+  fontSize: "1.2em",
+
+  "&:hover": {
+    textDecoration: "underline",
+  },
+
+  "&.current": {
+    color: theme.palette.primary.main,
+  },
+
+  [theme.breakpoints.up("sm")]: {
+    width: "fit-content",
+  },
+})
+
 const InternalNavLink = ({
   to,
   children,
@@ -292,34 +370,24 @@ const InternalNavLink = ({
     <InternalLink
       to={to}
       className={currentPath ? "current" : ""}
-      sx={(theme) => ({
-        textTransform: "uppercase",
-        color: "#FFF",
-        fontWeight: "300",
-        opacity: "95%",
-        textDecoration: "none",
-        width: "100%",
-        textAlign: "center",
-
-        fontSize: "1.2em",
-
-        "&:hover": {
-          textDecoration: "underline",
-        },
-
-        "&.current": {
-          color: theme.palette.primary.main,
-        },
-
-        [theme.breakpoints.up("sm")]: {
-          width: "fit-content",
-        },
-      })}
+      sx={navLinkSX}
     >
       {children}
     </InternalLink>
   );
 };
+
+export const ExternalNavLink = (
+  {
+    href,
+    children,
+  }: PropsWithChildren<{ href: string }>
+) => (<ExternalLink target="_blank" sx={navLinkSX} href={href}>
+  <Flex justifyContent="center">
+    <Box>{children}</Box>
+    <Icon path={mdiOpenInNew} size={0.6} />
+  </Flex>
+</ExternalLink>);
 
 const ExternalNavIconLink = ({
   href,
@@ -340,3 +408,4 @@ const bskySvgPath =
 
 const telegramSvgPath =
   "M20.7096 3.6545C20.7096 3.6545 22.6523 2.897 22.4904 4.73664C22.4364 5.49415 21.9508 8.1454 21.573 11.0131L20.2779 19.5079C20.2779 19.5079 20.17 20.7524 19.1987 20.9688C18.2273 21.1852 16.7704 20.2113 16.5005 19.9949C16.2847 19.8326 12.4534 17.3977 11.1043 16.2074C10.7265 15.8827 10.2948 15.2334 11.1582 14.4759L16.8243 9.06525C17.4719 8.41595 18.1194 6.90095 15.4213 8.7406L7.86655 13.8808C7.86655 13.8808 7.00315 14.4218 5.3843 13.9349L1.87671 12.8527C1.87671 12.8527 0.581605 12.0411 2.79408 11.2295C8.19035 8.68645 14.8277 6.0893 20.7096 3.6545Z";
+

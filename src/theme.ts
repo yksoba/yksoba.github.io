@@ -20,6 +20,7 @@ export const theme = createTheme({
       default: "#000",
     },
   },
+ 
 });
 
 Object.assign(theme.typography.h1, {

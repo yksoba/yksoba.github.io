@@ -39,13 +39,7 @@ const Socials: React.FC = () => (
       href={`https://www.furaffinity.net/user/${FURAFFINITY}`}
     >
       FurAffinity ({FURAFFINITY})
-    </Button>
-    <Button
-      startIcon={<Instagram />}
-      href={`https://www.instagram.com/${INSTAGRAM}`}
-    >
-      Instagram ({INSTAGRAM})
-    </Button>
+    </Button> 
   </Box>
 );
 

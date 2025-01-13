@@ -1,7 +1,7 @@
 {
   "packageManager": "yarn@3.2.1",
   "scripts": {
-    "develop": "gatsby develop --host 0.0.0.0",
+    "develop": "NODE_NO_WARNINGS=1 gatsby develop --host 0.0.0.0",
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",

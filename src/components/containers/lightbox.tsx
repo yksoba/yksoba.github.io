@@ -195,6 +195,7 @@ const LightboxImageWrapper: React.FC<{
 const Lightbox = () => {
   const context = useLightboxContext();
   const currentImage = context.images[context.currentIndex];
+  const [, year, month] = currentImage.modifiedTime?.match(/^(\d+)-(\d+)-\d+$/) ?? []
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -256,8 +257,7 @@ const Lightbox = () => {
             }}
           >
             <Typography variant="h6">
-              {currentImage.modifiedTime?.slice(0, 10) +
-                (currentImage.alt ? ` (${currentImage.alt})` : "")}
+              {month + '/' + year}
             </Typography>
           </Box>
         </Box>

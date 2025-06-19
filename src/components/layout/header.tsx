@@ -6,9 +6,9 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Flex, FlexCol, InternalLink } from "../styled";
-import { StaticImage } from "gatsby-plugin-image";
-import { SxProps, useMediaQuery } from "@mui/system";
+import {Flex, FlexCol, InternalLink} from "../styled";
+import {StaticImage} from "gatsby-plugin-image";
+import {SxProps, useMediaQuery, type SystemStyleObject} from "@mui/system";
 import {
   Portal,
   Link as ExternalLink,
@@ -19,10 +19,10 @@ import {
   AccordionSummary,
   AccordionDetails,
   Box,
-  Menu
+  Menu,
 } from "@mui/material";
-import { useIntersection, useMeasure } from "react-use";
-import { TELEGRAM } from "../../constants";
+import {useIntersection, useMeasure} from "react-use";
+import {TELEGRAM} from "../../constants";
 import Icon from "@mdi/react";
 import {
   mdiChevronDoubleDown,
@@ -30,10 +30,10 @@ import {
   mdiPaw,
   mdiStore,
   mdiTwitter,
-  mdiOpenInNew
+  mdiOpenInNew,
 } from "@mdi/js";
-import { LayoutContext } from "../../layouts";
-import { useIsSSR } from "../hooks/use-is-ssr";
+import {LayoutContext} from "../../layouts";
+import {useIsSSR} from "../hooks/use-is-ssr";
 
 export const Header = () => {
   const layout = useContext(LayoutContext);
@@ -82,7 +82,7 @@ const Banner: React.FC<{
   isXS: unknown;
   showBanner: boolean;
   showDrawer: boolean;
-}> = ({ bannerHeight, isXS, showBanner, showDrawer }) => (
+}> = ({bannerHeight, isXS, showBanner, showDrawer}) => (
   <>
     {/* Banner Image */}
     <Box
@@ -96,7 +96,7 @@ const Banner: React.FC<{
       <StaticImage
         src="../../static/banner.png"
         alt="banner"
-        imgStyle={{ willChange: "auto" }}
+        imgStyle={{willChange: "auto"}}
         style={{
           opacity: showBanner ? 1 : 0,
           transition: "opacity 500ms ease-in-out 50ms",
@@ -133,7 +133,7 @@ const Banner: React.FC<{
   </>
 );
 
-const Navigation = forwardRef(({ title }: { title?: boolean }, ref) => (
+const Navigation = forwardRef(({title}: {title?: boolean}, ref) => (
   <FlexCol
     component="nav"
     sx={{
@@ -146,7 +146,10 @@ const Navigation = forwardRef(({ title }: { title?: boolean }, ref) => (
     ref={ref}
   >
     {title && (
-      <InternalLink to="/" sx={{ display: "flex", justifyContent: "center", px: 2 }}>
+      <InternalLink
+        to="/"
+        sx={{display: "flex", justifyContent: "center", px: 2}}
+      >
         <TitleImage />
       </InternalLink>
     )}
@@ -202,46 +205,66 @@ const MerchMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  return <>
-    {isXS ?
-      <Accordion disableGutters elevation={0} sx={[{ bgcolor: "unset" }]}>
-        <AccordionSummary sx={{
-          px: 0,
-          minHeight: "unset",
-          "& .MuiAccordionSummary-content": { my: 0 }
-        }}><Box sx={navLinkSX}>Merch</Box></AccordionSummary>
-        <AccordionDetails sx={{ p: 1, bgcolor: "rgba(255,255,255,0.25)" }}>
-          <FlexCol gap={1}>
-            <ExternalNavLink href="//shop.yksoba.art">Shop</ExternalNavLink>
-            <ExternalNavLink href="//yksoba.bigcartel.com">Pre-Orders</ExternalNavLink>
-          </FlexCol>
-        </AccordionDetails>
-      </Accordion> :
-      <>
-        <ButtonBase sx={[{ fontFamily: "Metropolis, sans-serif" }, navLinkSX]} onClick={handleClick} disableRipple>MERCH</ButtonBase>
-        <Menu open={open} anchorEl={anchorEl} onClose={handleClose}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          transformOrigin={{ vertical: "top", horizontal: "right" }}
-          sx={{
-            "& .MuiList-root": {
-              p: 1,
-              bgcolor: "#444"
-            }
-          }}>
-          <FlexCol gap={1}>
-            <ExternalNavLink href="//shop.yksoba.art">Shop</ExternalNavLink>
-            <ExternalNavLink href="//yksoba.bigcartel.com">Pre-Orders</ExternalNavLink>
-          </FlexCol>
-        </Menu>
-      </>
-    }
-
-  </>;
+  return (
+    <>
+      {isXS ? (
+        <Accordion disableGutters elevation={0} sx={[{bgcolor: "unset"}]}>
+          <AccordionSummary
+            sx={{
+              px: 0,
+              minHeight: "unset",
+              "& .MuiAccordionSummary-content": {my: 0},
+            }}
+          >
+            <Box sx={navLinkSX}>Shop</Box>
+          </AccordionSummary>
+          <AccordionDetails sx={{p: 1, bgcolor: "rgba(255,255,255,0.25)"}}>
+            <FlexCol gap={1}>
+              <ExternalNavLink href="//shop.yksoba.art">Merch</ExternalNavLink>
+              <ExternalNavLink href="//yksoba.bigcartel.com">
+                Apparel
+              </ExternalNavLink>
+            </FlexCol>
+          </AccordionDetails>
+        </Accordion>
+      ) : (
+        <>
+          <ButtonBase
+            sx={[{fontFamily: "Metropolis, sans-serif"}, navLinkSX]}
+            onClick={handleClick}
+            disableRipple
+          >
+            Shop
+          </ButtonBase>
+          <Menu
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{vertical: "bottom", horizontal: "right"}}
+            transformOrigin={{vertical: "top", horizontal: "right"}}
+            sx={{
+              "& .MuiList-root": {
+                p: 1,
+                bgcolor: "#444",
+              },
+            }}
+          >
+            <FlexCol gap={1}>
+              <ExternalNavLink href="//shop.yksoba.art">Merch</ExternalNavLink>
+              <ExternalNavLink href="//yksoba.bigcartel.com">
+                Apparel
+              </ExternalNavLink>
+            </FlexCol>
+          </Menu>
+        </>
+      )}
+    </>
+  );
 };
 
 const NavigationDrawer: React.FC<{
   showDrawer: boolean;
-}> = ({ showDrawer }) => {
+}> = ({showDrawer}) => {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (!showDrawer) setOpen(false);
@@ -256,8 +279,8 @@ const NavigationDrawer: React.FC<{
       className={showDrawer ? "show" : "hide"}
       sx={{
         transition: "opacity 200ms",
-        "&.hide": { opacity: 0, pointerEvents: "none" },
-        "&.show": { opacity: 1 },
+        "&.hide": {opacity: 0, pointerEvents: "none"},
+        "&.show": {opacity: 1},
       }}
     >
       {/* Expander */}
@@ -274,7 +297,7 @@ const NavigationDrawer: React.FC<{
         }}
         onClick={() => setOpen((open) => !open)}
       >
-        <TitleImage sx={{ height: "100%", width: "auto" }} />
+        <TitleImage sx={{height: "100%", width: "auto"}} />
         <Box flexGrow={1} />
         <Icon
           path={open ? mdiChevronDoubleUp : mdiChevronDoubleDown}
@@ -323,8 +346,8 @@ const NavigationDrawer: React.FC<{
   );
 };
 
-const TitleImage = ({ sx }: { sx?: SxProps }) => (
-  <Box sx={[{ aspectRatio: "500/131", height: "auto" }, (sx as any) ?? {}]}>
+const TitleImage = ({sx}: {sx?: SxProps}) => (
+  <Box sx={[{aspectRatio: "500/131", height: "auto"}, (sx as any) ?? {}]}>
     <StaticImage
       alt="YKSOBA"
       src="../../static/title.png"
@@ -336,7 +359,7 @@ const TitleImage = ({ sx }: { sx?: SxProps }) => (
   </Box>
 );
 
-const navLinkSX: SxProps<Theme> = (theme) => ({
+const navLinkSX: (theme: Theme) => SystemStyleObject<Theme> = (theme) => ({
   textTransform: "uppercase",
   color: "#FFF",
   fontWeight: "300",
@@ -358,12 +381,9 @@ const navLinkSX: SxProps<Theme> = (theme) => ({
   [theme.breakpoints.up("sm")]: {
     width: "fit-content",
   },
-})
+});
 
-const InternalNavLink = ({
-  to,
-  children,
-}: PropsWithChildren<{ to: string }>) => {
+const InternalNavLink = ({to, children}: PropsWithChildren<{to: string}>) => {
   const layout = useContext(LayoutContext);
   const currentPath = layout?.path === to;
   return (
@@ -377,17 +397,17 @@ const InternalNavLink = ({
   );
 };
 
-export const ExternalNavLink = (
-  {
-    href,
-    children,
-  }: PropsWithChildren<{ href: string }>
-) => (<ExternalLink target="_blank" sx={navLinkSX} href={href}>
-  <Flex justifyContent="center">
-    <Box>{children}</Box>
-    <Icon path={mdiOpenInNew} size={0.6} />
-  </Flex>
-</ExternalLink>);
+export const ExternalNavLink = ({
+  href,
+  children,
+}: PropsWithChildren<{href: string}>) => (
+  <ExternalLink target="_blank" sx={navLinkSX} href={href}>
+    <Flex justifyContent="center">
+      <Box>{children}</Box>
+      <Icon path={mdiOpenInNew} size={0.6} />
+    </Flex>
+  </ExternalLink>
+);
 
 const ExternalNavIconLink = ({
   href,
@@ -398,7 +418,7 @@ const ExternalNavIconLink = ({
   path: string;
   title?: string;
 }) => (
-  <ExternalLink target="_blank" sx={{ display: "flex" }} href={href}>
+  <ExternalLink target="_blank" sx={{display: "flex"}} href={href}>
     <Icon path={path} title={title} color="#FFF" size="30px" />
   </ExternalLink>
 );
@@ -408,4 +428,3 @@ const bskySvgPath =
 
 const telegramSvgPath =
   "M20.7096 3.6545C20.7096 3.6545 22.6523 2.897 22.4904 4.73664C22.4364 5.49415 21.9508 8.1454 21.573 11.0131L20.2779 19.5079C20.2779 19.5079 20.17 20.7524 19.1987 20.9688C18.2273 21.1852 16.7704 20.2113 16.5005 19.9949C16.2847 19.8326 12.4534 17.3977 11.1043 16.2074C10.7265 15.8827 10.2948 15.2334 11.1582 14.4759L16.8243 9.06525C17.4719 8.41595 18.1194 6.90095 15.4213 8.7406L7.86655 13.8808C7.86655 13.8808 7.00315 14.4218 5.3843 13.9349L1.87671 12.8527C1.87671 12.8527 0.581605 12.0411 2.79408 11.2295C8.19035 8.68645 14.8277 6.0893 20.7096 3.6545Z";
-

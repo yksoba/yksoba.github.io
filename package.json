@@ -1,4 +1,5 @@
 {
+  "name": "yksoba.art",
   "packageManager": "yarn@3.2.1",
   "scripts": {
     "develop": "NODE_NO_WARNINGS=1 gatsby develop --host 0.0.0.0",

@@ -1,12 +1,12 @@
-import { PageProps } from "gatsby";
+import {PageProps} from "gatsby";
 import React from "react";
-import { Header } from "../../components/layout/header";
-import { Layout } from "../../layouts";
-import { Container, Link, Typography, Box } from "@mui/material";
-import { useEffectOnce } from "react-use";
-import { Flex, FlexCol } from "../../components/styled";
-import { GatsbyImage, StaticImage } from "gatsby-plugin-image";
-import { Helmet } from "react-helmet";
+import {Header} from "../../components/layout/header";
+import {Layout} from "../../layouts";
+import {Container, Link, Typography, Box} from "@mui/material";
+import {useEffectOnce} from "react-use";
+import {Flex, FlexCol} from "../../components/styled";
+import {GatsbyImage, StaticImage} from "gatsby-plugin-image";
+import {Helmet} from "react-helmet";
 
 const Page = (props: PageProps) => {
   return (
@@ -31,17 +31,12 @@ const Page = (props: PageProps) => {
       >
         <h1>Conventions Portfolio</h1>
         <p>
-          Hi! I’m Soba! I am a digital and traditional artist, and I deal mostly
-          in merch as well as at-con traditional commissions! My merch is
-          primarily prints, stickers, and charms of my OCs or generic species
-          (mostly foxes, admittedly 🦊). My sketch commissions are inked and
-          colored on japanese illustration board, and are completed at-con. Keep
-          scrolling to see more details!
+          Hi! I’m Soba! I am a digital and traditional artist, and I do a little
+          bit of everything from apparel, to prints, stickers, and charms!
         </p>
         <p>
-          And be sure to check out my gallery at{" "}
+          Be sure to check out my gallery at{" "}
           <AutoLink href="https://yksoba.art/" />, as well as my socials{" "}
-          <AutoLink href="https://twitter.com/yk_soba" /> and/or{" "}
           <AutoLink href="https://bsky.app/profile/yksoba.art" /> for the latest
           art and updates!
         </p>
@@ -49,6 +44,38 @@ const Page = (props: PageProps) => {
         <h2>Merch</h2>
         <p>Here are some examples of my most popular merch:</p>
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
+          <Flex gap={1}>
+            <StaticImage
+              src={"../../static/conventions/portfolio/799f.png"}
+              alt={""}
+            />
+            <StaticImage
+              src={"../../static/conventions/portfolio/P1179437_1_.webp"}
+              alt={""}
+            />
+          </Flex>
+          <Flex gap={1}>
+            <StaticImage
+              src={"../../static/conventions/portfolio/20250709_101051(1).jpg"}
+              alt={
+                "Print of a traditional drawing featuring a hypnotized puppy"
+              }
+            />
+            <StaticImage
+              src={"../../static/conventions/portfolio/P1190969.JPG"}
+              alt={
+                "Print of a white anthro dog standing in water, having just transformed under the moon"
+              }
+            />
+          </Flex>
+          <Flex gap={1}>
+            <StaticImage
+              src={"../../static/conventions/portfolio/image4.jpg"}
+              alt={
+                "Three prints (in order from left to right): fox about to bite into a watermelon; a wolf playing with a foxes ears; a fox touching the nose of another dog"
+              }
+            />
+          </Flex>
           <Flex gap={1}>
             <StaticImage
               src={"../../static/conventions/portfolio/image2.jpg"}
@@ -71,23 +98,15 @@ const Page = (props: PageProps) => {
               }
             />
           </Flex>
-          <Flex gap={1}>
-            <StaticImage
-              src={"../../static/conventions/portfolio/image4.jpg"}
-              alt={
-                "Three prints (in order from left to right): fox about to bite into a watermelon; a wolf playing with a foxes ears; a fox touching the nose of another dog"
-              }
-            />
-          </Flex>
         </FlexCol>
         <p>
           You can find photos of my previous table setups below, which will have
           the most comprehensive representation of the kind of merch I plan to
-          sell. You can also find some examples at my online store:{" "}
+          sell. You can also find some examples at my online stores:{" "}
           <AutoLink href="https://www.etsy.com/shop/YKSOBA" />.
         </p>
 
-        <h2>At-Con Commissions</h2>
+        {/* <h2>At-Con Commissions</h2>
         <p>Here are some of the at-con sketch commissions I've done:</p>
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
           <Flex gap={1}>
@@ -106,8 +125,8 @@ const Page = (props: PageProps) => {
               alt="several sketch commissions"
             />
           </Flex>
-        </FlexCol>
-        <p>
+        </FlexCol> */}
+        {/* <p>
           You can also see some of my previous at-con sketch comms which ppl
           have brought home! (May take a moment to load)
         </p>
@@ -141,9 +160,39 @@ const Page = (props: PageProps) => {
                 `}
             />
           </FlexCol>
-        </Flex>
+        </Flex> */}
 
         <h2>Previous Table Setups</h2>
+
+        <h3>Anthrocon '25</h3>
+        <FlexCol gap={1} maxWidth="600px" margin="0 auto">
+          <Flex gap={1}>
+            <StaticImage
+              src="../../static/conventions/portfolio/table-ac-25.jpg"
+              alt="Soba (me) and Rye (my partner) behind the table at Anthrocon '25"
+            />
+          </Flex>
+        </FlexCol>
+
+        <h3>FurSquared '25</h3>
+        <FlexCol gap={1} maxWidth="600px" margin="0 auto">
+          <Flex gap={1}>
+            <StaticImage
+              src="../../static/conventions/portfolio/FurSquared 2025.JPG"
+              alt="Soba (me) in fursuit behind the table at FurSquared '25"
+            />
+          </Flex>
+        </FlexCol>
+
+        <h3>Further Confusion '25</h3>
+        <FlexCol gap={1} maxWidth="600px" margin="0 auto">
+          <Flex gap={1}>
+            <StaticImage
+              src="../../static/conventions/portfolio/FC 2025.jpg"
+              alt="Soba (me) behind the table at Further Confusion '25"
+            />
+          </Flex>
+        </FlexCol>
 
         <h3>Anthrocon '24</h3>
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
@@ -188,15 +237,15 @@ const Page = (props: PageProps) => {
   );
 };
 
-const AutoLink = ({ href }: { href: string }) => (
+const AutoLink = ({href}: {href: string}) => (
   <a target="_blank" href={href}>
     {href}
   </a>
 );
 
-const TweetCard = ({ html }: { html: string }) => (
+const TweetCard = ({html}: {html: string}) => (
   <Box>
-    <div dangerouslySetInnerHTML={{ __html: html }} />
+    <div dangerouslySetInnerHTML={{__html: html}} />
   </Box>
 );
 

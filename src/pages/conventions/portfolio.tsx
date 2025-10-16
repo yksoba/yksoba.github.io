@@ -32,7 +32,8 @@ const Page = (props: PageProps) => {
         <h1>Conventions Portfolio</h1>
         <p>
           Hi! I’m Soba! I am a digital and traditional artist, and I do a little
-          bit of everything from apparel, to prints, stickers, and charms!
+          bit of everything from apparel, to prints, stickers, charms, and
+          traditional art commissions!
         </p>
         <p>
           Be sure to check out my gallery at{" "}

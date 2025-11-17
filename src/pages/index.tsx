@@ -12,10 +12,10 @@ const Home = () => {
       <Flex>
         <ProductPreview
           href="https://yksoba.bigcartel.com/product/stargazer-zip-up-hoodie"
-          title="「Stargazer・💫」 Zip-Up Hoodie (Pre-Order)"
+          title="「Stargazer・💫」 Zip-Up Hoodie"
           image={
             <StaticImage
-              src="../static/products/836e.png"
+              src="../static/products/836f-v1.png"
               alt="stargazer hoodie preview"
             />
           }

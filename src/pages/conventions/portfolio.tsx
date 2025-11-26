@@ -37,8 +37,9 @@ const Page = (props: PageProps) => {
         </p>
         <p>
           Be sure to check out my gallery at{" "}
-          <AutoLink href="https://yksoba.art/" />, as well as my socials{" "}
-          <AutoLink href="https://bsky.app/profile/yksoba.art" /> for the latest
+          <AutoLink href="yksoba.art" />, as well as my socials{" "}
+          <AutoLink href="t.me/yksobaart" /> and/or{" "}
+          <AutoLink href="bsky.app/profile/yksoba.art" /> for the latest
           art and updates!
         </p>
 
@@ -46,28 +47,36 @@ const Page = (props: PageProps) => {
         <p>Here are some examples of my most popular merch:</p>
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
           <Flex gap={1}>
-            <StaticImage
-              src={"../../static/conventions/portfolio/799f.png"}
-              alt={""}
-            />
-            <StaticImage
-              src={"../../static/conventions/portfolio/P1179437_1_.webp"}
-              alt={""}
-            />
+            <Flex width="50%">
+              <StaticImage
+                src={"../../static/conventions/portfolio/799f.png"}
+                alt={"Fox & Bird Hoodie"}
+              />
+            </Flex>
+            <Flex width="50%">
+              <StaticImage
+                src={"../../static/conventions/portfolio/836h.png"}
+                alt={"Stargazer Hoodie"}
+              />
+            </Flex>
           </Flex>
           <Flex gap={1}>
-            <StaticImage
-              src={"../../static/conventions/portfolio/20250709_101051(1).jpg"}
-              alt={
-                "Print of a traditional drawing featuring a hypnotized puppy"
-              }
-            />
-            <StaticImage
-              src={"../../static/conventions/portfolio/P1190969.JPG"}
-              alt={
-                "Print of a white anthro dog standing in water, having just transformed under the moon"
-              }
-            />
+            <Flex width="50%">
+              <StaticImage
+                src={"../../static/conventions/portfolio/20250709_101051-1.jpg"}
+                alt={
+                  "Print of a traditional drawing featuring a hypnotized puppy"
+                }
+              />
+            </Flex>
+            <Flex width="50%">
+              <StaticImage
+                src={"../../static/conventions/portfolio/P1190969-1.JPG"}
+                alt={
+                  "Print of a white anthro dog standing in water, having just transformed under the moon"
+                }
+              />
+            </Flex>
           </Flex>
           <Flex gap={1}>
             <StaticImage
@@ -103,8 +112,11 @@ const Page = (props: PageProps) => {
         <p>
           You can find photos of my previous table setups below, which will have
           the most comprehensive representation of the kind of merch I plan to
-          sell. You can also find some examples at my online stores:{" "}
-          <AutoLink href="https://www.etsy.com/shop/YKSOBA" />.
+          sell. You can also find some examples at my online stores:
+          <br />
+          <AutoLink href="etsy.com/shop/YKSOBA" />
+          <br />
+          <AutoLink href="yksoba.bigcartel.com" />
         </p>
 
         {/* <h2>At-Con Commissions</h2>
@@ -164,6 +176,16 @@ const Page = (props: PageProps) => {
         </Flex> */}
 
         <h2>Previous Table Setups</h2>
+
+        <h3>IndyFurCon '25</h3>
+        <FlexCol gap={1} maxWidth="600px" margin="0 auto">
+          <Flex gap={1}>
+            <StaticImage
+              src="../../static/conventions/portfolio/yksoba_16.jpg"
+              alt="Soba (me) in fursuit behind the table at IndyFurCon '25"
+            />
+          </Flex>
+        </FlexCol>
 
         <h3>Anthrocon '25</h3>
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
@@ -225,12 +247,26 @@ const Page = (props: PageProps) => {
           </Flex>
         </FlexCol>
 
+        <h2>Upcoming Conventions</h2>
+
+        <ul>
+          <li>
+            MFF '25 Dealers Den (with{" "}
+            <a href="https://supykun.com/" target="_blank">
+              SUPYKUN
+            </a>
+            )
+          </li>
+          <li>Further Confusion '26 Dealers Den</li>
+          <li>FurSquared '26 Dealers Den</li>
+        </ul>
+
         <h2>More Info</h2>
         <p>
           Be sure to check out my gallery at{" "}
-          <AutoLink href="https://yksoba.art/" />, as well as my socials{" "}
-          <AutoLink href="https://twitter.com/yk_soba" /> and/or{" "}
-          <AutoLink href="https://bsky.app/profile/yksoba.art" /> for the latest
+          <AutoLink href="yksoba.art" />, as well as my socials{" "}
+          <AutoLink href="t.me/yksobaart" /> and/or{" "}
+          <AutoLink href="bsky.app/profile/yksoba.art" /> for the latest
           art and updates!
         </p>
       </Box>
@@ -239,7 +275,7 @@ const Page = (props: PageProps) => {
 };
 
 const AutoLink = ({href}: {href: string}) => (
-  <a target="_blank" href={href}>
+  <a target="_blank" href={`https://${href}`}>
     {href}
   </a>
 );

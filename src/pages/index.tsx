@@ -15,7 +15,7 @@ const Home = () => {
           title="「Stargazer・💫」 Zip-Up Hoodie"
           image={
             <StaticImage
-              src="../static/products/836f-v1.png"
+              src="../static/products/836g.png"
               alt="stargazer hoodie preview"
             />
           }
@@ -25,7 +25,7 @@ const Home = () => {
           title="「Fox & Bird・🦊🐦」 Zip-Up Hoodie"
           image={
             <StaticImage
-              src="../static/products/799d.png"
+              src="../static/products/799h.png"
               alt="fox & bird hoodie preview"
             />
           }

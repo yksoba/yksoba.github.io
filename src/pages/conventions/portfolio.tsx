@@ -176,6 +176,16 @@ const Page = (props: PageProps) => {
         </Flex> */}
 
         <h2>Previous Table Setups</h2>
+        
+        <h3>Further Confusion '26</h3>
+        <FlexCol gap={1} maxWidth="600px" margin="0 auto">
+          <Flex gap={1}>
+            <StaticImage
+              src="../../static/conventions/portfolio/20260118_180019.jpg"
+              alt="Rye (my partner) behind the table at FurtherConfusion '26"
+            />
+          </Flex>
+        </FlexCol>
 
         <h3>IndyFurCon '25</h3>
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">

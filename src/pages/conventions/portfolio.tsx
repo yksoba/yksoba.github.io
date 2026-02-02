@@ -31,9 +31,13 @@ const Page = (props: PageProps) => {
       >
         <h1>Conventions Portfolio</h1>
         <p>
-          Hi! I’m Soba! I am a digital and traditional artist, and I do a little
+          {/* Hi! I’m Soba! I am a digital and traditional artist, and I do a little
           bit of everything from apparel, to prints, stickers, charms, and
-          traditional art commissions!
+          traditional art commissions! */}
+          Hi! I’m Soba! I’m a Korean-American furry artist who specializes 
+          in cute concepts and bright colors with a unique blend of kemono 
+          and western art styles! I like to put my art on a wide range of things, 
+          including apparel, prints, stickers, and charms!
         </p>
         <p>
           Be sure to check out my gallery at{" "}
@@ -260,15 +264,9 @@ const Page = (props: PageProps) => {
         <h2>Upcoming Conventions</h2>
 
         <ul>
-          <li>
-            MFF '25 Dealers Den (with{" "}
-            <a href="https://supykun.com/" target="_blank">
-              SUPYKUN
-            </a>
-            )
-          </li>
-          <li>Further Confusion '26 Dealers Den</li>
           <li>FurSquared '26 Dealers Den</li>
+          <li>Texas Furry Fiesta '26 Artist Alley</li>
+          <li>Anthrocon '26 Dealers Den</li>
         </ul>
 
         <h2>More Info</h2>

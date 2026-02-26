@@ -171,7 +171,7 @@ const Navigation = forwardRef(({title}: {title?: boolean}, ref) => (
       <InternalNavLink to="/conventions/portfolio/">
         Conventions
       </InternalNavLink>
-      <MerchMenu />
+      <ExternalNavLink href="//shop.yksoba.art">Shop</ExternalNavLink>
     </Flex>
     <Flex gap={1} justifyContent="center" alignItems="center">
       <ExternalNavIconLink
@@ -194,73 +194,6 @@ const Navigation = forwardRef(({title}: {title?: boolean}, ref) => (
     </Flex>
   </FlexCol>
 ));
-
-const MerchMenu = () => {
-  const isXS = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = !!anchorEl;
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  return (
-    <>
-      {isXS ? (
-        <Accordion disableGutters elevation={0} sx={[{bgcolor: "unset"}]}>
-          <AccordionSummary
-            sx={{
-              px: 0,
-              minHeight: "unset",
-              "& .MuiAccordionSummary-content": {my: 0},
-            }}
-          >
-            <Box sx={navLinkSX}>Shop</Box>
-          </AccordionSummary>
-          <AccordionDetails sx={{p: 1, bgcolor: "rgba(255,255,255,0.25)"}}>
-            <FlexCol gap={1}>
-              <ExternalNavLink href="//shop.yksoba.art">Merch</ExternalNavLink>
-              <ExternalNavLink href="//yksoba.bigcartel.com">
-                Apparel
-              </ExternalNavLink>
-            </FlexCol>
-          </AccordionDetails>
-        </Accordion>
-      ) : (
-        <>
-          <ButtonBase
-            sx={[{fontFamily: "Metropolis, sans-serif"}, navLinkSX]}
-            onClick={handleClick}
-            disableRipple
-          >
-            Shop
-          </ButtonBase>
-          <Menu
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{vertical: "bottom", horizontal: "right"}}
-            transformOrigin={{vertical: "top", horizontal: "right"}}
-            sx={{
-              "& .MuiList-root": {
-                p: 1,
-                bgcolor: "#444",
-              },
-            }}
-          >
-            <FlexCol gap={1}>
-              <ExternalNavLink href="//shop.yksoba.art">Merch</ExternalNavLink>
-              <ExternalNavLink href="//yksoba.bigcartel.com">
-                Apparel
-              </ExternalNavLink>
-            </FlexCol>
-          </Menu>
-        </>
-      )}
-    </>
-  );
-};
 
 const NavigationDrawer: React.FC<{
   showDrawer: boolean;

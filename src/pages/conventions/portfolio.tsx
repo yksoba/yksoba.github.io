@@ -181,6 +181,16 @@ const Page = (props: PageProps) => {
 
         <h2>Previous Table Setups</h2>
         
+        <h3>FurSquared '26</h3>
+        <FlexCol gap={1} maxWidth="600px" margin="0 auto">
+          <Flex gap={1}>
+            <StaticImage
+              src="../../static/conventions/portfolio/20260206_114921.jpg"
+              alt="Rye (my partner) behind the table at FurSqared '26"
+            />
+          </Flex>
+        </FlexCol>
+        
         <h3>Further Confusion '26</h3>
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
           <Flex gap={1}>
@@ -264,7 +274,6 @@ const Page = (props: PageProps) => {
         <h2>Upcoming Conventions</h2>
 
         <ul>
-          <li>FurSquared '26 Dealers Den</li>
           <li>Texas Furry Fiesta '26 Artist Alley</li>
           <li>Anthrocon '26 Dealers Den</li>
         </ul>

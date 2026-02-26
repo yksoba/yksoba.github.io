@@ -190,7 +190,6 @@ const Navigation = forwardRef(({title}: {title?: boolean}, ref) => (
         href={`https://t.me/${TELEGRAM}`}
         path={telegramSvgPath}
       />
-      {/* <ExternalNavIconLink href={`https://www.etsy.com/shop/YKSOBA`} path={mdiStore} /> */}
     </Flex>
   </FlexCol>
 ));

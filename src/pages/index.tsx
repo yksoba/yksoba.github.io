@@ -11,22 +11,32 @@ const Home = () => {
       <Typography variant="h3">FEATURED MERCH</Typography>
       <Flex>
         <ProductPreview
-          href="https://yksoba.bigcartel.com/product/stargazer-zip-up-hoodie"
-          title="「Stargazer・💫」 Zip-Up Hoodie"
+          href="https://yksoba.bigcartel.com/product/stargazer-zip-hoodie"
+          title="Stargazer・💫 | Full-Zip Hoodie"
           image={
             <StaticImage
-              src="../static/products/836g.png"
+              src="../static/products/836f.png"
               alt="stargazer hoodie preview"
             />
           }
         />
-        <ProductPreview
-          href="https://yksoba.bigcartel.com/product/fox-bird-zip-up-hoodie"
-          title="「Fox & Bird・🦊🐦」 Zip-Up Hoodie"
+        {/* <ProductPreview
+          href="https://yksoba.bigcartel.com/product/fox-bird-zip-hoodie"
+          title="Fox & Bird・🦊🐦 | Full-Zip Hoodie"
           image={
             <StaticImage
-              src="../static/products/799h.png"
+              src="../static/products/799i.png"
               alt="fox & bird hoodie preview"
+            />
+          }
+        /> */}
+        <ProductPreview
+          href="https://yksoba.bigcartel.com/product/gold-fox-bird-zip-hoodie"
+          title="🌟GOLD🌟 Fox & Bird | Full-Zip Hoodie"
+          image={
+            <StaticImage
+              src="../static/products/fb-gold.png"
+              alt="gold fox & bird hoodie preview"
             />
           }
         />

@@ -187,7 +187,7 @@ const Navigation = forwardRef(({title}: {title?: boolean}, ref) => (
         path={mdiPaw}
       />
       <ExternalNavIconLink
-        href={`https://t.me/${TELEGRAM}`}
+        href={`https://t.me/yksobaart`}
         path={telegramSvgPath}
       />
     </Flex>

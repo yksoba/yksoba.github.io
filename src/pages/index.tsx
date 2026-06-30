@@ -20,7 +20,7 @@ const Home = () => {
             />
           }
         />
-        {/* <ProductPreview
+        <ProductPreview
           href="https://yksoba.bigcartel.com/product/fox-bird-zip-hoodie"
           title="Fox & Bird・🦊🐦 | Full-Zip Hoodie"
           image={
@@ -29,8 +29,8 @@ const Home = () => {
               alt="fox & bird hoodie preview"
             />
           }
-        /> */}
-        <ProductPreview
+        />
+        {/* <ProductPreview
           href="https://yksoba.bigcartel.com/product/gold-fox-bird-zip-hoodie"
           title="🌟GOLD🌟 Fox & Bird | Full-Zip Hoodie"
           image={
@@ -39,7 +39,7 @@ const Home = () => {
               alt="gold fox & bird hoodie preview"
             />
           }
-        />
+        /> */}
       </Flex>
       <Divider2 />
       <Typography variant="h3">GALLERY</Typography>

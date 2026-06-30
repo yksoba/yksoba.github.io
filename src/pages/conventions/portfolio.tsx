@@ -181,6 +181,23 @@ const Page = (props: PageProps) => {
 
         <h2>Previous Table Setups</h2>
         
+        <h3>TFF '26</h3>
+
+        <FlexCol gap={1} maxWidth="600px" margin="0 auto">
+          <Flex gap={1}>
+            <StaticImage
+              src="../../static/conventions/portfolio/tff-2026-1.jpg"
+              alt="My table at TFF '26"
+            />
+          </Flex>
+          <Flex gap={1}>
+            <StaticImage
+              src="../../static/conventions/portfolio/tff-2026-2.jpg"
+              alt="Lower angle view of my table"
+            />
+          </Flex>
+        </FlexCol>
+
         <h3>FurSquared '26</h3>
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
           <Flex gap={1}>

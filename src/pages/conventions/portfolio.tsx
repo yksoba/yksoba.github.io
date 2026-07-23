@@ -31,20 +31,19 @@ const Page = (props: PageProps) => {
       >
         <h1>Conventions Portfolio</h1>
         <p>
-          {/* Hi! I’m Soba! I am a digital and traditional artist, and I do a little
-          bit of everything from apparel, to prints, stickers, charms, and
-          traditional art commissions! */}
-          Hi! I’m Soba! I’m a Korean-American furry artist who specializes 
-          in cute concepts and bright colors with a unique blend of kemono 
-          and western art styles! I like to put my art on a wide range of things, 
-          including apparel, prints, stickers, and charms!
+          I’m Soba! As a Korean-American furry artist, I specialize in cute
+          concepts and bright colors, blending elements from both east-asian
+          aesthetics and western furry culture! Show off your furry side with
+          apparel and accessories that you can feel comfortable wearing in any
+          casual setting, or find a print that resonates with your inner
+          creature! Or pick up something truly one-of-a-kind with my traditional
+          commissions for at-con pickup!
         </p>
         <p>
-          Be sure to check out my gallery at{" "}
-          <AutoLink href="yksoba.art" />, as well as my socials{" "}
-          <AutoLink href="t.me/yksobaart" /> and/or{" "}
-          <AutoLink href="bsky.app/profile/yksoba.art" /> for the latest
-          art and updates!
+          Be sure to check out my gallery at <AutoLink href="yksoba.art" />, as
+          well as my socials <AutoLink href="t.me/yksobaart" /> and/or{" "}
+          <AutoLink href="bsky.app/profile/yksoba.art" /> for the latest art and
+          updates!
         </p>
 
         <h2>Merch</h2>
@@ -65,14 +64,7 @@ const Page = (props: PageProps) => {
             </Flex>
           </Flex>
           <Flex gap={1}>
-            <Flex width="50%">
-              <StaticImage
-                src={"../../static/conventions/portfolio/20250709_101051-1.jpg"}
-                alt={
-                  "Print of a traditional drawing featuring a hypnotized puppy"
-                }
-              />
-            </Flex>
+          
             <Flex width="50%">
               <StaticImage
                 src={"../../static/conventions/portfolio/P1190969-1.JPG"}
@@ -180,7 +172,7 @@ const Page = (props: PageProps) => {
         </Flex> */}
 
         <h2>Previous Table Setups</h2>
-        
+
         <h3>TFF '26</h3>
 
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
@@ -207,7 +199,7 @@ const Page = (props: PageProps) => {
             />
           </Flex>
         </FlexCol>
-        
+
         <h3>Further Confusion '26</h3>
         <FlexCol gap={1} maxWidth="600px" margin="0 auto">
           <Flex gap={1}>
@@ -297,11 +289,10 @@ const Page = (props: PageProps) => {
 
         <h2>More Info</h2>
         <p>
-          Be sure to check out my gallery at{" "}
-          <AutoLink href="yksoba.art" />, as well as my socials{" "}
-          <AutoLink href="t.me/yksobaart" /> and/or{" "}
-          <AutoLink href="bsky.app/profile/yksoba.art" /> for the latest
-          art and updates!
+          Be sure to check out my gallery at <AutoLink href="yksoba.art" />, as
+          well as my socials <AutoLink href="t.me/yksobaart" /> and/or{" "}
+          <AutoLink href="bsky.app/profile/yksoba.art" /> for the latest art and
+          updates!
         </p>
       </Box>
     </>

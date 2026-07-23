@@ -8,7 +8,7 @@ const Home = () => {
   const isXS = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
   return (
     <FlexCol sx={{alignItems: "center", gap: 1}}>
-      {isXS && (
+      {/* {isXS && (
         <StaticImage
           src="../static/conventions/ac26-promo-4x3.jpg"
           alt="map showing yksoba at table g6 at anthrocon 2026"
@@ -23,7 +23,7 @@ const Home = () => {
             />
           </Flex>
         </Flex>
-      )}
+      )} */}
       <Typography variant="h3">FEATURED MERCH</Typography>
       <Flex>
         <ProductPreview

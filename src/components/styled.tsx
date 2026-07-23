@@ -1,10 +1,14 @@
 import React from "react";
-import { Box, Divider, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { Link } from "gatsby";
+import {Box, Divider, Typography} from "@mui/material";
+import {styled} from "@mui/material/styles";
+import {Link} from "gatsby";
 
-export const Flex = styled(Box)({ display: "flex" });
+export const Flex = styled(Box)(({col}: {col?: boolean}) => ({
+  display: "flex",
+  flexDirection: col ? "column" : "row",
+}));
 
+/** @deprecated */
 export const FlexCol = styled(Box)({
   display: "flex",
   flexDirection: "column",
@@ -18,7 +22,7 @@ export const Section = styled("section")({
 
 export const InternalLink = styled(Link)({});
 
-export const Divider2 = ({ children }: React.PropsWithChildren<{}>) =>
+export const Divider2 = ({children}: React.PropsWithChildren<{}>) =>
   children ? (
     <Divider
       flexItem
@@ -36,6 +40,6 @@ export const Divider2 = ({ children }: React.PropsWithChildren<{}>) =>
     <Divider
       flexItem
       orientation="horizontal"
-      sx={{ bgcolor: "primary.light" }}
+      sx={{bgcolor: "primary.light"}}
     />
   );

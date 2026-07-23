@@ -31,7 +31,7 @@ const Home = () => {
           title="Stargazer・💫 | Full-Zip Hoodie"
           image={
             <StaticImage
-              src="../static/products/836f.png"
+              src="../static/products/stargazer.png"
               alt="stargazer hoodie preview"
             />
           }
@@ -41,7 +41,7 @@ const Home = () => {
           title="Fox & Bird・🦊🐦 | Full-Zip Hoodie"
           image={
             <StaticImage
-              src="../static/products/799i.png"
+              src="../static/products/fox bird.png"
               alt="fox & bird hoodie preview"
             />
           }

@@ -24,13 +24,78 @@ const Page = () => {
     >
       <h1>Previous Table Setups</h1>
 
-      <h3>AC '26</h3>
+      <h3>FurPoc '26</h3>
+      <Flex>
+        <StaticImage
+          src="../../static/conventions/portfolio/fp26.webp"
+          alt="My table at FurPoc 2026."
+        />
+      </Flex>
+
+      <h3>BLFC '26</h3>
+      <Flex>
+        <StaticImage
+          src="../../static/conventions/portfolio/blfc26.webp"
+          alt="My table at BLFC 2026."
+        />
+      </Flex>
+
+      <h3>ACFI '26</h3>
+      <Flex>
+        <StaticImage
+          src="../../static/conventions/portfolio/acfi26.webp"
+          alt="My table at ACFI 2026."
+        />
+      </Flex>
+
+      <h3>Anthro SoCal '26</h3>
+      <Flex>
+        <StaticImage
+          src="../../static/conventions/portfolio/asc26.webp"
+          alt="My table at Anthro SoCal 2026."
+        />
+      </Flex>
+
+      <h3>Furry Migration '26</h3>
+      <Flex>
+        <StaticImage
+          src="../../static/conventions/portfolio/fm26.webp"
+          alt="My table at Furry Migration 2026."
+        />
+      </Flex>
+
+      <h3>IndyFurCon '26</h3>
+      <Flex>
+        <StaticImage
+          src="../../static/conventions/portfolio/ifc26.webp"
+          alt="My table at IndyFurCon 2026."
+        />
+      </Flex>
+
+      <h3>Stratosfur '26</h3>
+      <Flex>
+        <StaticImage
+          src="../../static/conventions/portfolio/sf26.webp"
+          alt="My table at Stratosfur 2026."
+        />
+      </Flex>
+
+      <h3>Megaplex '26</h3>
+      <Flex>
+        <StaticImage
+          src="../../static/conventions/portfolio/mp26.webp"
+          alt="My table at Megaplex 2026."
+        />
+      </Flex>
+
+      <h3>Anthrocon '26</h3>
       <Flex>
         <StaticImage
           src="../../static/conventions/portfolio/ac-2026.jpg"
           alt="Example of an 8ft table. From Anthrocon 2026."
         />
       </Flex>
+
       <h3>TFF '26</h3>
 
       <Flex gap={1}>

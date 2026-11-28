@@ -68,6 +68,16 @@ const Page = (props: PageProps) => {
           />
         </Flex>
 
+        <Typography variant="subtitle1">
+          12ft table example for MFF 2026
+        </Typography>
+        <Flex width="100%" mb={2}>
+          <StaticImage
+            src="../../static/conventions/portfolio/double table mff.png"
+            alt="Example of an 12ft table. For MFF 2026."
+          />
+        </Flex>
+
         <Divider2 />
         <Typography variant="h2">Merch</Typography>
         <p>
